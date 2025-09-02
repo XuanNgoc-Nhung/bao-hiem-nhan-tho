@@ -1,0 +1,7 @@
+<svg width="800" height="200" viewBox="0 0 800 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="200" rx="12" fill="#4169E1"/>
+    <text x="40" y="80" fill="white" font-family="Roboto" font-size="24" font-weight="bold">Bật thông báo EPoint</text>
+    <text x="40" y="120" fill="white" font-family="Roboto" font-size="16">Kiểm soát hóa đơn điện mỗi tháng</text>
+    <path d="M600 50H700C710 50 720 60 720 70V130C720 140 710 150 700 150H600C590 150 580 140 580 130V70C580 60 590 50 600 50Z" fill="white" fill-opacity="0.1"/>
+    <path d="M640 80V120M620 100H660" stroke="white" stroke-width="4" stroke-linecap="round"/>
+</svg> 

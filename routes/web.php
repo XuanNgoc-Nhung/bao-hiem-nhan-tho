@@ -9,6 +9,9 @@ use App\Http\Controllers\UserController;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+Route::get('chon-dang-ky',[UserController::class, 'chonDangKy'])->name('chon-dang-ky');
+
 Route::get('check-cccd',[UserController::class, 'checkCccd'])->name('user.check-cccd');
 Route::get('register',[UserController::class, 'register'])->name('user.register');
 Route::post('verify-cccd',[UserController::class, 'verifyCccd'])->name('user.verify-cccd');
