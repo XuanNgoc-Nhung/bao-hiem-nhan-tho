@@ -112,7 +112,12 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Mã bảo mật</label>
-                        <input type="text" class="form-control" name="ma_bao_mat" placeholder="Nhập mã bảo mật">
+                        <div class="input-group">
+                            <input type="password" class="form-control" name="ma_bao_mat" placeholder="Nhập mã bảo mật">
+                            <button type="button" class="btn btn-outline-secondary" id="addToggleMbm" aria-label="Ẩn/hiện" style="display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-eye" id="addToggleMbmIcon" style="font-size: 1.25rem;"></i>
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -142,7 +147,12 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Mã bảo mật</label>
-                        <input type="text" class="form-control" name="ma_bao_mat" placeholder="Nhập mã bảo mật">
+                        <div class="input-group">
+                            <input type="password" class="form-control" name="ma_bao_mat" placeholder="Nhập mã bảo mật">
+                            <button type="button" class="btn btn-outline-secondary" id="editToggleMbm" aria-label="Ẩn/hiện" style="display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-eye" id="editToggleMbmIcon" style="font-size: 1.25rem;"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Trạng thái</label>
@@ -305,6 +315,33 @@
                 }
             });
         }
+        // Toggle show/hide for Add modal
+        (function() {
+            const toggleBtn = document.getElementById('addToggleMbm');
+            if (!toggleBtn) return;
+            const icon = document.getElementById('addToggleMbmIcon');
+            const input = document.querySelector('#addCccdModal input[name="ma_bao_mat"]');
+            if (!input) return;
+            toggleBtn.addEventListener('click', function() {
+                const hidden = input.getAttribute('type') === 'password';
+                input.setAttribute('type', hidden ? 'text' : 'password');
+                icon.className = hidden ? 'bi bi-eye-slash' : 'bi bi-eye';
+            });
+        })();
+
+        // Toggle show/hide for Edit modal
+        ;(function() {
+            const toggleBtn = document.getElementById('editToggleMbm');
+            if (!toggleBtn) return;
+            const icon = document.getElementById('editToggleMbmIcon');
+            const input = document.querySelector('#editCccdModal input[name="ma_bao_mat"]');
+            if (!input) return;
+            toggleBtn.addEventListener('click', function() {
+                const hidden = input.getAttribute('type') === 'password';
+                input.setAttribute('type', hidden ? 'text' : 'password');
+                icon.className = hidden ? 'bi bi-eye-slash' : 'bi bi-eye';
+            });
+        })();
     })();
 </script>
 <script>

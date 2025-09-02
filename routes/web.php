@@ -8,8 +8,10 @@ use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 Route::get('check-cccd',[UserController::class, 'checkCccd'])->name('user.check-cccd');
+Route::get('register',[UserController::class, 'register'])->name('user.register');
+Route::post('verify-cccd',[UserController::class, 'verifyCccd'])->name('user.verify-cccd');
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', function () {
         return view('admin.index');
