@@ -300,6 +300,15 @@
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
+        /* Restore borders when using Bootstrap's table-bordered */
+        .table.table-bordered th,
+        .table.table-bordered td {
+            border: 1px solid rgba(0,0,0,0.125) !important;
+        }
+        .table.table-bordered thead th {
+            border-bottom-width: 2px !important;
+        }
+
         /* Buttons */
         .btn {
             border-radius: 0.5rem;
@@ -383,7 +392,7 @@
         <div class="sidebar-header">
             <a href="{{ route('admin.dashboard') }}" class="sidebar-brand">
                 <i class="bi bi-shield-check"></i>
-                <span>CMS Admin</span>
+                <span>CMS</span>
             </a>
         </div>
         
@@ -392,6 +401,12 @@
                 <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <i class="bi bi-speedometer2"></i>
                     <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('admin.cccd') }}" class="nav-link {{ request()->routeIs('admin.cccd*') ? 'active' : '' }}">
+                    <i class="bi bi-people"></i>
+                    <span>Quản lý ccccd</span>
                 </a>
             </li>
             <li class="nav-item">
