@@ -15,11 +15,11 @@ Route::get('chon-dang-ky',[UserController::class, 'chonDangKy'])->name('chon-dan
 Route::get('check-cccd',[UserController::class, 'checkCccd'])->name('user.check-cccd');
 Route::get('register',[UserController::class, 'register'])->name('user.register');
 Route::post('verify-cccd',[UserController::class, 'verifyCccd'])->name('user.verify-cccd');
-
-    Route::get('admin/dang-nhap', [AdminController::class, 'dangNhap'])->name('admin.dang-nhap');
+// Admin
+Route::get('admin/dang-nhap', [AdminController::class, 'dangNhap'])->name('admin.dang-nhap');
+Route::post('admin/login', [AdminController::class, 'dangNhapAdmin'])->name('admin.login');
+Route::get('admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 Route::group(['prefix' => 'admin','middleware' => 'CheckAdmin'], function () {
-    Route::post('login', [AdminController::class, 'dangNhapAdmin'])->name('admin.login');
-    Route::get('logout', [AdminController::class, 'logout'])->name('admin.logout');
     Route::get('/', function () {
         return view('admin.index');
     })->name('admin.dashboard');
