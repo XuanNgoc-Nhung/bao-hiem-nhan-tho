@@ -256,7 +256,7 @@
         </div>
         <hr>  
         <h1 class="title">Xác minh thông tin CCCD</h1>
-        <p class="subtitle">Nhập số CCCD và mã bảo mật để tiếp tục.</p>
+        <p class="subtitle">Nhập số CCCD và mã số hợp đồng để tiếp tục.</p>
 
         <form id="verify-form" novalidate>
             @csrf
@@ -268,7 +268,7 @@
             </div>
 
             <div class="form-group">
-                <label for="ma_bao_mat">Mã bảo mật</label>
+                <label for="ma_bao_mat">Mã số hợp đồng</label>
                 <div style="position: relative;">
                     <input id="ma_bao_mat" name="ma_bao_mat" type="password" placeholder="Nhập mã bảo mật" required
                         style="padding-right: 42px;">
@@ -291,7 +291,7 @@
         </form>
     </div>
 
-    <div class="brand">© <?php echo date('Y'); ?> Bảo Hiểm Nhân Thọ</div>
+    <div class="brand">© <?php echo date('Y'); ?> {{ $congTy->ten }}</div>
     <div class="toast-container" id="toast-container"></div>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
     <script>
@@ -374,7 +374,7 @@
                     ok = false;
                 }
                 if (!mbmVal) {
-                    mbmError.textContent = 'Vui lòng nhập mã bảo mật.';
+                    mbmError.textContent = 'Vui lòng nhập mã số hợp đồng.';
                     mbmInput.classList.add('is-invalid');
                     ok = false;
                 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CanCuocCongDan;
 use App\Models\CongTy;
-
+use App\Models\HopDong;
 class UserController extends Controller
 {
     public function checkCccd(Request $request)
@@ -47,6 +47,13 @@ class UserController extends Controller
             return response()->json([
                 'ok' => false,
                 'message' => 'Thông tin không khớp hoặc không tồn tại.'
+            ], 404);
+        }
+        $checkHopDong = HopDong::where('ccccd', $validated['ccccd'])->where('ma_bao_mat', $validated['ma_bao_mat'])->first();
+        if ($checkHopDong) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Mã số hợp đồng đã tồn tại trong hệ thống.'
             ], 404);
         }
 
