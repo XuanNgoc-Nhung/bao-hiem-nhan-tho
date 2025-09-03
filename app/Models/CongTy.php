@@ -19,6 +19,7 @@ class CongTy extends Model
         'ngay_dang_ky',
         'ma_so_thue',
         'website',
-        'nguoi_dai_dien'
+        'nguoi_dai_dien',
+        'hinh_nen'
     ];
 }

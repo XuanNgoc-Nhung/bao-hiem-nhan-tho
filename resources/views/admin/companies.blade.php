@@ -141,30 +141,51 @@
             </div>
             <form id="addCompanyForm">
                 <div class="modal-body">
-                    <div class="mb-3 text-center">
-                        <div class="d-inline-block border rounded p-2 bg-light"
-                            style="min-height: 160px; min-width: 260px; display: flex; align-items: center; justify-content: center;">
-                            <img id="addLogoPreview" alt="Xem trước logo"
-                                style="max-width: 260px; max-height: 160px; display: none; object-fit: contain;">
-                            <div id="addLogoPlaceholder" class="text-muted small" style="display: block;">Chưa có ảnh
-                                logo</div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                <div class="d-inline-block border rounded p-2 bg-light"
+                                    style="min-height: 160px; min-width: 260px; display: flex; align-items: center; justify-content: center;">
+                                    <img id="addLogoPreview" alt="Xem trước logo"
+                                        style="max-width: 260px; max-height: 160px; display: none; object-fit: contain;">
+                                    <div id="addLogoPlaceholder" class="text-muted small" style="display: block;">Chưa có ảnh
+                                        logo</div>
+                                </div>
+                                <div class="mt-2">
+                                    <label class="form-label">Hình ảnh logo <span class="text-danger">*</span></label>
+                                    <input type="text" id="addLogoUrl" class="form-control form-control-sm" name="addLogoUrl"
+                                        required placeholder="Dán link ảnh logo (https://...)">
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <div class="d-inline-block border rounded p-2 bg-light"
+                                    style="min-height: 160px; min-width: 260px; display: flex; align-items: center; justify-content: center;">
+                                    <img id="addHinhNenPreview" alt="Xem trước hình nền"
+                                        style="max-width: 260px; max-height: 160px; display: none; object-fit: contain;">
+                                    <div id="addHinhNenPlaceholder" class="text-muted small" style="display: block;">Chưa có ảnh
+                                        hình nền</div>
+                                </div>
+                                <div class="mt-2">
+                                    <label class="form-label">Hình ảnh hình nền</label>
+                                    <input type="text" id="addHinhNenUrl" class="form-control form-control-sm" name="addHinhNenUrl"
+                                        placeholder="Dán link ảnh hình nền (https://...)">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center">
-                        <div class="col-12 col-md-8 mb-3">
-                            <label class="form-label">Hình ảnh logo <span class="text-danger">*</span></label>
-                            <input type="text" id="addLogoUrl" class="form-control form-control-sm" name="addLogoUrl"
-                                required placeholder="Dán link ảnh logo (https://...)">
-                        </div>
-                        <script>
-                            document.getElementById('addLogoUrl').addEventListener('input', function () {
-                                document.getElementById('addLogoPreview').src = this.value;
-                                document.getElementById('addLogoPreview').style.display = 'block';
-                                document.getElementById('addLogoPlaceholder').style.display = 'none';
-                            });
+                    <script>
+                        document.getElementById('addLogoUrl').addEventListener('input', function () {
+                            document.getElementById('addLogoPreview').src = this.value;
+                            document.getElementById('addLogoPreview').style.display = 'block';
+                            document.getElementById('addLogoPlaceholder').style.display = 'none';
+                        });
 
-                        </script>
-                    </div>
+                        document.getElementById('addHinhNenUrl').addEventListener('input', function () {
+                            document.getElementById('addHinhNenPreview').src = this.value;
+                            document.getElementById('addHinhNenPreview').style.display = 'block';
+                            document.getElementById('addHinhNenPlaceholder').style.display = 'none';
+                        });
+                    </script>
                     <div class="row g-3">
                         <div class="col-12 col-sm-6 col-lg-3 mb-3">
                             <label class="form-label">Tên công ty <span class="text-danger">*</span></label>
@@ -324,30 +345,51 @@
             </div>
             <form id="editCompanyForm">
                 <div class="modal-body">
-                    <div class="mb-3 text-center">
-                        <div class="d-inline-block border rounded p-2 bg-light"
-                            style="min-height: 160px; min-width: 260px; display: flex; align-items: center; justify-content: center;">
-                            <img id="editLogoPreview" alt="Xem trước logo"
-                                style="max-width: 260px; max-height: 160px; display: none; object-fit: contain;">
-                            <div id="editLogoPlaceholder" class="text-muted small" style="display: block;">Chưa có ảnh
-                                logo</div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                <div class="d-inline-block border rounded p-2 bg-light"
+                                    style="min-height: 160px; min-width: 260px; display: flex; align-items: center; justify-content: center;">
+                                    <img id="editLogoPreview" alt="Xem trước logo"
+                                        style="max-width: 260px; max-height: 160px; display: none; object-fit: contain;">
+                                    <div id="editLogoPlaceholder" class="text-muted small" style="display: block;">Chưa có ảnh
+                                        logo</div>
+                                </div>
+                                <div class="mt-2">
+                                    <label class="form-label">Hình ảnh logo <span class="text-danger">*</span></label>
+                                    <input type="text" id="editLogoUrl" class="form-control form-control-sm" name="editLogoUrl"
+                                        required placeholder="Dán link ảnh logo (https://...)">
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <div class="d-inline-block border rounded p-2 bg-light"
+                                    style="min-height: 160px; min-width: 260px; display: flex; align-items: center; justify-content: center;">
+                                    <img id="editHinhNenPreview" alt="Xem trước hình nền"
+                                        style="max-width: 260px; max-height: 160px; display: none; object-fit: contain;">
+                                    <div id="editHinhNenPlaceholder" class="text-muted small" style="display: block;">Chưa có ảnh
+                                        hình nền</div>
+                                </div>
+                                <div class="mt-2">
+                                    <label class="form-label">Hình ảnh hình nền</label>
+                                    <input type="text" id="editHinhNenUrl" class="form-control form-control-sm" name="editHinhNenUrl"
+                                        placeholder="Dán link ảnh hình nền (https://...)">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center">
-                        <div class="col-12 col-md-8 mb-3">
-                            <label class="form-label">Hình ảnh logo <span class="text-danger">*</span></label>
-                            <input type="text" id="editLogoUrl" class="form-control form-control-sm" name="editLogoUrl"
-                                required placeholder="Dán link ảnh logo (https://...)">
-                        </div>
-                        <script>
-                            document.getElementById('editLogoUrl').addEventListener('input', function () {
-                                document.getElementById('editLogoPreview').src = this.value;
-                                document.getElementById('editLogoPreview').style.display = 'block';
-                                document.getElementById('editLogoPlaceholder').style.display = 'none';
-                            });
+                    <script>
+                        document.getElementById('editLogoUrl').addEventListener('input', function () {
+                            document.getElementById('editLogoPreview').src = this.value;
+                            document.getElementById('editLogoPreview').style.display = 'block';
+                            document.getElementById('editLogoPlaceholder').style.display = 'none';
+                        });
 
-                        </script>
-                    </div>
+                        document.getElementById('editHinhNenUrl').addEventListener('input', function () {
+                            document.getElementById('editHinhNenPreview').src = this.value;
+                            document.getElementById('editHinhNenPreview').style.display = 'block';
+                            document.getElementById('editHinhNenPlaceholder').style.display = 'none';
+                        });
+                    </script>
                     <div class="row g-3">
                         <div class="col-12 col-sm-6 col-lg-3 mb-3">
                             <label class="form-label">Tên công ty <span class="text-danger">*</span></label>
@@ -630,6 +672,15 @@
                 logoInput.dispatchEvent(new Event('input'));
             }
 
+            // Điền hình nền và cập nhật preview
+            const hinhNenInput = document.getElementById('editHinhNenUrl');
+            if (hinhNenInput) {
+                hinhNenInput.value = congTy.hinh_nen || '';
+                console.log('📋 Filled hinh_nen URL:', congTy.hinh_nen);
+                // Trigger input event để cập nhật preview
+                hinhNenInput.dispatchEvent(new Event('input'));
+            }
+
             // Thêm company ID vào form để biết đang chỉnh sửa công ty nào
             form.setAttribute('data-company-id', congTy.id);
             console.log('🆔 Set company ID:', congTy.id);
@@ -675,6 +726,8 @@
 
         setupLogoPreview('#addLogoUrl', '#addLogoPreview', '#addLogoPlaceholder');
         setupLogoPreview('#editLogoUrl', '#editLogoPreview', '#editLogoPlaceholder');
+        setupLogoPreview('#addHinhNenUrl', '#addHinhNenPreview', '#addHinhNenPlaceholder');
+        setupLogoPreview('#editHinhNenUrl', '#editHinhNenPreview', '#editHinhNenPlaceholder');
 
         // Edit form submission
         const editCompanyForm = document.getElementById('editCompanyForm');
@@ -698,6 +751,7 @@
                 const formData = {
                     ten: this.company_name.value,
                     logo: this.editLogoUrl.value,
+                    hinh_nen: this.editHinhNenUrl.value,
                     trang_thai: this.status.value,
                     mo_ta: this.description.value,
                     email: this.email.value,
@@ -744,6 +798,7 @@
             representative: 'Nguyễn Văn A',
             ngay_dang_ky: '22/09/2025',
             logo: 'https://assets.startbootstrap.com/img/screenshots/themes/sb-admin-2.png',
+            hinh_nen: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80',
             description: 'Công ty bảo hiểm hàng đầu Việt Nam với hơn 20 năm kinh nghiệm trong lĩnh vực bảo hiểm nhân thọ và sức khỏe.'
         };
 
