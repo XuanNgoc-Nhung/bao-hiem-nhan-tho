@@ -10,9 +10,9 @@
 <!-- Search and Filter -->
 <div class="card mb-4">
     <div class="card-body">
-        <div class="row g-3">
+        <div class="row g-4">
             <form action="{{ route('admin.cccd') }}" class="input-group" method="get">
-                <div class="col-12 col-md-4 mb-3">
+                <div class="col-12 col-md-4 pe-3">
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="bi bi-search"></i>
@@ -20,14 +20,14 @@
                         <input type="text" class="form-control" name="search" placeholder="Tìm kiếm công ty..." value="{{ request('search') }}">
                     </div>
                 </div>
-                <div class="col-12 col-md-3 mb-3">
+                <div class="col-12 col-md-3 px-3">
                     <select class="form-select" name="status" id="statusFilter">
                         <option {{ request('status') == '' ? 'selected' : '' }} value="">Tất cả trạng thái</option>
                         <option {{ request('status') == 1 ? 'selected' : '' }} value="1">Được phép đăng ký</option>
                         <option {{ request('status') == 2 ? 'selected' : '' }} value="2">Không được phép đăng ký</option>
                     </select>
                 </div>
-                <div class="col-12 col-md-2 mb-3">
+                <div class="col-12 col-md-2 ps-3">
                     <button type="submit" class="btn btn-primary w-100">
                         <i class="bi bi-search me-2"></i>Tìm kiếm
                     </button>
@@ -42,7 +42,7 @@
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">
             <i class="bi bi-building me-2"></i>
-            Danh sách công ty bảo hiểm
+            Danh sách CCCD kèm số hợp đồng
         </h5>
         <div class="d-flex gap-2">
             <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCccdModal">
@@ -57,7 +57,7 @@
                     <tr>
                         <th>STT</th>
                         <th>Số CCCD</th>
-                        <th>Mã bảo mật</th>
+                        <th>Số hợp đồng</th>
                         <th>Trạng thái</th>
                         <th>Thao tác</th>
                     </tr>
@@ -146,7 +146,7 @@
                         <input type="text" class="form-control" name="ccccd" placeholder="Nhập số CCCD">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Mã bảo mật</label>
+                        <label class="form-label">Số hợp đồng</label>
                         <div class="input-group">
                             <input type="password" class="form-control" name="ma_bao_mat" placeholder="Nhập mã bảo mật">
                             <button type="button" class="btn btn-outline-secondary" id="editToggleMbm" aria-label="Ẩn/hiện" style="display: inline-flex; align-items: center; justify-content: center;">

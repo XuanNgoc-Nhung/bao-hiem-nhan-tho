@@ -10,9 +10,9 @@
 <!-- Search and Filter -->
 <div class="card mb-4">
     <div class="card-body">
-        <div class="row">
+        <div class="row g-4">
             <form action="{{ route('admin.companies') }}" class="input-group" method="get">
-                <div class="col-md-4 mb-3">
+                <div class="col-12 col-md-4 pe-3">
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="bi bi-search"></i>
@@ -20,7 +20,7 @@
                         <input type="text" class="form-control" name="search" placeholder="Tìm kiếm công ty..." value="{{ request('search') }}">
                     </div>
                 </div>
-                <div class="col-md-3 mb-3">
+                <div class="col-12 col-md-3 px-3">
                     <select class="form-select" name="status" id="statusFilter">
                         <option {{ request('status') == '' ? 'selected' : '' }} value="">Tất cả trạng thái</option>
                         <option {{ request('status') == 1 ? 'selected' : '' }} value="1">Đang hoạt động</option>
@@ -28,7 +28,7 @@
                         <option {{ request('status') == 2 ? 'selected' : '' }} value="2">Chờ xác nhận</option>
                     </select>
                 </div>
-                <div class="col-md-3 mb-3">
+                <div class="col-12 col-md-3 px-3">
                     <select class="form-select" name="type"  id="typeFilter">
                         <option {{ request('type') == '' ? 'selected' : '' }} value="">Tất cả loại hình</option>
                         <option {{ request('type') == 'life' ? 'selected' : '' }} value="life">Bảo hiểm nhân thọ</option>
@@ -37,7 +37,7 @@
                         <option {{ request('type') == 'general' ? 'selected' : '' }} value="general">Bảo hiểm tổng hợp</option>
                     </select>
                 </div>
-                <div class="col-md-2 mb-3">
+                <div class="col-12 col-md-2 ps-3">
                     <button type="submit" class="btn btn-primary w-100">
                         <i class="bi bi-search me-2"></i>Tìm kiếm
                     </button>
