@@ -66,6 +66,7 @@
                 <thead>
                     <tr>
                         <th>Thông tin công ty</th>
+                        <th>Hình nền</th>
                         <th>Loại hình</th>
                         <th>Trạng thái</th>
                         <th>Mã số thuế</th>
@@ -90,6 +91,9 @@
                                     <small class="text-muted">{{ $cong_ty->dia_chi }}</small>
                                 </div>
                             </div>
+                        </td>
+                        <td>
+                            <img src="{{ $cong_ty->hinh_nen }}" alt="Hình nền" style="width: 100px; height: 100px; object-fit: contain;">
                         </td>
                         <td>
                             <span class="badge bg-success">{{ $cong_ty->loai_hinh }}</span>

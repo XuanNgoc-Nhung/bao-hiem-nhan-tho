@@ -578,9 +578,20 @@
             const mainContent = document.getElementById('mainContent');
             const sidebarToggle = document.getElementById('sidebarToggle');
             
+            // Khôi phục trạng thái sidebar từ localStorage
+            const sidebarState = localStorage.getItem('adminSidebarCollapsed');
+            if (sidebarState === 'true') {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('expanded');
+            }
+            
             sidebarToggle.addEventListener('click', function() {
                 sidebar.classList.toggle('collapsed');
                 mainContent.classList.toggle('expanded');
+                
+                // Lưu trạng thái sidebar vào localStorage
+                const isCollapsed = sidebar.classList.contains('collapsed');
+                localStorage.setItem('adminSidebarCollapsed', isCollapsed);
             });
 
             // Mobile sidebar toggle
@@ -612,6 +623,15 @@
             if (window.innerWidth <= 768) {
                 sidebar.classList.remove('collapsed');
                 mainContent.classList.remove('expanded');
+                // Xóa trạng thái collapsed khi chuyển sang mobile
+                localStorage.removeItem('adminSidebarCollapsed');
+            } else {
+                // Khôi phục trạng thái từ localStorage khi chuyển về desktop
+                const sidebarState = localStorage.getItem('adminSidebarCollapsed');
+                if (sidebarState === 'true') {
+                    sidebar.classList.add('collapsed');
+                    mainContent.classList.add('expanded');
+                }
             }
         });
     </script>
