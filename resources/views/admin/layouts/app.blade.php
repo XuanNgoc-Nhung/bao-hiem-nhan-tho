@@ -466,7 +466,7 @@
                         <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Cài đặt</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
-                            <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                            <form method="get" action="{{ route('admin.logout') }}" class="d-inline">
                                 @csrf
                                 <button type="submit" class="dropdown-item">
                                     <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
