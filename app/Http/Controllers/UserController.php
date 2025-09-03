@@ -27,6 +27,11 @@ class UserController extends Controller
         $ma_bao_mat = $request->get('ma_bao_mat');
         return view('user.register', compact('cty', 'ccccd', 'ma_bao_mat'));
     }
+    public function chonDangKy(Request $request)
+    {
+        $list_partner = CongTy::where('trang_thai', 1)->get();
+        return view('user.chon-dang-ky', compact('list_partner'));
+    }
     public function verifyCccd(Request $request)
     {
         $validated = $request->validate([
