@@ -40,14 +40,10 @@
                                             <span class="mat-button-wrapper">
                                                 <mat-icon _ngcontent-c4="" class="mat-icon material-icons" role="img"
                                                     aria-hidden="true">account_circle</mat-icon>
-                                                    @if (Session::get('user')->loaiTaiKhoan == 'caNhan')
-                                                        {{ Session::get('user')->hoTen }}
-                                                    @elseif (Session::get('user')->loaiTaiKhoan == 'coQuan')
-                                                        {{ Session::get('user')->tenCoQuan }}
-                                                    @elseif (Session::get('user')->loaiTaiKhoan == 'choCon')
-                                                        {{ Session::get('user')->hoTen }}
+                                                    @if (Session::get('user'))
+                                                        {{ Session::get('user')->name }}
                                                     @else
-                                                        {{ Session::get('user')->hoTen }}
+                                                        {{ Session::get('user')->name }}
                                                     @endif
                                             </span>
                                         </button>
@@ -57,8 +53,7 @@
                                                 <i class="material-icons">person</i> Cá nhân
                                             </a></li>
                                         @if(Session::get('user')->role == 1)
-                                        
-                                        <li><a class="dropdown-item" href="{{ route('admin') }}">
+                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">
                                                 <i class="material-icons">person</i> Trang quản trị
                                             </a></li>
                                         @endif

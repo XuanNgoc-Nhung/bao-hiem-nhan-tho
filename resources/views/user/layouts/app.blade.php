@@ -49,7 +49,9 @@
 
 
     {{-- Modal đăng nhập --}}
-    @include('user.layouts.dang-nhap')
+    @if(!session('user'))
+        @include('user.layouts.dang-nhap')
+    @endif
     <!-- </div> -->
     @include('user.layouts.connect')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

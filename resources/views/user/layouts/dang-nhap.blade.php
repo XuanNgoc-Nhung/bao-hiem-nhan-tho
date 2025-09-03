@@ -382,8 +382,6 @@
                 axios.post('/check-login', formData)
                     .then(response => {
                         if (response.data.success) {
-                            // showToast('success', 'Đăng nhập thành công');
-                            // Chuyển hướng sau khi đăng nhập thành công
                             window.location.href = response.data.redirect_url;
                         } else {
                             showToast('error', response.data.message || 'Đăng nhập thất bại');
