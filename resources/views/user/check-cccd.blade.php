@@ -242,7 +242,7 @@
 
         .logo {
             display: inline-block;
-            max-width: 140px;
+            max-width: 50%;
             height: auto;
         }
 

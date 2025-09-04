@@ -789,6 +789,60 @@
             });
         }
 
+        // Add form submission
+        const addCompanyForm = document.getElementById('addCompanyForm');
+        console.log('➕ Add company form found:', !!addCompanyForm);
+        if (addCompanyForm) {
+            addCompanyForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                console.log('➕ Add company form submitted');
+
+                const confirmed = await showConfirm('Xác nhận thêm công ty này?', { okVariant: 'primary', okText: 'Thêm công ty' });
+                if (!confirmed) {
+                    console.log('❌ Create cancelled by user');
+                    return;
+                }
+
+                const formData = {
+                    ten: this.company_name.value,
+                    logo: document.getElementById('addLogoUrl') ? document.getElementById('addLogoUrl').value : '',
+                    hinh_nen: document.getElementById('addHinhNenUrl') ? document.getElementById('addHinhNenUrl').value : '',
+                    trang_thai: this.status.value,
+                    mo_ta: this.description.value,
+                    email: this.email.value,
+                    so_dien_thoai: this.phone.value,
+                    dia_chi: this.address.value,
+                    loai_hinh: this.insurance_type.value,
+                    ma_so_thue: this.tax_code.value,
+                    website: this.website.value,
+                    nguoi_dai_dien: this.representative.value,
+                    ngay_dang_ky: this.ngay_dang_ky.value
+                };
+                console.log('📤 Sending create data:', formData);
+
+                axios.post('/admin/companies/store', formData)
+                .then(response => {
+                    console.log('✅ Create company success:', response.data);
+                    showToast('Công ty đã được thêm thành công!', 'success');
+                    setTimeout(() => {
+                        console.log('🔄 Reloading page...');
+                        window.location.reload();
+                    }, 1000);
+                })
+                .catch(error => {
+                    console.error('❌ Create company error:', error);
+                    const msg = error?.response?.data?.message || 'Lỗi khi thêm công ty!';
+                    showToast(msg, 'error');
+                });
+
+                const addModal = document.getElementById('addCompanyModal');
+                if (addModal) {
+                    const modalInstance = bootstrap.Modal.getInstance(addModal);
+                    if (modalInstance) modalInstance.hide();
+                }
+            });
+        }
+
         // Sample data for forms
         const sampleData = {
             company_name: 'Công ty Bảo hiểm ABC',
