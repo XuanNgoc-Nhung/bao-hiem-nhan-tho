@@ -23,7 +23,7 @@ class AdminController extends Controller
         if ($type) {
             $query->where('loai_hinh', $type);
         }
-        $danh_sach_cong_ty = $query->paginate(2);
+        $danh_sach_cong_ty = $query->paginate(20);
         return view('admin.companies', compact('danh_sach_cong_ty'));
     }
     public function dangNhap(Request $request)

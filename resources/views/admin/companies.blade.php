@@ -65,6 +65,7 @@
             <table class="table table-hover table-striped table-bordered table-sm" id="companiesTable">
                 <thead>
                     <tr>
+                        <th class="text-center">STT</th>
                         <th>Thông tin công ty</th>
                         <th>Hình nền</th>
                         <th>Loại hình</th>
@@ -78,6 +79,7 @@
                     @if (count($danh_sach_cong_ty) > 0)
                     @foreach ($danh_sach_cong_ty as $cong_ty)
                     <tr>
+                        <td class="text-center">{{ ($danh_sach_cong_ty->currentPage() - 1) * $danh_sach_cong_ty->perPage() + $loop->iteration }}</td>
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="company-logo me-3"

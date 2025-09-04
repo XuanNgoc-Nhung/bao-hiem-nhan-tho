@@ -16,9 +16,9 @@ class UserController extends Controller
             if($congTy) {
                 return view('user.check-cccd', compact('congTy'));
             }
-            return redirect()->route('home');
+            return redirect()->route('chon-dang-ky');
         }
-        return redirect()->route('home');
+        return redirect()->route('chon-dang-ky');
     }
     public function checkLogin(Request $request){
         try {
