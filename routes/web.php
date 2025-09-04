@@ -6,11 +6,11 @@ use App\Http\Controllers\CccdController;
 use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\UserController;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
 // User
+Route::get('/',[UserController::class, 'index'])->name('user.index');
+Route::get('my-qr',[UserController::class, 'myQr'])->name('my-qr');
 Route::get('chon-dang-ky',[UserController::class, 'chonDangKy'])->name('chon-dang-ky');
+Route::post('check-login',[UserController::class, 'checkLogin'])->name('check-login');
 Route::get('profile',[UserController::class, 'profile'])->name('profile');
 
 Route::get('check-cccd',[UserController::class, 'checkCccd'])->name('user.check-cccd');

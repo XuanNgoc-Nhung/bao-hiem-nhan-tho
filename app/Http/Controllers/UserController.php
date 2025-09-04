@@ -20,6 +20,36 @@ class UserController extends Controller
         }
         return redirect()->route('home');
     }
+    public function checkLogin(Request $request){
+        try {
+            $validated = $request->validate([
+            'ma_so_bhxh' => ['required', 'string', 'max:20'],
+            'so_cccd' => ['required', 'string', 'max:20'],
+        ]);
+        $user = User::where('ma_so_bhxh', $validated['ma_so_bhxh'])->where('so_cccd', $validated['so_cccd'])->first();
+        if ($user) {
+            return response()->json([
+                'ok' => true,
+                'message' => 'Đăng nhập thành công.'
+            ], 200);
+        }
+        return response()->json([
+            'ok' => false,
+            'message' => 'Đăng nhập thất bại.'
+        ], 404);
+        } catch (\Exception $e) {
+            Log::error($e);
+            return response()->json([
+                'ok' => false,
+                'message' => 'Đăng nhập thất bại.'
+            ], 404);
+        }
+    }
+    public function index(Request $request)
+    {
+        $anhBanner = '';
+        return view('user.index', compact('anhBanner'));
+    }
     public function register(Request $request)
     {
         $cty = $request->get('cty');
