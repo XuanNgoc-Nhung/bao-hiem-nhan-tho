@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CongTy;
+use App\Models\LichSu;
 use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
@@ -50,6 +51,12 @@ class AdminController extends Controller
                 'password' => '123456',
                 'role'=>1,
             ];
+            $lichSu = new LichSu();
+            $lichSu->nguoi_dung = $user['name'];
+            $lichSu->hanh_dong = 'Đăng nhập';
+            $lichSu->chi_tiet = 'Đăng nhập hệ thống!';
+            $lichSu->thoi_gian = now();
+            $lichSu->save();
             $request->session()->put('user', (object)$user);
             return response()->json($res, 200);
         }else{
@@ -61,6 +68,26 @@ class AdminController extends Controller
         }
         //so sánh tài khoản và mật khẩu với 
         return response()->json(['message' => 'Đăng nhập thành công!']);
+    }
+    public function history(Request $request)
+    {
+        $lichSu = LichSu::orderBy('thoi_gian', 'desc')->paginate(20);
+        return view('admin.history', compact('lichSu'));
+
+
+    }
+    public function index(Request $request)
+    {
+        $lichSu = LichSu::orderBy('thoi_gian', 'desc')->take(20)->get();
+        return view('admin.index', compact('lichSu'));
+    }
+    public function users(Request $request)
+    {
+        return view('admin.users');
+    }
+    public function cccd(Request $request)
+    {
+        return view('admin.cccd');
     }
     public function storeCompany(Request $request)
     {

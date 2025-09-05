@@ -9,7 +9,7 @@
                 <p style="font-size: 20px; color: #ff0000;">Trang không tồn tại</p>
                 <p style="font-size: 16px; color: #2f00ff;">Bạn đang cố gắng truy cập vào một trang không tồn tại.</p>
                 <div class="mt-5">
-                    <p style="font-size: 18px; color: #ff6b35; font-weight: bold; margin-bottom: 20px;">
+                    <p style="font-size: 18px; color: #da2190; font-weight: bold; margin-bottom: 20px;">
                         Tự động chuyển về trang chủ sau:
                     </p>
                     <div class="countdown-container" style="display: flex; justify-content: center; align-items: center; margin: 30px 0;">

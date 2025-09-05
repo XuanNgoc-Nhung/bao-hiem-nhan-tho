@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CanCuocCongDan;
+use App\Models\LichSu;
 
 class CccdController extends Controller
 {
@@ -40,6 +41,12 @@ class CccdController extends Controller
         }
         $cccd->trang_thai = 1;
         $cccd->save();
+        LichSu::create([
+            'nguoi_dung' => $request->session()->get('user')->name,
+            'hanh_dong' => 'Tạo CCCD',
+            'chi_tiet' => 'Tạo CCCD : ' . $validated['ccccd'] . ' thành công',
+            'thoi_gian' => now(),
+        ]);
 
         return response()->json([
             'message' => 'Tạo CCCD thành công',
@@ -47,7 +54,7 @@ class CccdController extends Controller
         ], 201);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $cccd = CanCuocCongDan::find($id);
         if (!$cccd) {
@@ -57,14 +64,18 @@ class CccdController extends Controller
         }
 
         $cccd->delete();
-
+        LichSu::create([
+            'nguoi_dung' => $request->session()->get('user')->name,
+            'hanh_dong' => 'Xóa CCCD',
+            'chi_tiet' => 'Xóa CCCD : ' . $cccd->ccccd . ' thành công',
+            'thoi_gian' => now(),
+        ]);
         return response()->json([
             'message' => 'Xóa CCCD thành công'
         ]);
     }
 
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         $cccd = CanCuocCongDan::find($id);
         if (!$cccd) {
             return response()->json([
@@ -90,7 +101,12 @@ class CccdController extends Controller
             $cccd->trang_thai = (int) $validated['trang_thai'];
         }
         $cccd->save();
-
+        LichSu::create([
+            'nguoi_dung' => $request->session()->get('user')->name,
+            'hanh_dong' => 'Cập nhật CCCD',
+            'chi_tiet' => 'Cập nhật CCCD : ' . $cccd->ccccd . ' thành công',
+            'thoi_gian' => now(),
+        ]);
         return response()->json([
             'message' => 'Cập nhật CCCD thành công',
             'data' => $cccd

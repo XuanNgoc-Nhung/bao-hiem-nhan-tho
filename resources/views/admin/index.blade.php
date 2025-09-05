@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="col-xl-3 col-md-6 mb-3">
         <div class="stats-card" style="background: linear-gradient(135deg, #28a745, #20c997);">
             <div class="d-flex justify-content-between align-items-center">
@@ -38,7 +38,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="col-xl-3 col-md-6 mb-3">
         <div class="stats-card" style="background: linear-gradient(135deg, #ffc107, #fd7e14);">
             <div class="d-flex justify-content-between align-items-center">
@@ -52,7 +52,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="col-xl-3 col-md-6 mb-3">
         <div class="stats-card" style="background: linear-gradient(135deg, #dc3545, #e83e8c);">
             <div class="d-flex justify-content-between align-items-center">
@@ -79,11 +79,11 @@
                 </h5>
             </div>
             <div class="card-body">
-                <canvas id="policyChart" height="100"></canvas>
+                <canvas id="policyChart" height="200"></canvas>
             </div>
         </div>
     </div>
-    
+
     <div class="col-xl-4 mb-3">
         <div class="card">
             <div class="card-header">
@@ -108,75 +108,53 @@
                     <i class="bi bi-activity me-2"></i>
                     Hoạt động gần đây
                 </h5>
-                <a href="#" class="btn btn-sm btn-outline-primary">Xem tất cả</a>
+                {{-- <a href="#" class="btn btn-sm btn-outline-primary">Xem tất cả</a> --}}
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table">
+                    <table class="table table-hover table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>Hoạt động</th>
+                                <th>STT</th>
                                 <th>Người dùng</th>
+                                <th>Hoạt động</th>
                                 <th>Thời gian</th>
                                 <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @if($lichSu)
+                            @foreach($lichSu as $ls)
                             <tr>
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td>{{ $ls->nguoi_dung }}</td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <div class="bg-success rounded-circle p-2 me-3">
-                                            <i class="bi bi-check text-white"></i>
-                                        </div>
                                         <div>
-                                            <div class="fw-bold">Tạo hợp đồng mới</div>
-                                            <small class="text-muted">Hợp đồng BHNT #BH001</small>
+                                            <div class="fw-bold">{{ $ls->hanh_dong }}</div>
+                                            <small class="text-muted">{{ $ls->chi_tiet }}</small>
                                         </div>
                                     </div>
                                 </td>
-                                <td>Nguyễn Văn A</td>
-                                <td>2 phút trước</td>
+                                <td>{{ $ls->thoi_gian }}</td>
                                 <td><span class="badge bg-success">Hoàn thành</span></td>
                             </tr>
+                            @endforeach
+                            @else
                             <tr>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="bg-info rounded-circle p-2 me-3">
-                                            <i class="bi bi-person-plus text-white"></i>
-                                        </div>
-                                        <div>
-                                            <div class="fw-bold">Đăng ký người dùng mới</div>
-                                            <small class="text-muted">Tài khoản mới được tạo</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>Trần Thị B</td>
-                                <td>15 phút trước</td>
-                                <td><span class="badge bg-info">Đang xử lý</span></td>
+                                <td colspan="4" class="text-center">Không có dữ liệu</td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="bg-warning rounded-circle p-2 me-3">
-                                            <i class="bi bi-exclamation-triangle text-white"></i>
-                                        </div>
-                                        <div>
-                                            <div class="fw-bold">Cập nhật thông tin</div>
-                                            <small class="text-muted">Cập nhật thông tin công ty</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>Lê Văn C</td>
-                                <td>1 giờ trước</td>
-                                <td><span class="badge bg-warning">Chờ xác nhận</span></td>
-                            </tr>
+                            @endif
+
+
+
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <div class="col-xl-4 mb-3">
         <div class="card">
             <div class="card-header">
@@ -278,77 +256,78 @@
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Policy Chart
-    const policyCtx = document.getElementById('policyChart').getContext('2d');
-    new Chart(policyCtx, {
-        type: 'line',
-        data: {
-            labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
-            datasets: [{
-                label: 'Hợp đồng mới',
-                data: [65, 59, 80, 81, 56, 55, 40, 45, 60, 70, 85, 90],
-                borderColor: '#007bff',
-                backgroundColor: 'rgba(0, 123, 255, 0.1)',
-                tension: 0.4,
-                fill: true
-            }, {
-                label: 'Hợp đồng gia hạn',
-                data: [28, 48, 40, 19, 86, 27, 90, 35, 45, 55, 65, 75],
-                borderColor: '#28a745',
-                backgroundColor: 'rgba(40, 167, 69, 0.1)',
-                tension: 0.4,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                }
+    document.addEventListener('DOMContentLoaded', function () {
+        // Policy Chart
+        const policyCtx = document.getElementById('policyChart').getContext('2d');
+        new Chart(policyCtx, {
+            type: 'line',
+            data: {
+                labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                datasets: [{
+                    label: 'Hợp đồng mới',
+                    data: [65, 59, 80, 81, 56, 55, 40, 45, 60, 70, 85, 90],
+                    borderColor: '#007bff',
+                    backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Hợp đồng gia hạn',
+                    data: [28, 48, 40, 19, 86, 27, 90, 35, 45, 55, 65, 75],
+                    borderColor: '#28a745',
+                    backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
             },
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    // Insurance Type Chart
-    const typeCtx = document.getElementById('insuranceTypeChart').getContext('2d');
-    new Chart(typeCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Nhân thọ', 'Sức khỏe', 'Tài sản', 'Xe cộ', 'Du lịch'],
-            datasets: [{
-                data: [45, 25, 15, 10, 5],
-                backgroundColor: [
-                    '#007bff',
-                    '#28a745',
-                    '#ffc107',
-                    '#dc3545',
-                    '#6c757d'
-                ],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        padding: 20,
-                        usePointStyle: true
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
             }
-        }
+        });
+
+        // Insurance Type Chart
+        const typeCtx = document.getElementById('insuranceTypeChart').getContext('2d');
+        new Chart(typeCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Nhân thọ', 'Sức khỏe', 'Tài sản', 'Xe cộ', 'Du lịch'],
+                datasets: [{
+                    data: [5, 25, 15, 10, 5],
+                    backgroundColor: [
+                        '#007bff',
+                        '#28a745',
+                        '#ffc107',
+                        '#dc3545',
+                        '#6c757d'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true
+                        }
+                    }
+                }
+            }
+        });
     });
-});
+
 </script>
 @endsection

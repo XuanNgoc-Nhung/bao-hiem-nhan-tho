@@ -10,14 +10,14 @@ use App\Http\Controllers\UserController;
 // User
 Route::get('/',[UserController::class, 'index'])->name('user.index');
 Route::get('my-qr',[UserController::class, 'myQr'])->name('my-qr');
-Route::get('chon-dang-ky',[UserController::class, 'chonDangKy'])->name('chon-dang-ky');
+Route::get('chon-dang-ky.html',[UserController::class, 'chonDangKy'])->name('chon-dang-ky');
 Route::post('check-login',[UserController::class, 'checkLogin'])->name('check-login');
-Route::get('check-cccd',[UserController::class, 'checkCccd'])->name('user.check-cccd');
-Route::get('register',[UserController::class, 'register'])->name('user.register');
+Route::get('check-cccd.html',[UserController::class, 'checkCccd'])->name('user.check-cccd');
+Route::get('register.html',[UserController::class, 'register'])->name('user.register');
 Route::post('verify-cccd',[UserController::class, 'verifyCccd'])->name('user.verify-cccd');
-//Check đăng nhập
+//Check đăng nhậpp
 Route::middleware(['CheckLogin'])->group(function () {
-    Route::get('profile',[UserController::class, 'profile'])->name('profile');
+    Route::get('profile.html',[UserController::class, 'profile'])->name('profile');
 });
 // Admin
 Route::get('admin/dang-nhap', [AdminController::class, 'dangNhap'])->name('admin.dang-nhap');
@@ -25,13 +25,9 @@ Route::post('admin/login', [AdminController::class, 'dangNhapAdmin'])->name('adm
 //Check đăng nhập
 Route::get('admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 Route::group(['prefix' => 'admin','middleware' => 'CheckAdmin'], function () {
-    Route::get('/', function () {
-        return view('admin.index');
-    })->name('admin.dashboard');
+    Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/companies', [AdminController::class, 'companies'])->name('admin.companies');
-    Route::get('/user', function () {
-        return view('admin.users');
-    })->name('admin.users');
+    Route::get('/user', [AdminController::class, 'users'])->name('admin.users');
     // CCCD
     Route::get('/cccd', [CccdController::class, 'index'])->name('admin.cccd');
     Route::post('/cccd', [CccdController::class, 'store'])->name('admin.cccd.store');
@@ -54,6 +50,8 @@ Route::group(['prefix' => 'admin','middleware' => 'CheckAdmin'], function () {
     Route::get('reports', function () {})->name('admin.reports');
     Route::get('settings', function () {})->name('admin.settings');
     Route::post('logout', function () {})->name('logout');
+    // History
+    Route::get('/history', [AdminController::class, 'history'])->name('admin.history');
 });
 Route::fallback(function () {
     return response()->view('errors.404');

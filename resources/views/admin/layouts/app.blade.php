@@ -434,6 +434,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a href="{{ route('admin.history') }}" class="nav-link {{ request()->routeIs('admin.history*') ? 'active' : '' }}">
+                    <i class="bi bi-clock-history"></i>
+                    <span>Lịch sử hoạt động</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="{{ route('admin.settings') }}" class="nav-link {{ request()->routeIs('admin.settings*') ? 'active' : '' }}">
                     <i class="bi bi-gear"></i>
                     <span>Cài đặt hệ thống</span>
