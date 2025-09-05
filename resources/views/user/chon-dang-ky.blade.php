@@ -41,7 +41,7 @@
 <!-- CSS cho logo grid với hover overlay -->
 <style>
     .logo-wrapper {
-        background: #ffffff;
+        background: rgba(0, 0, 0, 0.06);
         border-radius: 12px;
         padding: 0;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -51,7 +51,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid #e9ecef;
+        border: 2px solid rgba(0, 123, 255, 0.25);
         text-align: center;
         position: relative;
         overflow: hidden;
@@ -60,8 +60,8 @@
 
     .logo-wrapper:hover {
         transform: translateY(-5px);
-        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-        border-color: #007bff;
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.18), 0 0 0 4px rgba(0, 123, 255, 0.12);
+        border-color: rgba(0, 123, 255, 0.7);
     }
 
     .logo-container {
@@ -80,6 +80,7 @@
         height: auto;
         object-fit: contain;
         transition: all 0.3s ease;
+        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
     }
 
     /* Logo Overlay */
@@ -106,6 +107,7 @@
 
     .logo-wrapper:hover .logo-image {
         transform: scale(1.05);
+        filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.28));
     }
 
     .logo-info {

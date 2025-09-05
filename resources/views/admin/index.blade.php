@@ -110,16 +110,16 @@
                 </h5>
                 {{-- <a href="#" class="btn btn-sm btn-outline-primary">Xem tất cả</a> --}}
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover table-striped table-bordered">
-                        <thead>
+            <div class="card-body p-0">
+                <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                    <table class="table table-hover table-striped table-bordered table-sm mb-0">
+                        <thead class="table-light sticky-top" style="z-index: 10;">
                             <tr>
-                                <th>STT</th>
-                                <th>Người dùng</th>
-                                <th>Hoạt động</th>
-                                <th>Thời gian</th>
-                                <th>Trạng thái</th>
+                                <th style="width: 8%;">STT</th>
+                                <th style="width: 20%;">Người dùng</th>
+                                <th style="width: 40%;">Hoạt động</th>
+                                <th style="width: 20%;">Thời gian</th>
+                                <th style="width: 12%;">Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -142,7 +142,7 @@
                             @endforeach
                             @else
                             <tr>
-                                <td colspan="4" class="text-center">Không có dữ liệu</td>
+                                <td colspan="5" class="text-center">Không có dữ liệu</td>
                             </tr>
                             @endif
 

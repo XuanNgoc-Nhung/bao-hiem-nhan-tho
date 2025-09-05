@@ -24,8 +24,7 @@
                     <select class="form-select" name="status" id="statusFilter">
                         <option {{ request('status') == '' ? 'selected' : '' }} value="">Tất cả trạng thái</option>
                         <option {{ request('status') == 1 ? 'selected' : '' }} value="1">Đang hoạt động</option>
-                        <option {{ request('status') == 0 ? 'selected' : '' }} value="0">Không hoạt động</option>
-                        <option {{ request('status') == 2 ? 'selected' : '' }} value="2">Chờ xác nhận</option>
+                        <option {{ request('status') == 2 ? 'selected' : '' }} value="2">Không hoạt động</option>
                     </select>
                 </div>
                 <div class="col-12 col-md-3 px-3">
@@ -98,10 +97,10 @@
                             <img src="{{ $cong_ty->hinh_nen }}" alt="Hình nền" style="width: 100px; height: 100px; object-fit: contain;">
                         </td>
                         <td>
-                            <span class="badge bg-success">{{ $cong_ty->loai_hinh }}</span>
+                            <span class="badge bg-primary">{{ $cong_ty->loai_hinh }}</span>
                         </td>
                         <td>
-                            <span class="badge bg-success">{{ $cong_ty->trang_thai == 1 ? 'Đang hoạt động' : 'Không hoạt động' }}</span>
+                            <span class="badge {{ $cong_ty->trang_thai == 1 ? 'bg-success' : 'bg-danger' }}">{{ $cong_ty->trang_thai == 1 ? 'Đang hoạt động' : 'Không hoạt động' }}</span>
                         </td>
                         <td>
                             <span class="badge bg-info">{{ $cong_ty->ma_so_thue }}</span>
@@ -123,7 +122,7 @@
                     @endforeach
                     @else
                     <tr>
-                        <td colspan="6" class="text-center">Không có dữ liệu</td>
+                        <td colspan="8" class="text-center">Không có dữ liệu</td>
                     </tr>
                     @endif
                 </tbody>
@@ -228,8 +227,7 @@
                             <select class="form-select form-select-sm" name="status" required>
                                 <option value="">Chọn trạng thái</option>
                                 <option value="1">Đang hoạt động</option>
-                                <option value="0">Không hoạt động</option>
-                                <option value="2">Chờ xác nhận</option>
+                                <option value="2">Không hoạt động</option>
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3 mb-3">
@@ -432,8 +430,7 @@
                             <select class="form-select form-select-sm" name="status" required>
                                 <option value="">Chọn trạng thái</option>
                                 <option value="1">Đang hoạt động</option>
-                                <option value="0">Không hoạt động</option>
-                                <option value="2">Chờ xác nhận</option>
+                                <option value="2">Không hoạt động</option>
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3 mb-3">

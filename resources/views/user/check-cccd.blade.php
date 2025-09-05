@@ -270,9 +270,9 @@
             <div class="form-group">
                 <label for="ma_bao_mat">Mã số hợp đồng</label>
                 <div style="position: relative;">
-                    <input id="ma_bao_mat" name="ma_bao_mat" type="password" placeholder="Nhập mã bảo mật" required
+                    <input id="ma_bao_mat" name="ma_bao_mat" type="password" placeholder="Nhập mã số hợp đồng" required
                         style="padding-right: 42px;">
-                    <button type="button" id="toggle_mbm" aria-label="Ẩn/hiện mã bảo mật" title="Ẩn/hiện"
+                    <button type="button" id="toggle_mbm" aria-label="Ẩn/hiện mã hợp đồng" title="Ẩn/hiện"
                         style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: transparent; border: 0; color: rgba(255,255,255,0.9); cursor: pointer; padding: 4px; font-size: 20px; line-height: 1;">
                         <span id="icon_mbm" aria-hidden="true" style="font-size: 20px;">👁️</span>
                     </button>
