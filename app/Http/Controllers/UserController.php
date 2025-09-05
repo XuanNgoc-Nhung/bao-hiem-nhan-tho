@@ -20,6 +20,10 @@ class UserController extends Controller
         }
         return redirect()->route('chon-dang-ky');
     }
+    public function profile(Request $request)
+    {
+        return view('user.profile');
+    }
     public function checkLogin(Request $request){
         try {
             $validated = $request->validate([

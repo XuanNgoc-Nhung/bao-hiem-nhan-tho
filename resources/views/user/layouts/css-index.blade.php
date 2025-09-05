@@ -1431,5 +1431,7 @@ ul[_ngcontent-c13] {
     max-width: 198px;
     max-height: 75px
 }
-
+.container-fluid{
+    min-height: calc(100vh - 219px);
+}
 </style></head>

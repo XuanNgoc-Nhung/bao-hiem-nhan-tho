@@ -45,7 +45,7 @@
                                                     _ngcontent-c13="" alt="image"
                                                     src="../../../../assets/images/thanhtoanbhxhdientu-01.svg"></a>
                                         </li>
-                                        <li _ngcontent-c13=""><a _ngcontent-c13="" href="{{ route('my-qr') }}"><img
+                                        <li _ngcontent-c13=""><a _ngcontent-c13="" href="#"><img
                                                     _ngcontent-c13="" alt="image"
                                                     src="../../../../assets/images/dichvucong-01.svg"></a>
                                         </li>

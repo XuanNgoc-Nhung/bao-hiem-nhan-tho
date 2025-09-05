@@ -6,19 +6,23 @@ use App\Http\Controllers\CccdController;
 use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\UserController;
 
+
 // User
 Route::get('/',[UserController::class, 'index'])->name('user.index');
 Route::get('my-qr',[UserController::class, 'myQr'])->name('my-qr');
 Route::get('chon-dang-ky',[UserController::class, 'chonDangKy'])->name('chon-dang-ky');
 Route::post('check-login',[UserController::class, 'checkLogin'])->name('check-login');
-Route::get('profile',[UserController::class, 'profile'])->name('profile');
-
 Route::get('check-cccd',[UserController::class, 'checkCccd'])->name('user.check-cccd');
 Route::get('register',[UserController::class, 'register'])->name('user.register');
 Route::post('verify-cccd',[UserController::class, 'verifyCccd'])->name('user.verify-cccd');
+//Check đăng nhập
+Route::middleware(['CheckLogin'])->group(function () {
+    Route::get('profile',[UserController::class, 'profile'])->name('profile');
+});
 // Admin
 Route::get('admin/dang-nhap', [AdminController::class, 'dangNhap'])->name('admin.dang-nhap');
 Route::post('admin/login', [AdminController::class, 'dangNhapAdmin'])->name('admin.login');
+//Check đăng nhập
 Route::get('admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 Route::group(['prefix' => 'admin','middleware' => 'CheckAdmin'], function () {
     Route::get('/', function () {
@@ -50,4 +54,7 @@ Route::group(['prefix' => 'admin','middleware' => 'CheckAdmin'], function () {
     Route::get('reports', function () {})->name('admin.reports');
     Route::get('settings', function () {})->name('admin.settings');
     Route::post('logout', function () {})->name('logout');
+});
+Route::fallback(function () {
+    return response()->view('errors.404');
 });
