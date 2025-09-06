@@ -223,25 +223,43 @@ class UserController extends Controller
 
             // Xử lý upload ảnh
             if ($request->hasFile('anh_mat_truoc')) {
-                $hopDong->anh_mat_truoc = $request->file('anh_mat_truoc')->store('hop_dong_images', 'public');
+                $file = $request->file('anh_mat_truoc');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('images/hop_dong'), $fileName);
+                $hopDong->anh_mat_truoc = 'images/hop_dong/' . $fileName;
             }
             if ($request->hasFile('anh_mat_sau')) {
-                $hopDong->anh_mat_sau = $request->file('anh_mat_sau')->store('hop_dong_images', 'public');
+                $file = $request->file('anh_mat_sau');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('images/hop_dong'), $fileName);
+                $hopDong->anh_mat_sau = 'images/hop_dong/' . $fileName;
             }
             if ($request->hasFile('anh_chan_dung')) {
-                $hopDong->anh_chan_dung = $request->file('anh_chan_dung')->store('hop_dong_images', 'public');
+                $file = $request->file('anh_chan_dung');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('images/hop_dong'), $fileName);
+                $hopDong->anh_chan_dung = 'images/hop_dong/' . $fileName;
             }
 
             // Xử lý upload ảnh người thừa hưởng
             if ($validated['loai_hop_dong'] === 'cho_nguoi_khac') {
                 if ($request->hasFile('th_anh_mat_truoc')) {
-                    $hopDong->th_anh_mat_truoc = $request->file('th_anh_mat_truoc')->store('hop_dong_images', 'public');
+                    $file = $request->file('th_anh_mat_truoc');
+                    $fileName = time() . '_th_' . $file->getClientOriginalName();
+                    $file->move(public_path('images/hop_dong'), $fileName);
+                    $hopDong->th_anh_mat_truoc = 'images/hop_dong/' . $fileName;
                 }
                 if ($request->hasFile('th_anh_mat_sau')) {
-                    $hopDong->th_anh_mat_sau = $request->file('th_anh_mat_sau')->store('hop_dong_images', 'public');
+                    $file = $request->file('th_anh_mat_sau');
+                    $fileName = time() . '_th_' . $file->getClientOriginalName();
+                    $file->move(public_path('images/hop_dong'), $fileName);
+                    $hopDong->th_anh_mat_sau = 'images/hop_dong/' . $fileName;
                 }
                 if ($request->hasFile('th_anh_chan_dung')) {
-                    $hopDong->th_anh_chan_dung = $request->file('th_anh_chan_dung')->store('hop_dong_images', 'public');
+                    $file = $request->file('th_anh_chan_dung');
+                    $fileName = time() . '_th_' . $file->getClientOriginalName();
+                    $file->move(public_path('images/hop_dong'), $fileName);
+                    $hopDong->th_anh_chan_dung = 'images/hop_dong/' . $fileName;
                 }
             }
 

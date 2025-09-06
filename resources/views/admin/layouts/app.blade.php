@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <base href="{{ asset('') }}">
     <title>@yield('title', 'CMS Admin') - Bảo Hiểm Nhân Thọ</title>
     
     <!-- Bootstrap CSS -->
