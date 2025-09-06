@@ -38,6 +38,12 @@ Route::group(['prefix' => 'admin','middleware' => 'CheckAdmin'], function () {
     Route::post('/companies/store', [AdminController::class, 'storeCompany'])->name('admin.companies.store');
     Route::put('/companies/{id}', [AdminController::class, 'updateCompany'])->name('admin.companies.update');
     Route::delete('/companies/{id}', [AdminController::class, 'deleteCompany'])->name('admin.companies.delete');
+
+    //Hợp đồng
+    Route::get('/hop-dong', [AdminController::class, 'hopDong'])->name('admin.hop-dong');
+    Route::post('/hop-dong', [AdminController::class, 'storeHopDong'])->name('admin.hop-dong.store');
+    Route::put('/hop-dong/{id}', [AdminController::class, 'updateHopDong'])->name('admin.hop-dong.update');
+    Route::delete('/hop-dong/{id}', [AdminController::class, 'deleteHopDong'])->name('admin.hop-dong.delete');
     // Policies
     Route::get('/policies', [PolicyController::class, 'index'])->name('admin.policies');
     Route::post('/policies', [PolicyController::class, 'store'])->name('admin.policies.store');

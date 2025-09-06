@@ -422,7 +422,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('admin.policies') }}" class="nav-link {{ request()->routeIs('admin.policies*') ? 'active' : '' }}">
+                <a href="{{ route('admin.hop-dong') }}" class="nav-link {{ request()->routeIs('admin.hop-dong*') ? 'active' : '' }}">
                     <i class="bi bi-file-earmark-text"></i>
                     <span>Quản lý hợp đồng</span>
                 </a>

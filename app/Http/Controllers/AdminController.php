@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CongTy;
 use App\Models\LichSu;
+use App\Models\HopDong;
 use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
@@ -68,6 +69,12 @@ class AdminController extends Controller
         }
         //so sánh tài khoản và mật khẩu với 
         return response()->json(['message' => 'Đăng nhập thành công!']);
+    }
+    public function hopDong(Request $request)
+    {
+        $hopDong = HopDong::orderBy('created_at', 'desc')->paginate(20);
+        $congTy = CongTy::all();
+        return view('admin.hop-dong', compact('hopDong', 'congTy'));
     }
     public function history(Request $request)
     {
