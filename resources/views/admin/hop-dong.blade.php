@@ -370,11 +370,11 @@ function loadContractDetail(contractId) {
                             <!-- Thông tin cơ bản -->
                             <div class="row mb-4">
                                 <div class="col-2 text-center">
-                                    <div class="border border-2 border-dark p-2" style="min-height: 120px; min-width: 100px; display: flex; align-items: center; justify-content: center;">
+                                    <div class="border border-2 border-dark p-2" style="height: 240px; min-width: 100px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
                                         <img src="${contractData.anh_chan_dung}" alt="Ảnh chân dung" 
-                                             class="img-fluid" style="max-height: 100px; width: auto;"
+                                             class="img-fluid" style="max-height: 200px; width: auto; border-radius: 4px;"
                                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                        <div class="d-none text-center flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                                        <div class="d-none text-center flex-column align-items-center justify-content-center" style="height: 200px;">
                                             <i class="bi bi-person fs-1 text-dark mb-2"></i>
                                             <p class="mb-0 small fw-bold">ẢNH CHÂN DUNG</p>
                                         </div>
@@ -489,11 +489,11 @@ function loadContractDetail(contractId) {
                             <!-- Thông tin cơ bản -->
                             <div class="row mb-4">
                                 <div class="col-2 text-center">
-                                    <div class="border border-2 border-dark p-2" style="min-height: 120px; min-width: 100px; display: flex; align-items: center; justify-content: center;">
+                                    <div class="border border-2 border-dark p-2" style="height: 240px; min-width: 100px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
                                         <img src="${contractData.th_anh_chan_dung}" alt="Ảnh chân dung người thừa hưởng" 
-                                             class="img-fluid" style="max-height: 100px; width: auto;"
+                                             class="img-fluid" style="max-height: 200px; width: auto; border-radius: 4px;"
                                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                        <div class="d-none text-center flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                                        <div class="d-none text-center flex-column align-items-center justify-content-center" style="height: 200px;">
                                             <i class="bi bi-person fs-1 text-dark mb-2"></i>
                                             <p class="mb-0 small fw-bold">ẢNH CHÂN DUNG</p>
                                         </div>
