@@ -488,7 +488,7 @@
                                          id="drag_drop_th_anh_mat_truoc" 
                                          data-input="th_anh_mat_truoc">
                                         <!-- Default content -->
-                                        <div class="drag-drop-content" id="content_th_anh_mat_truoc">
+                                        <div class="drag-drop-content" id="content_th_anh_mat_truoc" style="display: block !important;">
                                             <div class="drag-drop-icon">
                                                 <i class="bi bi-cloud-upload"></i>
                                             </div>
@@ -528,7 +528,7 @@
                                          id="drag_drop_th_anh_mat_sau" 
                                          data-input="th_anh_mat_sau">
                                         <!-- Default content -->
-                                        <div class="drag-drop-content" id="content_th_anh_mat_sau">
+                                        <div class="drag-drop-content" id="content_th_anh_mat_sau" style="display: block !important;">
                                             <div class="drag-drop-icon">
                                                 <i class="bi bi-cloud-upload"></i>
                                             </div>
@@ -568,7 +568,7 @@
                                          id="drag_drop_th_anh_chan_dung" 
                                          data-input="th_anh_chan_dung">
                                         <!-- Default content -->
-                                        <div class="drag-drop-content" id="content_th_anh_chan_dung">
+                                        <div class="drag-drop-content" id="content_th_anh_chan_dung" style="display: block !important;">
                                             <div class="drag-drop-icon">
                                                 <i class="bi bi-cloud-upload"></i>
                                             </div>
@@ -909,7 +909,14 @@ h5 {
 
 .drag-drop-content {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     z-index: 2;
+    width: 100%;
+    height: 100%;
 }
 
 /* Style cho vùng upload thiếu hình ảnh */
@@ -1117,6 +1124,116 @@ h5 {
     display: block !important;
 }
 
+/* Đảm bảo style cho người thừa hưởng giống người đăng ký */
+#beneficiary-section .drag-drop-area {
+    border: 2px dashed #cbd5e0;
+    border-radius: 12px;
+    padding: 30px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#beneficiary-section .drag-drop-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(102, 126, 234, 0.1) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+#beneficiary-section .drag-drop-area:hover::before {
+    transform: translateX(100%);
+}
+
+#beneficiary-section .drag-drop-area:hover {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #f0f2ff 0%, #e6f0ff 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+#beneficiary-section .drag-drop-area.drag-over {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #e6f0ff 0%, #d1e7ff 100%);
+    transform: scale(1.02);
+    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.25);
+}
+
+#beneficiary-section .drag-drop-area.is-invalid {
+    border-color: #dc3545;
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe6e6 100%);
+    animation: shake 0.5s ease-in-out;
+}
+
+#beneficiary-section .drag-drop-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+}
+
+#beneficiary-section .drag-drop-icon {
+    font-size: 3rem;
+    color: #a0aec0;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+#beneficiary-section .drag-drop-area:hover .drag-drop-icon {
+    transform: scale(1.1);
+    color: #5a67d8;
+}
+
+#beneficiary-section .drag-drop-text p {
+    margin: 0;
+    font-weight: 500;
+    color: #2d3748;
+}
+
+#beneficiary-section .drag-drop-area.drag-over .drag-drop-icon {
+    animation: pulse 1s infinite;
+}
+
+#beneficiary-section .drag-drop-area.has-image {
+    border-color: #28a745;
+    background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
+}
+
+#beneficiary-section .drag-drop-area.has-image .drag-drop-icon {
+    color: #28a745;
+}
+
+#beneficiary-section .drag-drop-area.has-preview {
+    background: #fff;
+    border: 2px solid #28a745;
+    position: relative;
+}
+
+#beneficiary-section .drag-drop-area.has-preview .drag-drop-content {
+    display: none;
+}
+
+#beneficiary-section .drag-drop-area.has-preview .drag-drop-preview {
+    display: block !important;
+}
+
 /* Validation Toast Styles */
 .validation-toast {
     border-left: 4px solid #dc3545;
@@ -1170,6 +1287,25 @@ h5 {
     }
     
     .drag-drop-info small {
+        font-size: 0.7rem;
+    }
+    
+    /* Responsive cho người thừa hưởng */
+    #beneficiary-section .drag-drop-area {
+        height: 150px;
+        padding: 20px 15px;
+    }
+    
+    #beneficiary-section .drag-drop-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+    
+    #beneficiary-section .drag-drop-text p {
+        font-size: 0.9rem;
+    }
+    
+    #beneficiary-section .drag-drop-info small {
         font-size: 0.7rem;
     }
     
@@ -1270,6 +1406,22 @@ function initializeForm() {
     $('input[type="file"].d-none').on('invalid', function(e) {
         e.preventDefault();
         console.log('Prevented HTML5 validation for hidden file input:', this.id);
+        //thông báo lỗi
+        let msg = 'Vui lòng chọn file ảnh hợp lệ (JPG, PNG, GIF)';
+        if (this.id === 'th_anh_mat_truoc') {
+            msg = 'Vui lòng chọn file ảnh mặt trước người thừa hưởng';
+        } else if (this.id === 'th_anh_mat_sau') {
+            msg = 'Vui lòng chọn file ảnh mặt sau cccd người thừa hưởng';
+        } else if (this.id === 'th_anh_chan_dung') {
+            msg = 'Vui lòng chọn file ảnh chân dung người thừa hưởng';
+        } else if (this.id === 'anh_mat_truoc') {
+            msg = 'Vui lòng chọn file ảnh mặt trước cccd';
+        } else if (this.id === 'anh_mat_sau') {
+            msg = 'Vui lòng chọn file ảnh mặt sau cccd';
+        } else if (this.id === 'anh_chan_dung') {
+            msg = 'Vui lòng chọn file ảnh chân dung';
+        }
+        showAlert(msg, 'warning');
     });
 
 
@@ -1531,15 +1683,87 @@ function handleImagePreview(event, inputId) {
 
 
 
+// Hàm helper để log dữ liệu form
+function logFormData(form) {
+    console.log('📋 Form data details:');
+    console.log('Form element:', form);
+    
+    const formData = new FormData(form);
+    console.log('FormData entries:');
+    for (let [key, value] of formData.entries()) {
+        if (value instanceof File) {
+            console.log(`  ${key}: File(${value.name}, ${value.size} bytes, ${value.type})`);
+        } else {
+            console.log(`  ${key}: ${value}`);
+        }
+    }
+    
+    // Log các trường quan trọng
+    const importantFields = ['cccd', 'ho_ten', 'so_dien_thoai', 'ma_hop_dong', 'loai_hop_dong'];
+    console.log('🔑 Important fields:');
+    importantFields.forEach(fieldId => {
+        const element = document.getElementById(fieldId);
+        if (element) {
+            console.log(`  ${fieldId}: "${element.value}"`);
+        } else {
+            console.log(`  ${fieldId}: Element not found`);
+        }
+    });
+    
+    // Log hình ảnh
+    const imageFields = ['anh_mat_truoc', 'anh_mat_sau', 'anh_chan_dung'];
+    console.log('📸 Image fields:');
+    imageFields.forEach(fieldId => {
+        const element = document.getElementById(fieldId);
+        if (element && element.files && element.files.length > 0) {
+            console.log(`  ${fieldId}: File(${element.files[0].name}, ${element.files[0].size} bytes)`);
+        } else {
+            console.log(`  ${fieldId}: No file selected`);
+        }
+    });
+    
+    // Log thông tin người thừa hưởng nếu có
+    const loaiHopDong = document.getElementById('loai_hop_dong');
+    if (loaiHopDong && loaiHopDong.value === 'cho_nguoi_khac') {
+        console.log('👥 Beneficiary information:');
+        const beneficiaryFields = ['th_cccd', 'th_ho_ten', 'th_moi_quan_he'];
+        beneficiaryFields.forEach(fieldId => {
+            const element = document.getElementById(fieldId);
+            if (element) {
+                console.log(`  ${fieldId}: "${element.value}"`);
+            } else {
+                console.log(`  ${fieldId}: Element not found`);
+            }
+        });
+        
+        const beneficiaryImages = ['th_anh_mat_truoc', 'th_anh_mat_sau', 'th_anh_chan_dung'];
+        beneficiaryImages.forEach(fieldId => {
+            const element = document.getElementById(fieldId);
+            if (element && element.files && element.files.length > 0) {
+                console.log(`  ${fieldId}: File(${element.files[0].name}, ${element.files[0].size} bytes)`);
+            } else {
+                console.log(`  ${fieldId}: No file selected`);
+            }
+        });
+    }
+}
+
 // Hàm gửi form với axios
 function submitFormWithAxios(form) {
+    console.log('🚀 Starting form submission with axios...');
+    
     const formData = new FormData(form);
     const submitButton = form.querySelector('button[type="submit"]');
     const originalText = submitButton.innerHTML;
     
+    // Log form data chi tiết
+    logFormData(form);
+    
     // Hiển thị loading state
     submitButton.disabled = true;
     submitButton.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang xử lý...';
+    
+    console.log('📤 Sending request to:', '{{ route("user.register.store") }}');
     
     // Gửi request với axios
     axios.post('{{ route("user.register.store") }}', formData, {
@@ -1549,11 +1773,15 @@ function submitFormWithAxios(form) {
         },
         onUploadProgress: function(progressEvent) {
             const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            console.log(`📊 Upload progress: ${percentCompleted}%`);
             submitButton.innerHTML = `<i class="bi bi-hourglass-split"></i> Đang tải lên ${percentCompleted}%`;
         }
     })
     .then(function(response) {
-        console.log('Success:', response.data);
+        console.log('✅ Request successful!');
+        console.log('📊 Response status:', response.status);
+        console.log('📋 Response data:', response.data);
+        console.log('📋 Response headers:', response.headers);
         
         // Hiển thị thông báo thành công
         showAlert('🎉 Đăng ký bảo hiểm thành công!', 'success');
@@ -1573,7 +1801,7 @@ function submitFormWithAxios(form) {
         });
         
         document.querySelectorAll('.drag-drop-content').forEach(content => {
-            content.style.display = 'flex';
+            content.style.display = 'block';
         });
         
         // Ẩn form người thừa hưởng
@@ -1591,34 +1819,52 @@ function submitFormWithAxios(form) {
         }, 2000);
     })
     .catch(function(error) {
-        console.error('Error:', error);
+        console.error('❌ Request failed!');
+        console.error('Error object:', error);
+        console.error('Error message:', error.message);
         
         // Hiển thị lỗi
         if (error.response) {
             // Lỗi từ server
+            console.error('📊 Server response status:', error.response.status);
+            console.error('📋 Server response data:', error.response.data);
+            console.error('📋 Server response headers:', error.response.headers);
+            
             const errors = error.response.data.errors || {};
             const errorMessages = [];
             
+            console.log('🔍 Processing validation errors:', errors);
+            
             Object.keys(errors).forEach(field => {
+                console.log(`  Field "${field}":`, errors[field]);
                 errors[field].forEach(message => {
                     errorMessages.push(message);
                 });
             });
             
             if (errorMessages.length > 0) {
+                console.log('📝 Validation errors to display:', errorMessages);
                 showValidationErrors(errorMessages);
             } else {
-                showAlert(error.response.data.message || 'Có lỗi xảy ra khi đăng ký', 'error');
+                const serverMessage = error.response.data.message || 'Có lỗi xảy ra khi đăng ký';
+                console.log('📝 Server message:', serverMessage);
+                showAlert(serverMessage, 'error');
             }
         } else if (error.request) {
             // Lỗi network
+            console.error('🌐 Network error - no response received');
+            console.error('Request details:', error.request);
             showAlert('Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng.', 'error');
         } else {
             // Lỗi khác
+            console.error('⚠️ Other error:', error.message);
             showAlert('Có lỗi xảy ra: ' + error.message, 'error');
         }
     })
     .finally(function() {
+        console.log('🏁 Request completed (success or error)');
+        console.log('🔄 Restoring submit button state');
+        
         // Khôi phục button
         submitButton.disabled = false;
         submitButton.innerHTML = originalText;
@@ -1629,12 +1875,6 @@ function submitFormWithAxios(form) {
 function validateForm() {
     console.log('Validating form...');
     const errors = [];
-    
-    // Reset tất cả trạng thái lỗi trước khi validate
-    document.querySelectorAll('.is-invalid').forEach(el => {
-        el.classList.remove('is-invalid');
-        el.style.animation = '';
-    });
     
     // Danh sách các trường bắt buộc
     const requiredFields = [
@@ -1663,6 +1903,19 @@ function validateForm() {
         { id: 'anh_chan_dung', name: 'Ảnh chân dung', icon: '📷' }
     ];
     
+    // Debug: Kiểm tra các trường ảnh
+    console.log('Checking required images...');
+    requiredImages.forEach(image => {
+        const element = document.getElementById(image.id);
+        console.log(`Image ${image.id}:`, element, element ? element.files : 'no element');
+    });
+    
+    // Reset tất cả trạng thái lỗi trước khi validate
+    document.querySelectorAll('.is-invalid').forEach(el => {
+        el.classList.remove('is-invalid');
+        el.style.animation = '';
+    });
+    
     // Kiểm tra các trường bắt buộc
     requiredFields.forEach(field => {
         const element = document.getElementById(field.id);
@@ -1685,9 +1938,8 @@ function validateForm() {
         
         // Kiểm tra xem element có tồn tại và có file không
         const hasFile = element && element.files && element.files.length > 0;
-        const isRequired = element && element.getAttribute('data-required') === 'true';
         
-        console.log(`Image ${image.id} - hasFile: ${hasFile}, isRequired: ${isRequired}`);
+        console.log(`Image ${image.id} - hasFile: ${hasFile}`);
         
         // Tất cả hình ảnh trong danh sách requiredImages đều bắt buộc
         if (!hasFile) {
@@ -1784,6 +2036,7 @@ function validateForm() {
     if (errors.length > 0) {
         console.log('Found validation errors:', errors);
         console.log('Total errors:', errors.length);
+        console.log('About to call showValidationErrors...');
         
         // Phân loại lỗi
         const imageErrors = errors.filter(error => error.includes('🆔') || error.includes('📷'));
