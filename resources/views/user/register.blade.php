@@ -29,7 +29,7 @@
                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-3">
                                 <label for="cccd" class="form-label">Số CCCD/CMND <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('cccd') is-invalid @enderror" 
-                                       id="cccd" name="cccd" value="{{ old('cccd') }}" 
+                                       id="cccd"  name="cccd" value="{{ request('ccccd') }}" 
                                        placeholder="Nhập số CCCD/CMND" required>
                                 @error('cccd')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -40,7 +40,7 @@
                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-3">
                                 <label for="ma_hop_dong" class="form-label">Mã hợp đồng <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('ma_hop_dong') is-invalid @enderror" 
-                                       id="ma_hop_dong" name="ma_hop_dong" value="{{ old('ma_hop_dong') }}" 
+                                       id="ma_hop_dong" name="ma_hop_dong"  value="{{ request('ma_bao_mat') }}" 
                                        placeholder="Nhập mã hợp đồng" required>
                                 @error('ma_hop_dong')
                                     <div class="invalid-feedback">{{ $message }}</div>

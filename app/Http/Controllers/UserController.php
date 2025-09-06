@@ -61,6 +61,25 @@ class UserController extends Controller
         $cty = $request->get('cty');
         $ccccd = $request->get('ccccd');
         $ma_bao_mat = $request->get('ma_bao_mat');
+        if(!$cty || !$ccccd || !$ma_bao_mat){
+            return redirect()->route('chon-dang-ky');
+        }
+        $congTy = CongTy::where('id', $cty)->first();
+        if(!$congTy){
+            return redirect()->route('chon-dang-ky');
+        }
+        $check = HopDong::where('cccd', $ccccd)->where('ma_hop_dong', $ma_bao_mat)->first();
+        if($check){
+            return redirect()->route('chon-dang-ky');
+        }
+        $checkCccd = CanCuocCongDan::where('ccccd', $ccccd)->where('ma_bao_mat', $ma_bao_mat)->first();
+        if(!$checkCccd){
+            return redirect()->route('chon-dang-ky');
+        }
+        $checkHd = HopDong::where('cccd', $ccccd)->where('ma_hop_dong', $ma_bao_mat)->first();
+        if($checkHd){
+            return redirect()->route('chon-dang-ky');
+        }
         return view('user.register', compact('cty', 'ccccd', 'ma_bao_mat'));
     }
     public function chonDangKy(Request $request)
@@ -106,6 +125,20 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
+            $checkCccd = CanCuocCongDan::where('ccccd', $request->cccd)->where('ma_bao_mat', $request->ma_hop_dong)->first();
+            if(!$checkCccd){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Số CCCD hoặc mã hợp đồng không khớp.'
+                ], 404);
+            }
+            $checkHopDong = HopDong::where('cccd', $request->cccd)->where('ma_hop_dong', $request->ma_hop_dong)->first();
+            if($checkHopDong){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Mã hợp đồng đã tồn tại trong hệ thống.'
+                ], 404);
+            }
             // Validation rules
             $rules = [
                 'cccd' => 'required|string|max:20',
