@@ -72,9 +72,20 @@ class AdminController extends Controller
     }
     public function hopDong(Request $request)
     {
-        $hopDong = HopDong::orderBy('created_at', 'desc')->with('congTy')->paginate(20);
+        $search = $request->input('search');
+        $company = $request->input('company');
+        $query = HopDong::orderBy('created_at', 'desc')->with('congTy');
+        if ($company) {
+            $query->where('cong_ty_id', $company);
+        }
+        if ($search) {
+            $query->where('ho_ten', 'like', '%' . $search . '%');
+            $query->orWhere('ma_hop_dong', 'like', '%' . $search . '%');
+            $query->orWhere('cccd', 'like', '%' . $search . '%');
+        }
+        $hopDong = $query->paginate(20);
         $congTy = CongTy::all();
-        return view('admin.hop-dong', compact('hopDong', 'congTy'));
+        return view('admin.hop-dong', compact('hopDong', 'congTy', 'search', 'company'));
     }
     public function history(Request $request)
     {

@@ -9,34 +9,52 @@
     <p class="page-subtitle">Quản lý tất cả hợp đồng bảo hiểm trong hệ thống</p>
 </div>
 
-<!-- Search and Filter -->
+<!-- Search and Filter Form -->
 <div class="card mb-4">
+    <div class="card-header bg-light">
+        <h6 class="card-title mb-0">
+            <i class="bi bi-funnel me-2"></i>
+            Bộ lọc và tìm kiếm
+        </h6>
+    </div>
     <div class="card-body">
-        <div class="row">
-            <div class="col-md-3 mb-3">
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="bi bi-search"></i>
-                    </span>
-                    <input type="text" class="form-control" placeholder="Tìm kiếm..." id="searchInput">
+        <form id="filterForm" class="needs-validation" novalidate>
+            <div class="row g-3">
+                <!-- Tìm kiếm từ khóa -->
+                <div class="col-md-6">
+                    <label for="searchInput" class="form-label">Tìm kiếm</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" class="form-control" id="searchInput" name="search" 
+                        value="{{ $search }}"
+                               placeholder="Tìm theo tên, mã hợp đồng, CCCD...">
+                    </div>
+                </div>
+
+                <!-- Lọc theo công ty -->
+                <div class="col-md-4">
+                    <label for="companyFilter" class="form-label">Công ty</label>
+                    <select class="form-select" id="companyFilter" name="company" value="{{ $company }}">
+                        <option value="">Tất cả công ty</option>
+                        @foreach ($congTy as $ct)
+                            <option value="{{ $ct->id }}" {{ $company == $ct->id ? 'selected' : '' }}>{{ $ct->ten }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Nút thao tác -->
+                <div class="col-md-2">
+                    <label class="form-label">&nbsp;</label>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-search me-1"></i>Tìm
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-2 mb-3">
-                <select class="form-select" id="companyFilter">
-                    <option value="">Tất cả công ty</option>
-                    <option value="baoviet">Bảo Việt</option>
-                    <option value="prudential">Prudential</option>
-                    <option value="manulife">Manulife</option>
-                </select>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="d-flex gap-2">
-                    <button class="btn btn-primary">
-                        Tìm kiếm
-                    </button>
-                </div>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -49,8 +67,8 @@
         </h5>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover table-striped table-bordered table-sm table-responsive" id="hopDongTable">
+        <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+            <table class="table table-hover table-striped table-bordered table-sm" id="hopDongTable" style="min-width: 800px;">
                 <thead>
                     <tr>
                         <th class="text-center">STT</th>
@@ -789,50 +807,181 @@ function exportContract() {
     alert('Tính năng xuất PDF sẽ được phát triển trong phiên bản tiếp theo!');
 }
 
-// Đợi DOM load xong rồi mới thêm event listeners
-document.addEventListener('DOMContentLoaded', function() {
-    // Tìm kiếm và lọc
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const table = document.getElementById('hopDongTable');
-            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-            
-            for (let i = 0; i < rows.length; i++) {
-                const row = rows[i];
-                const text = row.textContent.toLowerCase();
-                
-                if (text.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+// Hàm áp dụng bộ lọc đơn giản
+function applyFilters() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const companyValue = document.getElementById('companyFilter').value.toLowerCase();
+    
+    const table = document.getElementById('hopDongTable');
+    const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    
+    for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        let showRow = true;
+        
+        // Lọc theo từ khóa tìm kiếm
+        if (searchTerm.trim() !== '') {
+            const rowText = row.textContent.toLowerCase();
+            if (!rowText.includes(searchTerm)) {
+                showRow = false;
             }
-        });
+        }
+        
+        // Lọc theo công ty
+        if (companyValue !== '') {
+            const companyCell = row.cells[3]; // Cột công ty
+            if (!companyCell.textContent.toLowerCase().includes(companyValue)) {
+                showRow = false;
+            }
+        }
+        
+        // Hiển thị/ẩn row
+        row.style.display = showRow ? '' : 'none';
     }
+    
+    // Cập nhật số lượng kết quả
+    updateResultCount();
+}
 
-    // Lọc theo công ty
-    const companyFilter = document.getElementById('companyFilter');
-    if (companyFilter) {
-        companyFilter.addEventListener('change', function() {
-            const filterValue = this.value.toLowerCase();
-            const table = document.getElementById('hopDongTable');
-            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-            
-            for (let i = 0; i < rows.length; i++) {
-                const row = rows[i];
-                const companyCell = row.cells[3]; // Cột công ty
-                
-                if (filterValue === '' || companyCell.textContent.toLowerCase().includes(filterValue)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            }
-        });
+// Hàm reset form
+function resetFilter() {
+    document.getElementById('filterForm').reset();
+    applyFilters();
+}
+
+
+// Hàm cập nhật số lượng kết quả
+function updateResultCount() {
+    const table = document.getElementById('hopDongTable');
+    const visibleRows = Array.from(table.getElementsByTagName('tbody')[0].getElementsByTagName('tr'))
+        .filter(row => row.style.display !== 'none').length;
+    
+    // Tìm hoặc tạo element hiển thị số lượng kết quả
+    let resultCountElement = document.getElementById('resultCount');
+    if (!resultCountElement) {
+        resultCountElement = document.createElement('div');
+        resultCountElement.id = 'resultCount';
+        resultCountElement.className = 'text-muted small mt-2';
+        document.querySelector('.card-body').appendChild(resultCountElement);
     }
-});
+    
+    resultCountElement.textContent = `Hiển thị ${visibleRows} kết quả`;
+}
 </script>
+
+<style>
+/* Responsive table styles */
+@media (max-width: 768px) {
+    .table-responsive {
+        border: none;
+        box-shadow: none;
+    }
+    
+    #hopDongTable {
+        font-size: 0.875rem;
+    }
+    
+    #hopDongTable th,
+    #hopDongTable td {
+        padding: 0.5rem 0.25rem;
+        white-space: nowrap;
+    }
+    
+    /* Sticky first column on mobile */
+    #hopDongTable th:first-child,
+    #hopDongTable td:first-child {
+        position: sticky;
+        left: 0;
+        background-color: #f8f9fa;
+        z-index: 10;
+        border-right: 2px solid #dee2e6;
+    }
+    
+    /* Action buttons responsive */
+    .btn-group-sm .btn {
+        padding: 0.25rem 0.4rem;
+        font-size: 0.75rem;
+    }
+    
+    /* User avatar smaller on mobile */
+    .user-avatar {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 0.7rem !important;
+    }
+    
+    /* Badge responsive */
+    .badge {
+        font-size: 0.7rem;
+        padding: 0.35em 0.5em;
+    }
+}
+
+@media (max-width: 576px) {
+    #hopDongTable {
+        font-size: 0.8rem;
+        min-width: 700px;
+    }
+    
+    #hopDongTable th,
+    #hopDongTable td {
+        padding: 0.4rem 0.2rem;
+    }
+    
+    /* Hide less important columns on very small screens */
+    #hopDongTable th:nth-child(4),
+    #hopDongTable td:nth-child(4),
+    #hopDongTable th:nth-child(5),
+    #hopDongTable td:nth-child(5) {
+        display: none;
+    }
+}
+
+/* Scroll indicator */
+.table-responsive::after {
+    content: "← Kéo để xem thêm →";
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    .table-responsive::after {
+        opacity: 1;
+    }
+}
+
+/* Smooth scrolling */
+.table-responsive {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+.table-responsive::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+</style>
 
 
