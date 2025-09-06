@@ -7,7 +7,10 @@
         <div class="col-lg-10">
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0 text-center">Đăng Ký Bảo Hiểm Nhân Thọ</h3>
+                    <div class="text-center mb-3">
+                        <img src="{{ $congTy->logo }}" alt="Logo công ty" style="height: 60px; max-width: 200px;">
+                    </div>
+                    <h3 class="mb-0 text-center">{{ $congTy->ten }}</h3>
                 </div>
                 <div class="card-body p-4">
                     <form method="POST" enctype="multipart/form-data">
@@ -193,19 +196,8 @@
                                 @enderror
                             </div>
 
-                            <!-- Loại hợp đồng -->
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-3">
-                                <label for="loai_hop_dong" class="form-label">Loại hợp đồng <span class="text-danger">*</span></label>
-                                <select class="form-select @error('loai_hop_dong') is-invalid @enderror" 
-                                        id="loai_hop_dong" name="loai_hop_dong" required>
-                                    <option value="">Chọn loại hợp đồng</option>
-                                    <option value="cho_ban_than" {{ old('loai_hop_dong') == 'cho_ban_than' ? 'selected' : '' }}>Cho bản thân</option>
-                                    <option value="cho_nguoi_khac" {{ old('loai_hop_dong') == 'cho_nguoi_khac' ? 'selected' : '' }}>Cho người khác</option>
-                                </select>
-                                @error('loai_hop_dong')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            <!-- Loại hợp đồng - Ẩn và mặc định là "cho_nguoi_khac" -->
+                            <input type="hidden" id="loai_hop_dong" name="loai_hop_dong" value="cho_nguoi_khac">
                             </div>
 
                             <!-- Upload ảnh người mua -->
@@ -341,7 +333,7 @@
                         </div>
 
                         <!-- Nhóm 2: Thông tin người thừa hưởng -->
-                        <div class="row mb-4 mt-5" id="beneficiary-section" style="display: none;">
+                        <div class="row mb-4 mt-5" id="beneficiary-section" style="display: block;">
                             <div class="col-12">
                                 <h4 class="text-primary border-bottom pb-2 mb-3">
                                     <i class="bi bi-people"></i> Thông tin người thừa hưởng
@@ -349,7 +341,7 @@
                             </div>
                         </div>
 
-                        <div class="form-section" id="beneficiary-form" style="display: none;">
+                        <div class="form-section" id="beneficiary-form" style="display: block;">
                             <div class="row">
                             <!-- CCCD người thừa hưởng -->
                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-3">
@@ -1425,104 +1417,47 @@ function initializeForm() {
     });
 
 
-    // Xử lý cho Select2 (vẫn dùng jQuery vì Select2 là jQuery plugin)
-    $('#loai_hop_dong').on('select2:select', function (e) {
-        console.log('Select2 select event triggered');
-        const selectedValue = e.params.data.id;
-        toggleBeneficiaryForm(selectedValue);
-    });
-
-    // Xử lý cho change event thông thường (Vanilla JavaScript)
-    const loaiHopDongSelect = document.getElementById('loai_hop_dong');
-    if (loaiHopDongSelect) {
-        loaiHopDongSelect.addEventListener('change', function() {
-            console.log('Change event triggered');
-            const selectedValue = this.value;
-            toggleBeneficiaryForm(selectedValue);
-        });
-
-        // Thêm event listener cho input event
-        loaiHopDongSelect.addEventListener('input', function() {
-            console.log('Input event triggered');
-            const selectedValue = this.value;
-            toggleBeneficiaryForm(selectedValue);
-        });
-    }
-
-    // Khởi tạo trạng thái ban đầu
-    const initialValue = loaiHopDongSelect ? loaiHopDongSelect.value : '';
-    toggleBeneficiaryForm(initialValue);
+    // Khởi tạo form người thừa hưởng (luôn hiển thị)
+    initializeBeneficiaryForm();
     
     // Khởi tạo image preview cho tất cả file inputs
     initializeImagePreview();
 }
 
-// Hàm xử lý hiển thị/ẩn form người thừa hưởng (Vanilla JavaScript)
-function toggleBeneficiaryForm(selectedValue) {
-    console.log('Toggle beneficiary form with value:', selectedValue);
+// Hàm khởi tạo form người thừa hưởng (luôn hiển thị)
+function initializeBeneficiaryForm() {
+    console.log('Initializing beneficiary form - always visible');
     const beneficiarySection = document.getElementById('beneficiary-section');
     const beneficiaryForm = document.getElementById('beneficiary-form');
     
     console.log('Beneficiary section found:', beneficiarySection ? 'Yes' : 'No');
     console.log('Beneficiary form found:', beneficiaryForm ? 'Yes' : 'No');
     
-    if (selectedValue === 'cho_nguoi_khac') {
-        console.log('Showing beneficiary form');
-        if (beneficiarySection) {
-            beneficiarySection.style.display = 'block';
-            beneficiarySection.style.animation = 'fadeInUp 0.6s ease-out';
-        }
-        if (beneficiaryForm) {
-            beneficiaryForm.style.display = 'block';
-            beneficiaryForm.style.animation = 'fadeInUp 0.6s ease-out';
-        }
-        
-        // Làm các trường người thừa hưởng bắt buộc
-        const beneficiaryInputs = document.querySelectorAll('#beneficiary-form input, #beneficiary-form select');
-        beneficiaryInputs.forEach(input => {
-            input.required = true;
-        });
-        
-        // Làm các trường hình ảnh người thừa hưởng bắt buộc (chỉ đánh dấu, không set required)
-        const beneficiaryImageInputs = ['th_anh_mat_truoc', 'th_anh_mat_sau', 'th_anh_chan_dung'];
-        beneficiaryImageInputs.forEach(inputId => {
-            const input = document.getElementById(inputId);
-            if (input) {
-                // Không set required cho input file ẩn, chỉ dựa vào JavaScript validation
-                input.setAttribute('data-required', 'true');
-            }
-        });
-        
-        // Hiển thị thông báo
-        showAlert('📋 Form thông tin người thừa hưởng đã được hiển thị', 'info');
-    } else {
-        console.log('Hiding beneficiary form');
-        if (beneficiarySection) {
-            beneficiarySection.style.display = 'none';
-        }
-        if (beneficiaryForm) {
-            beneficiaryForm.style.display = 'none';
-        }
-        
-        // Bỏ bắt buộc các trường người thừa hưởng
-        const beneficiaryInputs = document.querySelectorAll('#beneficiary-form input, #beneficiary-form select');
-        beneficiaryInputs.forEach(input => {
-            input.required = false;
-            input.value = ''; // Xóa giá trị các trường người thừa hưởng
-        });
-        
-        // Bỏ bắt buộc các trường hình ảnh người thừa hưởng
-        const beneficiaryImageInputs = ['th_anh_mat_truoc', 'th_anh_mat_sau', 'th_anh_chan_dung'];
-        beneficiaryImageInputs.forEach(inputId => {
-            const input = document.getElementById(inputId);
-            if (input) {
-                input.setAttribute('data-required', 'false');
-                input.value = ''; // Xóa file đã chọn
-                // Xóa preview
-                removeImage(inputId);
-            }
-        });
+    // Luôn hiển thị form người thừa hưởng
+    if (beneficiarySection) {
+        beneficiarySection.style.display = 'block';
     }
+    if (beneficiaryForm) {
+        beneficiaryForm.style.display = 'block';
+    }
+    
+    // Làm các trường người thừa hưởng bắt buộc
+    const beneficiaryInputs = document.querySelectorAll('#beneficiary-form input, #beneficiary-form select');
+    beneficiaryInputs.forEach(input => {
+        input.required = true;
+    });
+    
+    // Làm các trường hình ảnh người thừa hưởng bắt buộc (chỉ đánh dấu, không set required)
+    const beneficiaryImageInputs = ['th_anh_mat_truoc', 'th_anh_mat_sau', 'th_anh_chan_dung'];
+    beneficiaryImageInputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+            // Không set required cho input file ẩn, chỉ dựa vào JavaScript validation
+            input.setAttribute('data-required', 'true');
+        }
+    });
+    
+    console.log('Beneficiary form initialized and always visible');
 }
 
 // Hàm khởi tạo image preview và drag & drop
@@ -1699,7 +1634,7 @@ function logFormData(form) {
     }
     
     // Log các trường quan trọng
-    const importantFields = ['cccd', 'ho_ten', 'so_dien_thoai', 'ma_hop_dong', 'loai_hop_dong'];
+    const importantFields = ['cccd', 'ho_ten', 'so_dien_thoai', 'ma_hop_dong'];
     console.log('🔑 Important fields:');
     importantFields.forEach(fieldId => {
         const element = document.getElementById(fieldId);
@@ -1892,8 +1827,7 @@ function validateForm() {
         { id: 'ngay_dao_han', name: 'Ngày đáo hạn' },
         { id: 'ngan_hang', name: 'Ngân hàng' },
         { id: 'so_tai_khoan', name: 'Số tài khoản' },
-        { id: 'chu_tai_khoan', name: 'Chủ tài khoản' },
-        { id: 'loai_hop_dong', name: 'Loại hợp đồng' }
+        { id: 'chu_tai_khoan', name: 'Chủ tài khoản' }
     ];
     
     // Danh sách các trường hình ảnh bắt buộc
@@ -1965,9 +1899,10 @@ function validateForm() {
         }
     });
     
-    // Kiểm tra thông tin người thừa hưởng nếu loại hợp đồng là "cho_nguoi_khac"
+    // Kiểm tra thông tin người thừa hưởng (luôn bắt buộc)
     const loaiHopDong = document.getElementById('loai_hop_dong').value;
-    if (loaiHopDong === 'cho_nguoi_khac') {
+    // Luôn kiểm tra thông tin người thừa hưởng vì đã ẩn phần chọn loại hợp đồng
+    if (true) {
         const beneficiaryFields = [
             { id: 'th_cccd', name: 'Số CCCD/CMND người thừa hưởng' },
             { id: 'th_moi_quan_he', name: 'Mối quan hệ' },
@@ -2009,7 +1944,7 @@ function validateForm() {
             
             console.log(`Checking beneficiary image ${image.id} - hasFile: ${hasFile}`);
             
-            // Tất cả hình ảnh người thừa hưởng đều bắt buộc khi loại hợp đồng là "cho_nguoi_khac"
+            // Tất cả hình ảnh người thừa hưởng đều bắt buộc (luôn hiển thị form)
             if (!hasFile) {
                 console.log(`Missing beneficiary image: ${image.id}`);
                 errors.push(`${image.icon} Vui lòng chọn ${image.name.toLowerCase()}`);
@@ -2559,55 +2494,27 @@ function fillSampleData() {
     document.getElementById('so_tai_khoan').value = generateAccountNumber();
     document.getElementById('chu_tai_khoan').value = sampleData.names[getRandomInt(0, sampleData.names.length - 1)];
     
-    // Luôn chọn loại hợp đồng "Cho người khác"
-    const contractType = 'cho_nguoi_khac';
+    // Loại hợp đồng đã được set mặc định là "cho_nguoi_khac" trong hidden field
+    // Form người thừa hưởng luôn hiển thị
     
-    // Set giá trị cho select box
-    document.getElementById('loai_hop_dong').value = contractType;
+    // Điền dữ liệu người thừa hưởng (form luôn hiển thị)
+    document.getElementById('th_cccd').value = generateCCCD();
+    document.getElementById('th_moi_quan_he').value = sampleData.relationships[getRandomInt(0, sampleData.relationships.length - 1)];
+    document.getElementById('th_ho_ten').value = sampleData.names[getRandomInt(0, sampleData.names.length - 1)];
+    document.getElementById('th_gioi_tinh').value = Math.random() < 0.5 ? 'Nam' : 'Nữ';
+    document.getElementById('th_ngay_sinh').value = generateRandomDate();
+    document.getElementById('th_dia_chi').value = sampleData.addresses[getRandomInt(0, sampleData.addresses.length - 1)];
+    document.getElementById('th_so_dien_thoai').value = generatePhone();
+    document.getElementById('th_ngan_hang').value = sampleData.banks[getRandomInt(0, sampleData.banks.length - 1)];
+    document.getElementById('th_so_tai_khoan').value = generateAccountNumber();
+    document.getElementById('th_chu_tai_khoan').value = sampleData.names[getRandomInt(0, sampleData.names.length - 1)];
     
-    // Trigger change event cho Select2
-    $('#loai_hop_dong').val(contractType).trigger('change');
+    // Trigger change cho Select2 của người thừa hưởng
+    $('#th_moi_quan_he').val(document.getElementById('th_moi_quan_he').value).trigger('change');
+    $('#th_gioi_tinh').val(document.getElementById('th_gioi_tinh').value).trigger('change');
     
-    // Đảm bảo form người thừa hưởng được hiển thị ngay lập tức
-    toggleBeneficiaryForm(contractType);
-    
-    // Đảm bảo form người thừa hưởng được hiển thị sau khi Select2 cập nhật
-    setTimeout(() => {
-        toggleBeneficiaryForm(contractType);
-    }, 200);
-    
-    // Điền dữ liệu người thừa hưởng sau khi form đã được hiển thị
-    setTimeout(() => {
-        // Điền dữ liệu người thừa hưởng
-        document.getElementById('th_cccd').value = generateCCCD();
-        document.getElementById('th_moi_quan_he').value = sampleData.relationships[getRandomInt(0, sampleData.relationships.length - 1)];
-        document.getElementById('th_ho_ten').value = sampleData.names[getRandomInt(0, sampleData.names.length - 1)];
-        document.getElementById('th_gioi_tinh').value = Math.random() < 0.5 ? 'Nam' : 'Nữ';
-        document.getElementById('th_ngay_sinh').value = generateRandomDate();
-        document.getElementById('th_dia_chi').value = sampleData.addresses[getRandomInt(0, sampleData.addresses.length - 1)];
-        document.getElementById('th_so_dien_thoai').value = generatePhone();
-        document.getElementById('th_ngan_hang').value = sampleData.banks[getRandomInt(0, sampleData.banks.length - 1)];
-        document.getElementById('th_so_tai_khoan').value = generateAccountNumber();
-        document.getElementById('th_chu_tai_khoan').value = sampleData.names[getRandomInt(0, sampleData.names.length - 1)];
-        
-        // Trigger change cho Select2 của người thừa hưởng
-        $('#th_moi_quan_he').val(document.getElementById('th_moi_quan_he').value).trigger('change');
-        $('#th_gioi_tinh').val(document.getElementById('th_gioi_tinh').value).trigger('change');
-        
-        // Hiển thị thông báo thành công
-        showAlert('✅ Đã điền dữ liệu mẫu cho hợp đồng "Cho người khác" thành công! Form người thừa hưởng đã được hiển thị và điền đầy đủ thông tin.', 'success');
-        
-        // Scroll đến form người thừa hưởng để người dùng thấy
-        setTimeout(() => {
-            const beneficiarySection = document.getElementById('beneficiary-section');
-            if (beneficiarySection) {
-                beneficiarySection.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
-                });
-            }
-        }, 500);
-    }, 300);
+    // Hiển thị thông báo thành công
+    showAlert('✅ Đã điền dữ liệu mẫu thành công! Form người thừa hưởng đã được điền đầy đủ thông tin.', 'success');
 }
 
 // Thực thi khi DOM sẵn sàng

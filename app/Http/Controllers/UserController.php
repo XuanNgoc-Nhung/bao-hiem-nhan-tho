@@ -80,7 +80,7 @@ class UserController extends Controller
         if($checkHd){
             return redirect()->route('chon-dang-ky');
         }
-        return view('user.register', compact('cty', 'ccccd', 'ma_bao_mat'));
+        return view('user.register', compact('cty', 'ccccd', 'ma_bao_mat', 'congTy'));
     }
     public function chonDangKy(Request $request)
     {

@@ -296,211 +296,178 @@ function loadContractDetail(contractId) {
             </div>
         </div>
 
-        <!-- Thông tin người mua và người hưởng -->
-        <div class="row mb-3">
-            <!-- Thông tin người mua bảo hiểm -->
-            <div class="col-lg-6 mb-3">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-header bg-success text-white py-2">
-                        <h6 class="card-title mb-0">
-                            <i class="bi bi-person-circle me-2"></i>Người mua bảo hiểm
-                        </h6>
-                    </div>
-                    <div class="card-body p-3">
-                        <!-- Ảnh chân dung và thông tin cơ bản -->
-                        <div class="row mb-3">
-                            <div class="col-3 text-center">
-                                <div class="position-relative">
-                                    <img src="${contractData.anh_chan_dung}" alt="Ảnh chân dung" 
-                                         class="img-fluid rounded-circle border border-2 border-success" 
-                                         style="width: 60px; height: 60px; object-fit: cover;"
-                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                                    <div class="rounded-circle border border-2 border-success d-flex align-items-center justify-content-center bg-light" 
-                                         style="width: 60px; height: 60px; display: none;">
-                                        <i class="bi bi-person text-muted fs-4"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-9">
-                                <h6 class="text-success mb-1">${contractData.ho_ten}</h6>
-                                <div class="row g-1">
-                                    <div class="col-6">
-                                        <small class="text-muted">Giới tính:</small>
-                                        <span class="fw-bold">${contractData.gioi_tinh}</span>
-                                    </div>
-                                    <div class="col-6">
-                                        <small class="text-muted">Ngày sinh:</small>
-                                        <span class="fw-bold">${new Date(contractData.ngay_sinh).toLocaleDateString('vi-VN')}</span>
-                                    </div>
-                                    <div class="col-12">
-                                        <small class="text-muted">CCCD:</small>
-                                        <span class="fw-bold text-primary">${contractData.cccd}</span>
-                                    </div>
-                                </div>
-                        </div>
-                    </div>
-                    
-                        <!-- Thông tin liên hệ -->
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <div class="d-flex align-items-center p-2 bg-light rounded mb-2">
-                                    <i class="bi bi-phone text-success me-2"></i>
-                                    <div>
-                                        <small class="text-muted">SĐT:</small>
-                                        <span class="fw-bold">${contractData.so_dien_thoai}</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-start p-2 bg-light rounded">
-                                    <i class="bi bi-geo-alt text-success me-2 mt-1"></i>
-                                    <div>
-                                        <small class="text-muted">Địa chỉ:</small>
-                                        <span class="fw-bold">${contractData.dia_chi}</span>
-                                    </div>
+        <!-- VĂN BẢN HÀNH CHÍNH - THÔNG TIN HỢP ĐỒNG BẢO HIỂM -->
+        <div class="mb-4">
+            <!-- BÊN BÁN - CÔNG TY BẢO HIỂM -->
+            <div class="card border border-dark mb-4">
+                <div class="card-header bg-dark text-white py-3">
+                    <h5 class="card-title mb-0 text-center fw-bold">
+                        <i class="bi bi-building me-2"></i>BÊN BÁN - CÔNG TY BẢO HIỂM NHÂN THỌ
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <!-- Logo và tên công ty -->
+                        <div class="col-md-3 text-center mb-3">
+                            <div class="border border-2 border-dark p-3 d-inline-block" style="min-height: 120px; min-width: 120px; display: flex; align-items: center; justify-content: center;">
+                                <img src="/images/logo-baoviet.png" alt="Logo công ty" 
+                                     class="img-fluid" style="max-height: 80px; width: auto;"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="d-none text-center flex-column align-items-center justify-content-center" style="min-height: 80px;">
+                                    <i class="bi bi-building fs-1 text-dark mb-2"></i>
+                                    <p class="mb-0 fw-bold small">LOGO CÔNG TY</p>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Hình ảnh CCCD -->
-                        <div class="row">
-                            <div class="col-12">
-                                <small class="text-muted mb-2 d-block">
-                                    <i class="bi bi-card-image me-1"></i>Giấy tờ tùy thân
-                                </small>
-                                <div class="row g-2">
-                                    <div class="col-6">
-                                        <div class="text-center">
-                                            <div class="position-relative">
-                                                <img src="${contractData.anh_mat_truoc}" alt="CCCD mặt trước" 
-                                                     class="img-fluid rounded border" style="max-height: 80px; width: auto;"
-                                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                                <div class="d-flex align-items-center justify-content-center bg-light border rounded" 
-                                                     style="height: 80px; display: none;">
-                                                    <i class="bi bi-card-image text-muted"></i>
-                                                </div>
-                                            </div>
-                                            <small class="text-muted d-block mt-1">Mặt trước</small>
-                                        </div>
+                        <!-- Thông tin công ty -->
+                        <div class="col-md-9">
+                            <form>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-normal text-dark">TÊN CÔNG TY:</label>
+                                        <input type="text" class="form-control" value="${contractData.cong_ty}" disabled>
                                     </div>
-                                    <div class="col-6">
-                                        <div class="text-center">
-                                            <div class="position-relative">
-                                                <img src="${contractData.anh_mat_sau}" alt="CCCD mặt sau" 
-                                                     class="img-fluid rounded border" style="max-height: 80px; width: auto;"
-                                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                                <div class="d-flex align-items-center justify-content-center bg-light border rounded" 
-                                                     style="height: 80px; display: none;">
-                                                    <i class="bi bi-card-image text-muted"></i>
-                                                </div>
-                                            </div>
-                                            <small class="text-muted d-block mt-1">Mặt sau</small>
-                                        </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-normal text-dark">Mã số thuế:</label>
+                                        <input type="text" class="form-control" value="${contractData.ma_so_thue}" disabled>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-normal text-dark">ĐỊA CHỈ TRỤ SỞ CHÍNH:</label>
+                                        <input type="text" class="form-control" value="123 Đường ABC, Phường 1, Quận 1, TP.Hồ Chí Minh" disabled>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-normal text-dark">SỐ ĐIỆN THOẠI:</label>
+                                        <input type="text" class="form-control" value="1900 1234" disabled>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-normal text-dark">WEBSITE:</label>
+                                        <input type="text" class="form-control" value="www.baoviet.com.vn" disabled>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-normal text-dark">EMAIL:</label>
+                                        <input type="text" class="form-control" value="support@baoviet.com.vn" disabled>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Thông tin người hưởng -->
-            <div class="col-lg-6 mb-3">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-header bg-warning text-dark py-2">
-                        <h6 class="card-title mb-0">
-                            <i class="bi bi-people-circle me-2"></i>Người hưởng
-                        </h6>
-                    </div>
-                    <div class="card-body p-3">
-                        <!-- Ảnh chân dung và thông tin cơ bản -->
-                        <div class="row mb-3">
-                            <div class="col-3 text-center">
-                                <div class="position-relative">
-                                    <img src="${contractData.th_anh_chan_dung}" alt="Ảnh chân dung người hưởng" 
-                                         class="img-fluid rounded-circle border border-2 border-warning" 
-                                         style="width: 60px; height: 60px; object-fit: cover;"
-                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                                    <div class="rounded-circle border border-2 border-warning d-flex align-items-center justify-content-center bg-light" 
-                                         style="width: 60px; height: 60px; display: none;">
-                                        <i class="bi bi-person text-muted fs-4"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-9">
-                                <h6 class="text-warning mb-1">${contractData.th_ho_ten}</h6>
-                                <div class="row g-1">
-                                    <div class="col-6">
-                                        <small class="text-muted">Mối quan hệ:</small>
-                                        <span class="badge bg-info">${contractData.th_moi_quan_he}</span>
-                                    </div>
-                                    <div class="col-6">
-                                        <small class="text-muted">Giới tính:</small>
-                                        <span class="fw-bold">${contractData.th_gioi_tinh}</span>
-                                    </div>
-                                    <div class="col-6">
-                                        <small class="text-muted">Ngày sinh:</small>
-                                        <span class="fw-bold">${new Date(contractData.th_ngay_sinh).toLocaleDateString('vi-VN')}</span>
-                                    </div>
-                                    <div class="col-6">
-                                        <small class="text-muted">CCCD:</small>
-                                        <span class="fw-bold text-primary">${contractData.th_cccd}</span>
-                                    </div>
-                                </div>
+            <!-- BÊN MUA - THÔNG TIN NGƯỜI MUA VÀ NGƯỜI THỪA HƯỞNG -->
+            <div class="row">
+                <!-- NGƯỜI MUA BẢO HIỂM -->
+                <div class="col-12 mb-4">
+                    <div class="card border border-dark">
+                        <div class="card-header bg-dark text-white py-3">
+                            <h5 class="card-title mb-0 text-center fw-bold">
+                                <i class="bi bi-person-circle me-2"></i>BÊN MUA - NGƯỜI MUA BẢO HIỂM
+                            </h5>
+                            <p class="mb-0 text-center small">THÔNG TIN CÁ NHÂN NGƯỜI MUA</p>
                         </div>
-                    </div>
-                    
-                        <!-- Thông tin liên hệ -->
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <div class="d-flex align-items-center p-2 bg-light rounded mb-2">
-                                    <i class="bi bi-phone text-warning me-2"></i>
-                                    <div>
-                                        <small class="text-muted">SĐT:</small>
-                                        <span class="fw-bold">${contractData.th_so_dien_thoai}</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-start p-2 bg-light rounded">
-                                    <i class="bi bi-geo-alt text-warning me-2 mt-1"></i>
-                                    <div>
-                                        <small class="text-muted">Địa chỉ:</small>
-                                        <span class="fw-bold">${contractData.th_dia_chi}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Hình ảnh CCCD -->
-                        <div class="row">
-                            <div class="col-12">
-                                <small class="text-muted mb-2 d-block">
-                                    <i class="bi bi-card-image me-1"></i>Giấy tờ tùy thân
-                                </small>
-                                <div class="row g-2">
-                                    <div class="col-6">
-                                        <div class="text-center">
-                                            <div class="position-relative">
-                                                <img src="${contractData.th_anh_mat_truoc}" alt="CCCD mặt trước người hưởng" 
-                                                     class="img-fluid rounded border" style="max-height: 80px; width: auto;"
-                                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                                <div class="d-flex align-items-center justify-content-center bg-light border rounded" 
-                                                     style="height: 80px; display: none;">
-                                                    <i class="bi bi-card-image text-muted"></i>
-                                                </div>
-                                            </div>
-                                            <small class="text-muted d-block mt-1">Mặt trước</small>
+                        <div class="card-body p-4">
+                            <!-- Thông tin cơ bản -->
+                            <div class="row mb-4">
+                                <div class="col-2 text-center">
+                                    <div class="border border-2 border-dark p-2" style="min-height: 120px; min-width: 100px; display: flex; align-items: center; justify-content: center;">
+                                        <img src="${contractData.anh_chan_dung}" alt="Ảnh chân dung" 
+                                             class="img-fluid" style="max-height: 100px; width: auto;"
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <div class="d-none text-center flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                                            <i class="bi bi-person fs-1 text-dark mb-2"></i>
+                                            <p class="mb-0 small fw-bold">ẢNH CHÂN DUNG</p>
                                         </div>
                                     </div>
-                                    <div class="col-6">
-                                        <div class="text-center">
-                                            <div class="position-relative">
-                                                <img src="${contractData.th_anh_mat_sau}" alt="CCCD mặt sau người hưởng" 
-                                                     class="img-fluid rounded border" style="max-height: 80px; width: auto;"
-                                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                                <div class="d-flex align-items-center justify-content-center bg-light border rounded" 
-                                                     style="height: 80px; display: none;">
-                                                    <i class="bi bi-card-image text-muted"></i>
-                                                </div>
+                                    <p class="small mt-2 mb-0 fw-bold">ẢNH CHÂN DUNG</p>
+                                </div>
+                                <div class="col-10">
+                                    <form>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-normal text-dark">HỌ VÀ TÊN:</label>
+                                                <input type="text" class="form-control text-uppercase" value="${contractData.ho_ten}" disabled>
                                             </div>
-                                            <small class="text-muted d-block mt-1">Mặt sau</small>
+                                            <div class="col-md-3">
+                                                <label class="form-label fw-normal text-dark">GIỚI TÍNH:</label>
+                                                <input type="text" class="form-control" value="${contractData.gioi_tinh}" disabled>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label fw-normal text-dark">NGÀY SINH:</label>
+                                                <input type="text" class="form-control" value="${new Date(contractData.ngay_sinh).toLocaleDateString('vi-VN')}" disabled>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-normal text-dark">SỐ CCCD/CMND:</label>
+                                                <input type="text" class="form-control" value="${contractData.cccd}" disabled>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-normal text-dark">SỐ ĐIỆN THOẠI:</label>
+                                                <input type="text" class="form-control" value="${contractData.so_dien_thoai}" disabled>
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label fw-normal text-dark">ĐỊA CHỈ THƯỜNG TRÚ:</label>
+                                                <input type="text" class="form-control" value="${contractData.dia_chi}" disabled>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            <!-- Thông tin ngân hàng người mua -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h6 class="fw-bold text-dark mb-3">THÔNG TIN NGÂN HÀNG:</h6>
+                                    <form>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-normal text-dark">TÊN NGÂN HÀNG:</label>
+                                                <input type="text" class="form-control" value="${contractData.ngan_hang}" disabled>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-normal text-dark">SỐ TÀI KHOẢN:</label>
+                                                <input type="text" class="form-control text-primary" value="${contractData.so_tai_khoan}" disabled>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-normal text-dark">CHỦ TÀI KHOẢN:</label>
+                                                <input type="text" class="form-control text-uppercase" value="${contractData.chu_tai_khoan}" disabled>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            <!-- Hình ảnh CCCD -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class="fw-bold text-dark border-bottom border-dark pb-1 mb-3">GIẤY TỜ TÙY THÂN (CCCD/CMND):</h6>
+                                    <div class="row g-3">
+                                        <div class="col-6">
+                                            <div class="text-center">
+                                                <div class="border border-2 border-dark p-2" style="min-height: 180px; min-width: 120px; display: flex; align-items: center; justify-content: center;">
+                                                    <img src="${contractData.anh_mat_truoc}" alt="CCCD mặt trước" 
+                                                         class="img-fluid" style="max-height: 150px; width: auto;"
+                                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                                    <div class="d-none text-center flex-column align-items-center justify-content-center" style="min-height: 150px;">
+                                                        <i class="bi bi-card-image fs-1 text-dark mb-2"></i>
+                                                        <p class="mb-0 small fw-bold">MẶT TRƯỚC</p>
+                                                    </div>
+                                                </div>
+                                                <p class="small mt-2 mb-0 fw-bold">MẶT TRƯỚC</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="text-center">
+                                                <div class="border border-2 border-dark p-2" style="min-height: 180px; min-width: 120px; display: flex; align-items: center; justify-content: center;">
+                                                    <img src="${contractData.anh_mat_sau}" alt="CCCD mặt sau" 
+                                                         class="img-fluid" style="max-height: 150px; width: auto;"
+                                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                                    <div class="d-none text-center flex-column align-items-center justify-content-center" style="min-height: 150px;">
+                                                        <i class="bi bi-card-image fs-1 text-dark mb-2"></i>
+                                                        <p class="mb-0 small fw-bold">MẶT SAU</p>
+                                                    </div>
+                                                </div>
+                                                <p class="small mt-2 mb-0 fw-bold">MẶT SAU</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -508,194 +475,123 @@ function loadContractDetail(contractId) {
                         </div>
                     </div>
                 </div>
+                
+                <!-- NGƯỜI THỪA HƯỞNG -->
+                <div class="col-12">
+                    <div class="card border border-dark">
+                        <div class="card-header bg-dark text-white py-3">
+                            <h5 class="card-title mb-0 text-center fw-bold">
+                                <i class="bi bi-people-circle me-2"></i>NGƯỜI THỪA HƯỞNG
+                            </h5>
+                            <p class="mb-0 text-center small">THÔNG TIN NGƯỜI HƯỞNG QUYỀN LỢI BẢO HIỂM</p>
                         </div>
-                    </div>
-                    
-        <!-- Thông tin tài chính và thời gian -->
-        <div class="row mb-4">
-            <!-- Thông tin tài chính -->
-            <div class="col-lg-6 mb-4">
-                <div class="card border-0 shadow-lg">
-                    <div class="card-header bg-gradient bg-info text-white py-4">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h5 class="card-title mb-1">
-                                    <i class="bi bi-currency-dollar me-2"></i>Thông tin tài chính
-                                </h5>
-                                <small class="opacity-75">Chi phí và số tiền bảo hiểm</small>
-                            </div>
-                            <div class="col-4 text-end">
-                                <i class="bi bi-cash-stack fs-1 opacity-50"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body p-4">
-                        <div class="row g-4">
-                            <div class="col-12">
-                                <div class="text-center p-4 bg-light rounded-3">
-                                    <h3 class="text-success mb-2">${new Intl.NumberFormat('vi-VN').format(contractData.so_tien_mua)} VNĐ</h3>
-                                    <p class="text-muted mb-0">Phí bảo hiểm</p>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="text-center p-4 bg-light rounded-3">
-                                    <h3 class="text-primary mb-2">${new Intl.NumberFormat('vi-VN').format(contractData.so_tien_dong_hang_nam)} VNĐ</h3>
-                                    <p class="text-muted mb-0">Số tiền đóng hàng năm</p>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="text-center p-3 bg-info text-white rounded-3">
-                                    <h4 class="mb-0">${contractData.thoi_gian_mua} tháng</h4>
-                                    <small class="opacity-75">Thời gian mua</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                        </div>
-                    </div>
-                    
-            <!-- Thông tin thời gian -->
-            <div class="col-lg-6 mb-4">
-                <div class="card border-0 shadow-lg">
-                    <div class="card-header bg-gradient bg-secondary text-white py-4">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h5 class="card-title mb-1">
-                                    <i class="bi bi-calendar-event me-2"></i>Thông tin thời gian
-                                </h5>
-                                <small class="opacity-75">Thời hạn và ngày hiệu lực</small>
-                            </div>
-                            <div class="col-4 text-end">
-                                <i class="bi bi-calendar3 fs-1 opacity-50"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body p-4">
-                        <div class="row g-4">
-                            <div class="col-12">
-                                <div class="d-flex align-items-center p-3 bg-light rounded-3">
-                                    <i class="bi bi-calendar-check text-secondary fs-2 me-3"></i>
-                                    <div>
-                                        <h6 class="mb-1">Ngày cấp hợp đồng</h6>
-                                        <p class="mb-0 fw-bold">${new Date(contractData.ngay_cap_hop_dong).toLocaleDateString('vi-VN')}</p>
+                        <div class="card-body p-4">
+                            <!-- Thông tin cơ bản -->
+                            <div class="row mb-4">
+                                <div class="col-2 text-center">
+                                    <div class="border border-2 border-dark p-2" style="min-height: 120px; min-width: 100px; display: flex; align-items: center; justify-content: center;">
+                                        <img src="${contractData.th_anh_chan_dung}" alt="Ảnh chân dung người thừa hưởng" 
+                                             class="img-fluid" style="max-height: 100px; width: auto;"
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <div class="d-none text-center flex-column align-items-center justify-content-center" style="min-height: 100px;">
+                                            <i class="bi bi-person fs-1 text-dark mb-2"></i>
+                                            <p class="mb-0 small fw-bold">ẢNH CHÂN DUNG</p>
+                                        </div>
                                     </div>
+                                    <p class="small mt-2 mb-0 fw-bold">ẢNH CHÂN DUNG</p>
+                                </div>
+                                <div class="col-10">
+                                    <form>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-normal text-dark">HỌ VÀ TÊN:</label>
+                                                <input type="text" class="form-control text-uppercase" value="${contractData.th_ho_ten}" disabled>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label fw-normal text-dark">MỐI QUAN HỆ:</label>
+                                                <input type="text" class="form-control" value="${contractData.th_moi_quan_he}" disabled>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label fw-normal text-dark">GIỚI TÍNH:</label>
+                                                <input type="text" class="form-control" value="${contractData.th_gioi_tinh}" disabled>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label fw-normal text-dark">NGÀY SINH:</label>
+                                                <input type="text" class="form-control" value="${new Date(contractData.th_ngay_sinh).toLocaleDateString('vi-VN')}" disabled>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label fw-normal text-dark">SỐ CCCD/CMND:</label>
+                                                <input type="text" class="form-control" value="${contractData.th_cccd}" disabled>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-normal text-dark">SỐ ĐIỆN THOẠI:</label>
+                                                <input type="text" class="form-control" value="${contractData.th_so_dien_thoai}" disabled>
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label fw-normal text-dark">ĐỊA CHỈ THƯỜNG TRÚ:</label>
+                                                <input type="text" class="form-control" value="${contractData.th_dia_chi}" disabled>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <div class="d-flex align-items-center p-3 bg-light rounded-3">
-                                    <i class="bi bi-calendar-x text-secondary fs-2 me-3"></i>
-                                    <div>
-                                        <h6 class="mb-1">Ngày đáo hạn</h6>
-                                        <p class="mb-0 fw-bold">${new Date(contractData.ngay_dao_han).toLocaleDateString('vi-VN')}</p>
-                                    </div>
+                            
+                            <!-- Thông tin ngân hàng người thừa hưởng -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h6 class="fw-bold text-dark mb-3">THÔNG TIN NGÂN HÀNG:</h6>
+                                    <form>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-normal text-dark">TÊN NGÂN HÀNG:</label>
+                                                <input type="text" class="form-control" value="${contractData.th_ngan_hang}" disabled>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-normal text-dark">SỐ TÀI KHOẢN:</label>
+                                                <input type="text" class="form-control text-primary" value="${contractData.th_so_tai_khoan}" disabled>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-normal text-dark">CHỦ TÀI KHOẢN:</label>
+                                                <input type="text" class="form-control text-uppercase" value="${contractData.th_chu_tai_khoan}" disabled>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <div class="text-center p-3 bg-secondary text-white rounded-3">
-                                    <h4 class="mb-0">${contractData.thoi_gian_mua} tháng</h4>
-                                    <small class="opacity-75">Thời hạn hợp đồng</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Thông tin ngân hàng -->
-        <div class="row mb-4">
-            <!-- Ngân hàng người mua -->
-            <div class="col-lg-6 mb-4">
-                <div class="card border-0 shadow-lg">
-                    <div class="card-header bg-gradient bg-dark text-white py-4">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h5 class="card-title mb-1">
-                                    <i class="bi bi-bank me-2"></i>Ngân hàng người mua
-                                </h5>
-                                <small class="opacity-75">Thông tin tài khoản thanh toán</small>
-                            </div>
-                            <div class="col-4 text-end">
-                                <i class="bi bi-credit-card fs-1 opacity-50"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body p-4">
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <div class="d-flex align-items-center p-3 bg-light rounded-3">
-                                    <i class="bi bi-building text-dark fs-3 me-3"></i>
-                                    <div>
-                                        <h6 class="mb-1">Ngân hàng</h6>
-                                        <p class="mb-0 fw-bold">${contractData.ngan_hang}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="d-flex align-items-center p-3 bg-light rounded-3">
-                                    <i class="bi bi-hash text-dark fs-3 me-3"></i>
-                                    <div>
-                                        <h6 class="mb-1">Số tài khoản</h6>
-                                        <p class="mb-0 fw-bold text-primary">${contractData.so_tai_khoan}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="d-flex align-items-center p-3 bg-light rounded-3">
-                                    <i class="bi bi-person text-dark fs-3 me-3"></i>
-                                    <div>
-                                        <h6 class="mb-1">Chủ tài khoản</h6>
-                                        <p class="mb-0 fw-bold">${contractData.chu_tai_khoan}</p>
-                                    </div>
-                                </div>
-                            </div>
-                </div>
-        </div>
-    </div>
-</div>
-
-            <!-- Ngân hàng người hưởng -->
-            <div class="col-lg-6 mb-4">
-                <div class="card border-0 shadow-lg">
-                    <div class="card-header bg-gradient bg-warning text-dark py-4">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h5 class="card-title mb-1">
-                                    <i class="bi bi-bank me-2"></i>Ngân hàng người hưởng
-                                </h5>
-                                <small class="opacity-75">Thông tin tài khoản nhận tiền</small>
-                            </div>
-                            <div class="col-4 text-end">
-                                <i class="bi bi-wallet2 fs-1 opacity-50"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body p-4">
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <div class="d-flex align-items-center p-3 bg-light rounded-3">
-                                    <i class="bi bi-building text-warning fs-3 me-3"></i>
-                                    <div>
-                                        <h6 class="mb-1">Ngân hàng</h6>
-                                        <p class="mb-0 fw-bold">${contractData.th_ngan_hang}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="d-flex align-items-center p-3 bg-light rounded-3">
-                                    <i class="bi bi-hash text-warning fs-3 me-3"></i>
-                                    <div>
-                                        <h6 class="mb-1">Số tài khoản</h6>
-                                        <p class="mb-0 fw-bold text-primary">${contractData.th_so_tai_khoan}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="d-flex align-items-center p-3 bg-light rounded-3">
-                                    <i class="bi bi-person text-warning fs-3 me-3"></i>
-                                    <div>
-                                        <h6 class="mb-1">Chủ tài khoản</h6>
-                                        <p class="mb-0 fw-bold">${contractData.th_chu_tai_khoan}</p>
+                            
+                            <!-- Hình ảnh CCCD -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class="fw-bold text-dark border-bottom border-dark pb-1 mb-3">GIẤY TỜ TÙY THÂN (CCCD/CMND):</h6>
+                                    <div class="row g-3">
+                                        <div class="col-6">
+                                            <div class="text-center">
+                                                <div class="border border-2 border-dark p-2" style="min-height: 180px; min-width: 120px; display: flex; align-items: center; justify-content: center;">
+                                                    <img src="${contractData.th_anh_mat_truoc}" alt="CCCD mặt trước người thừa hưởng" 
+                                                         class="img-fluid" style="max-height: 150px; width: auto;"
+                                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                                    <div class="d-none text-center flex-column align-items-center justify-content-center" style="min-height: 150px;">
+                                                        <i class="bi bi-card-image fs-1 text-dark mb-2"></i>
+                                                        <p class="mb-0 small fw-bold">MẶT TRƯỚC</p>
+                                                    </div>
+                                                </div>
+                                                <p class="small mt-2 mb-0 fw-bold">MẶT TRƯỚC</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="text-center">
+                                                <div class="border border-2 border-dark p-2" style="min-height: 180px; min-width: 120px; display: flex; align-items: center; justify-content: center;">
+                                                    <img src="${contractData.th_anh_mat_sau}" alt="CCCD mặt sau người thừa hưởng" 
+                                                         class="img-fluid" style="max-height: 150px; width: auto;"
+                                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                                    <div class="d-none text-center flex-column align-items-center justify-content-center" style="min-height: 150px;">
+                                                        <i class="bi bi-card-image fs-1 text-dark mb-2"></i>
+                                                        <p class="mb-0 small fw-bold">MẶT SAU</p>
+                                                    </div>
+                                                </div>
+                                                <p class="small mt-2 mb-0 fw-bold">MẶT SAU</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -704,28 +600,123 @@ function loadContractDetail(contractId) {
                 </div>
             </div>
         </div>
+                    
+        <!-- THÔNG TIN TÀI CHÍNH VÀ THỜI GIAN HỢP ĐỒNG -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border border-dark">
+                    <div class="card-header bg-dark text-white py-3">
+                        <h5 class="card-title mb-0 text-center fw-bold">
+                            <i class="bi bi-cash-stack me-2"></i>THÔNG TIN TÀI CHÍNH VÀ THỜI GIAN HỢP ĐỒNG
+                        </h5>
+                        <p class="mb-0 text-center small">CHI PHÍ, SỐ TIỀN VÀ THỜI HẠN HỢP ĐỒNG</p>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-4">
+                            <!-- Thông tin tài chính -->
+                            <div class="col-lg-6">
+                                <h6 class="fw-bold text-dark mb-3">THÔNG TIN TÀI CHÍNH:</h6>
+                                <form>
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label class="form-label fw-normal text-dark">SỐ TIỀN BẢO HIỂM:</label>
+                                            <input type="text" class="form-control text-success" value="${new Intl.NumberFormat('vi-VN').format(contractData.so_tien_mua)} VNĐ" disabled>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label fw-normal text-dark">PHÍ BẢO HIỂM HÀNG NĂM:</label>
+                                            <input type="text" class="form-control text-primary" value="${new Intl.NumberFormat('vi-VN').format(contractData.so_tien_dong_hang_nam)} VNĐ" disabled>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-normal text-dark">THỜI GIAN ĐÓNG PHÍ:</label>
+                                            <input type="text" class="form-control" value="${contractData.thoi_gian_mua} THÁNG" disabled>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-normal text-dark">PHƯƠNG THỨC THANH TOÁN:</label>
+                                            <input type="text" class="form-control" value="Chuyển khoản ngân hàng" disabled>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <!-- Thông tin thời gian -->
+                            <div class="col-lg-6">
+                                <h6 class="fw-bold text-dark mb-3">THÔNG TIN THỜI GIAN:</h6>
+                                <form>
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label class="form-label fw-normal text-dark">NGÀY CẤP HỢP ĐỒNG:</label>
+                                            <input type="text" class="form-control" value="${new Date(contractData.ngay_cap_hop_dong).toLocaleDateString('vi-VN')}" disabled>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label fw-normal text-dark">NGÀY ĐÁO HẠN:</label>
+                                            <input type="text" class="form-control" value="${new Date(contractData.ngay_dao_han).toLocaleDateString('vi-VN')}" disabled>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-normal text-dark">THỜI HẠN HỢP ĐỒNG:</label>
+                                            <input type="text" class="form-control" value="${contractData.thoi_gian_mua} THÁNG" disabled>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-normal text-dark">TRẠNG THÁI HỢP ĐỒNG:</label>
+                                            <input type="text" class="form-control ${contractData.trang_thai == 1 ? 'text-success' : 'text-danger'}" value="${contractData.trang_thai == 1 ? 'ĐANG HIỆU LỰC' : 'HẾT HẠN'}" disabled>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <!-- Ghi chú -->
+
+        <!-- GHI CHÚ VÀ ĐIỀU KHOẢN BỔ SUNG -->
         <div class="row">
             <div class="col-12">
-                <div class="card border-0 shadow-lg">
-                    <div class="card-header bg-gradient bg-light py-4">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h5 class="card-title mb-1 text-dark">
-                                    <i class="bi bi-chat-text me-2"></i>Ghi chú
-                                </h5>
-                                <small class="text-muted">Thông tin bổ sung về hợp đồng</small>
-                            </div>
-                            <div class="col-4 text-end">
-                                <i class="bi bi-sticky fs-1 text-muted opacity-50"></i>
-                            </div>
-                        </div>
+                <div class="card border border-dark">
+                    <div class="card-header bg-dark text-white py-3">
+                        <h5 class="card-title mb-0 text-center fw-bold">
+                            <i class="bi bi-chat-text me-2"></i>GHI CHÚ VÀ ĐIỀU KHOẢN BỔ SUNG
+                        </h5>
+                        <p class="mb-0 text-center small">THÔNG TIN BỔ SUNG VỀ HỢP ĐỒNG BẢO HIỂM</p>
                     </div>
                     <div class="card-body p-4">
-                        <div class="p-4 bg-light rounded-3">
-                            <p class="mb-0 text-muted fs-6">${contractData.ghi_chu}</p>
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-dark mb-3">GHI CHÚ HỢP ĐỒNG:</h6>
+                            <form>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <textarea class="form-control" rows="3" disabled>${contractData.ghi_chu}</textarea>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
+                        
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-dark mb-3">ĐIỀU KHOẢN QUAN TRỌNG:</h6>
+                            <form>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <textarea class="form-control" rows="4" disabled>• Hợp đồng có hiệu lực từ ngày ký và thanh toán phí bảo hiểm đầu tiên
+• Người mua bảo hiểm có trách nhiệm đóng phí đúng hạn theo quy định
+• Người thừa hưởng sẽ nhận quyền lợi bảo hiểm khi có sự kiện bảo hiểm xảy ra
+• Mọi thay đổi thông tin phải được thông báo bằng văn bản cho công ty bảo hiểm</textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-normal text-dark">NGÀY LẬP HỢP ĐỒNG:</label>
+                                    <input type="text" class="form-control" value="${new Date().toLocaleDateString('vi-VN')}" disabled>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-normal text-dark">NƠI LẬP HỢP ĐỒNG:</label>
+                                    <input type="text" class="form-control" value="TP. Hồ Chí Minh, Việt Nam" disabled>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -792,4 +783,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
 

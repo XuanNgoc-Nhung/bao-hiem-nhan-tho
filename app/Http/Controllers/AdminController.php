@@ -72,7 +72,7 @@ class AdminController extends Controller
     }
     public function hopDong(Request $request)
     {
-        $hopDong = HopDong::orderBy('created_at', 'desc')->paginate(20);
+        $hopDong = HopDong::orderBy('created_at', 'desc')->with('congTy')->paginate(20);
         $congTy = CongTy::all();
         return view('admin.hop-dong', compact('hopDong', 'congTy'));
     }

@@ -5,8 +5,8 @@
                 <div _ngcontent-c4="" class="row">
                     <div _ngcontent-c4="" class="col-2 col-sm-2 col-md-6">
                         <div _ngcontent-c4="" class="left"><a _ngcontent-c4="" href="#/index"><img _ngcontent-c4=""
-                                    alt="logo" src="../../../../assets/images/logo_text.svg"><img _ngcontent-c4=""
-                                    alt="logo_white" src="../../../../assets/images/logo_white .svg"></a>
+                                    alt="logo" src="{{ asset('assets/images/logo_text.svg') }}"><img _ngcontent-c4=""
+                                    alt="logo_white" src="{{ asset('assets/images/logo_white.svg') }}"></a>
                         </div>
                     </div>
                     <div _ngcontent-c4="" class="col-10 col-sm-10 col-md-6">
