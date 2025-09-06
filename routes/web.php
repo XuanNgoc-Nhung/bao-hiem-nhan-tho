@@ -14,6 +14,7 @@ Route::get('chon-dang-ky.html',[UserController::class, 'chonDangKy'])->name('cho
 Route::post('check-login',[UserController::class, 'checkLogin'])->name('check-login');
 Route::get('check-cccd.html',[UserController::class, 'checkCccd'])->name('user.check-cccd');
 Route::get('register.html',[UserController::class, 'register'])->name('user.register');
+Route::post('register',[UserController::class, 'store'])->name('user.register.store');
 Route::post('verify-cccd',[UserController::class, 'verifyCccd'])->name('user.verify-cccd');
 //Check đăng nhậpp
 Route::middleware(['CheckLogin'])->group(function () {
