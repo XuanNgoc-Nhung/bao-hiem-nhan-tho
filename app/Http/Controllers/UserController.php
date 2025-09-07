@@ -9,6 +9,7 @@ use App\Models\HopDong;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use App\Models\LichSu;
 class UserController extends Controller
 {
     public function checkCccd(Request $request)
@@ -44,6 +45,13 @@ class UserController extends Controller
 
         if ($user) {
             Log::info('Đăng nhập thành công.');
+            
+            $lichSu = new LichSu();
+            $lichSu->nguoi_dung = 'Người dùng' . $request->so_cccd;
+            $lichSu->hanh_dong = 'Đăng nhập';
+            $lichSu->chi_tiet = 'Đăng nhập hệ thống!';
+            $lichSu->thoi_gian = now();
+            $lichSu->save();
             $res = [
                 'data'=>$user,
                 'success' => true,

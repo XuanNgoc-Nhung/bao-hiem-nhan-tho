@@ -193,12 +193,6 @@
             </div>
             <div class="modal-footer bg-light d-flex justify-content-end">
                 <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-success" onclick="printContract()">
-                        <i class="bi bi-printer me-2"></i><span class="d-none d-sm-inline">In hợp đồng</span><span class="d-inline d-sm-none">In</span>
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="exportContract()">
-                        <i class="bi bi-download me-2"></i><span class="d-none d-sm-inline">Xuất PDF</span><span class="d-inline d-sm-none">PDF</span>
-                    </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle me-2"></i>Đóng
                     </button>
