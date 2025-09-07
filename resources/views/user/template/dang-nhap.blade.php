@@ -21,6 +21,72 @@
                                     </div>
                                 </div>
                                 <div _ngcontent-c15="" class="modal-body">
+
+                                    <mat-form-field _ngcontent-c15=""
+                                        class="mat-form-field ng-tns-c17-6 mat-primary mat-form-field-type-mat-input mat-form-field-appearance-legacy mat-form-field-can-float mat-form-field-hide-placeholder ng-untouched ng-pristine ng-invalid"
+                                        floatplaceholder="never">
+                                        <div class="mat-form-field-wrapper">
+                                            <div class="mat-form-field-flex">
+                                                <!---->
+                                                <!---->
+                                                <div class="mat-form-field-prefix ng-tns-c17-6 ng-star-inserted"
+                                                    style=""><span _ngcontent-c15="" matprefix="">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                            fill="currentColor" class="bi bi-person-bounding-box"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5" />
+                                                            <path
+                                                                d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                                        </svg>&nbsp;</span>
+                                                </div>
+                                                <div class="mat-form-field-infix"><input _ngcontent-c15=""
+                                                        class="mat-input-element mat-form-field-autofill-control cdk-text-field-autofill-monitored ng-untouched ng-pristine ng-invalid"
+                                                        formcontrolname="text" matinput="" placeholder="Nhập số cccd"
+                                                        type="text" id="mat-input-4" aria-invalid="false"
+                                                        aria-required="false"><span
+                                                        class="mat-form-field-label-wrapper">
+                                                        <!----><label
+                                                            class="mat-form-field-label ng-tns-c17-6 mat-empty mat-form-field-empty ng-star-inserted"
+                                                            id="mat-form-field-label-9" for="mat-input-4"
+                                                            aria-owns="mat-input-4" style="">
+                                                            <!---->
+                                                            <!---->Nhập số cccd
+                                                            <!---->
+                                                            <!----></label></span></div>
+                                                <!---->
+                                                {{-- <div class="mat-form-field-suffix ng-tns-c17-6 ng-star-inserted"
+                                                    style="">
+                                                    <button _ngcontent-c15="" aria-label="Show password"
+                                                        mat-button="" mat-icon-button="" matsuffix=""
+                                                        class="mat-button mat-icon-button"><span
+                                                            class="mat-button-wrapper">
+                                                            <!---->
+                                                            <mat-icon _ngcontent-c15=""
+                                                                class="mat-icon material-icons ng-star-inserted"
+                                                                role="img" aria-hidden="true">visibility</mat-icon>
+                                                            <!---->
+                                                        </span>
+                                                        <div class="mat-button-ripple mat-ripple mat-button-ripple-round"
+                                                            matripple=""></div>
+                                                        <div class="mat-button-focus-overlay"></div>
+                                                    </button>
+                                                </div> --}}
+                                            </div>
+                                            <!---->
+                                            <div class="mat-form-field-underline ng-tns-c17-6 ng-star-inserted"
+                                                style=""><span class="mat-form-field-ripple"></span></div>
+                                            <div class="mat-form-field-subscript-wrapper">
+                                                <!---->
+                                                <!---->
+                                                <div class="mat-form-field-hint-wrapper ng-tns-c17-6 ng-trigger ng-trigger-transitionMessages ng-star-inserted"
+                                                    style="opacity: 1; transform: translateY(0%);">
+                                                    <!---->
+                                                    <div class="mat-form-field-hint-spacer"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-form-field>
                                     <mat-form-field _ngcontent-c15=""
                                         class="mat-form-field ng-tns-c17-5 mat-primary mat-form-field-type-mat-input mat-form-field-appearance-legacy mat-form-field-can-float mat-form-field-hide-placeholder ng-untouched ng-pristine ng-invalid"
                                         floatplaceholder="never">
@@ -29,10 +95,16 @@
                                                 <!---->
                                                 <!---->
                                                 <div class="mat-form-field-prefix ng-tns-c17-5 ng-star-inserted"
-                                                    style=""><span _ngcontent-c15="" matprefix=""><img _ngcontent-c15=""
-                                                            alt="username" class="icon"
-                                                            src="../../../assets/images/user_name.svg">
-                                                        &nbsp;</span></div>
+                                                    style=""><span _ngcontent-c15="" matprefix="">
+
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                            fill="currentColor" class="bi bi-file-earmark-break"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M14 4.5V9h-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v7H2V2a2 2 0 0 1 2-2h5.5zM13 12h1v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2h1v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1zM.5 10a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1z" />
+                                                        </svg>
+                                                        &nbsp;</span>
+                                                </div>
                                                 <div class="mat-form-field-infix"><input _ngcontent-c15=""
                                                         class="mat-input-element mat-form-field-autofill-control cdk-text-field-autofill-monitored ng-untouched ng-pristine ng-invalid"
                                                         formcontrolname="username" matinput="" type="text"
@@ -56,63 +128,6 @@
                                                 <!---->
                                                 <!---->
                                                 <div class="mat-form-field-hint-wrapper ng-tns-c17-5 ng-trigger ng-trigger-transitionMessages ng-star-inserted"
-                                                    style="opacity: 1; transform: translateY(0%);">
-                                                    <!---->
-                                                    <div class="mat-form-field-hint-spacer"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </mat-form-field>
-                                    <mat-form-field _ngcontent-c15=""
-                                        class="mat-form-field ng-tns-c17-6 mat-primary mat-form-field-type-mat-input mat-form-field-appearance-legacy mat-form-field-can-float mat-form-field-hide-placeholder ng-untouched ng-pristine ng-invalid"
-                                        floatplaceholder="never">
-                                        <div class="mat-form-field-wrapper">
-                                            <div class="mat-form-field-flex">
-                                                <!---->
-                                                <!---->
-                                                <div class="mat-form-field-prefix ng-tns-c17-6 ng-star-inserted"
-                                                    style=""><span _ngcontent-c15="" matprefix=""><img _ngcontent-c15=""
-                                                            alt="password" class="icon"
-                                                            src="../../../assets/images/pass.svg"> &nbsp;</span>
-                                                </div>
-                                                <div class="mat-form-field-infix"><input _ngcontent-c15=""
-                                                        class="mat-input-element mat-form-field-autofill-control cdk-text-field-autofill-monitored ng-untouched ng-pristine ng-invalid"
-                                                        formcontrolname="password" matinput="" placeholder="Mật khẩu"
-                                                        type="password" id="mat-input-4" aria-invalid="false"
-                                                        aria-required="false"><span
-                                                        class="mat-form-field-label-wrapper">
-                                                        <!----><label
-                                                            class="mat-form-field-label ng-tns-c17-6 mat-empty mat-form-field-empty ng-star-inserted"
-                                                            id="mat-form-field-label-9" for="mat-input-4"
-                                                            aria-owns="mat-input-4" style="">
-                                                            <!---->
-                                                            <!---->Số cccd
-                                                            <!---->
-                                                            <!----></label></span></div>
-                                                <!---->
-                                                <div class="mat-form-field-suffix ng-tns-c17-6 ng-star-inserted"
-                                                    style=""><button _ngcontent-c15="" aria-label="Show password"
-                                                        mat-button="" mat-icon-button="" matsuffix=""
-                                                        class="mat-button mat-icon-button"><span
-                                                            class="mat-button-wrapper">
-                                                            <!---->
-                                                            <mat-icon _ngcontent-c15=""
-                                                                class="mat-icon material-icons ng-star-inserted"
-                                                                role="img" aria-hidden="true">visibility</mat-icon>
-                                                            <!---->
-                                                        </span>
-                                                        <div class="mat-button-ripple mat-ripple mat-button-ripple-round"
-                                                            matripple=""></div>
-                                                        <div class="mat-button-focus-overlay"></div>
-                                                    </button></div>
-                                            </div>
-                                            <!---->
-                                            <div class="mat-form-field-underline ng-tns-c17-6 ng-star-inserted"
-                                                style=""><span class="mat-form-field-ripple"></span></div>
-                                            <div class="mat-form-field-subscript-wrapper">
-                                                <!---->
-                                                <!---->
-                                                <div class="mat-form-field-hint-wrapper ng-tns-c17-6 ng-trigger ng-trigger-transitionMessages ng-star-inserted"
                                                     style="opacity: 1; transform: translateY(0%);">
                                                     <!---->
                                                     <div class="mat-form-field-hint-spacer"></div>
@@ -308,13 +323,14 @@
 
 
                 // Kiểm tra dữ liệu
-                if (!maSoBHXH) {
-                    showToast('error', 'Vui lòng nhập mã số BHXH');
-                    return;
-                }
+                
 
                 if (!soCCCD) {
                     showToast('error', 'Vui lòng nhập số CCCD');
+                    return;
+                }
+                if (!maSoBHXH) {
+                    showToast('error', 'Vui lòng nhập mã số BHXH');
                     return;
                 }
 
@@ -336,9 +352,11 @@
                 axios.post('/check-login', formData)
                     .then(response => {
                         if (response.data.success) {
-                            // showToast('success', 'Đăng nhập thành công');
-                            // Chuyển hướng sau khi đăng nhập thành công
-                            window.location.href = response.data.redirect_url;
+                            // window.location.href = response.data.redirect_url;
+                            showToast('success', response.data.message || 'Đăng nhập thành công');
+                            setTimeout(() => {
+                                window.location.href = response.data.redirect_url;
+                            }, 3000);
                         } else {
                             showToast('error', response.data.message || 'Đăng nhập thất bại');
                         }

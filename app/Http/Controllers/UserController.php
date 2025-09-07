@@ -8,6 +8,7 @@ use App\Models\CongTy;
 use App\Models\HopDong;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 class UserController extends Controller
 {
     public function checkCccd(Request $request)
@@ -24,31 +25,41 @@ class UserController extends Controller
     }
     public function profile(Request $request)
     {
-        return view('user.profile');
+        $user = Session::get('user');
+        return view('user.profile', compact('user'));
     }
     public function checkLogin(Request $request){
         try {
-            $validated = $request->validate([
+            $request->validate([
             'ma_so_bhxh' => ['required', 'string', 'max:20'],
             'so_cccd' => ['required', 'string', 'max:20'],
         ]);
-        $user = User::where('ma_so_bhxh', $validated['ma_so_bhxh'])->where('so_cccd', $validated['so_cccd'])->first();
+        Log::info($request->all());
+        $user = HopDong::where('ma_hop_dong', $request->ma_so_bhxh)->where('cccd', $request->so_cccd)->with('congTy')->first();
+
         if ($user) {
-            return response()->json([
-                'ok' => true,
-                'message' => 'Đăng nhập thành công.'
-            ], 200);
+            Log::info('Đăng nhập thành công.');
+            $res = [
+                'data'=>$user,
+                'success' => true,
+                'message' => 'Đăng nhập thành công.',
+                'redirect_url' => route('profile')
+            ];
+            session()->put('user', (object)$user);
+            return response()->json($res);
         }
-        return response()->json([
-            'ok' => false,
-            'message' => 'Đăng nhập thất bại.'
-        ], 404);
+        Log::info('CCCD hoặc mã hợp đồng không khớp.');
+        $res = [
+            'success' => false,
+            'message' => 'CCCD hoặc mã hợp đồng không khớp.'
+        ];
+        return response()->json($res);
         } catch (\Exception $e) {
             Log::error($e);
-            return response()->json([
-                'ok' => false,
-                'message' => 'Đăng nhập thất bại.'
-            ], 404);
+            $res = [    'success' => false,
+                'message' => 'Có lỗi xảy ra, vui lòng thử lại.'
+            ];
+            return response()->json($res);
         }
     }
     public function index(Request $request)

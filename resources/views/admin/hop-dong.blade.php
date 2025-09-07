@@ -982,6 +982,135 @@ function updateResultCount() {
 .table-responsive::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+/* Modal Image Styles - Responsive và vừa khung */
+#contractDetailModal .img-fluid {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 4px;
+}
+
+/* Logo công ty */
+#contractDetailModal img[alt="Logo công ty"] {
+    max-height: 80px;
+    width: auto;
+    max-width: 100%;
+}
+
+/* Ảnh chân dung người mua và người thừa hưởng */
+#contractDetailModal img[alt="Ảnh chân dung"],
+#contractDetailModal img[alt="Ảnh chân dung người thừa hưởng"] {
+    max-height: 200px;
+    width: auto;
+    max-width: 100%;
+    border-radius: 4px;
+}
+
+/* Ảnh CCCD mặt trước và mặt sau */
+#contractDetailModal img[alt="CCCD mặt trước"],
+#contractDetailModal img[alt="CCCD mặt sau"],
+#contractDetailModal img[alt="CCCD mặt trước người thừa hưởng"],
+#contractDetailModal img[alt="CCCD mặt sau người thừa hưởng"] {
+    max-height: 150px;
+    width: auto;
+    max-width: 100%;
+}
+
+/* Container cho hình ảnh - đảm bảo hình ảnh vừa khung */
+#contractDetailModal .border.border-2.border-dark {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+}
+
+/* Fallback khi không có hình ảnh */
+#contractDetailModal .d-none {
+    color: #ffffff;
+}
+
+/* Responsive cho mobile */
+@media (max-width: 768px) {
+    /* Logo công ty mobile */
+    #contractDetailModal img[alt="Logo công ty"] {
+        max-height: 60px;
+    }
+    
+    /* Ảnh chân dung mobile */
+    #contractDetailModal img[alt="Ảnh chân dung"],
+    #contractDetailModal img[alt="Ảnh chân dung người thừa hưởng"] {
+        max-height: 150px;
+    }
+    
+    /* Ảnh CCCD mobile */
+    #contractDetailModal img[alt="CCCD mặt trước"],
+    #contractDetailModal img[alt="CCCD mặt sau"],
+    #contractDetailModal img[alt="CCCD mặt trước người thừa hưởng"],
+    #contractDetailModal img[alt="CCCD mặt sau người thừa hưởng"] {
+        max-height: 120px;
+    }
+    
+    /* Container mobile */
+    #contractDetailModal .border.border-2.border-dark {
+        min-height: 120px;
+        min-width: 80px;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Logo công ty mobile nhỏ */
+    #contractDetailModal img[alt="Logo công ty"] {
+        max-height: 50px;
+    }
+    
+    /* Ảnh chân dung mobile nhỏ */
+    #contractDetailModal img[alt="Ảnh chân dung"],
+    #contractDetailModal img[alt="Ảnh chân dung người thừa hưởng"] {
+        max-height: 120px;
+    }
+    
+    /* Ảnh CCCD mobile nhỏ */
+    #contractDetailModal img[alt="CCCD mặt trước"],
+    #contractDetailModal img[alt="CCCD mặt sau"],
+    #contractDetailModal img[alt="CCCD mặt trước người thừa hưởng"],
+    #contractDetailModal img[alt="CCCD mặt sau người thừa hưởng"] {
+        max-height: 100px;
+    }
+    
+    /* Container mobile nhỏ */
+    #contractDetailModal .border.border-2.border-dark {
+        min-height: 100px;
+        min-width: 70px;
+    }
+}
+
+/* Đảm bảo hình ảnh không bị méo */
+#contractDetailModal img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: optimize-contrast;
+}
+
+/* Hover effect cho hình ảnh */
+#contractDetailModal img:hover {
+    transform: scale(1.02);
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+/* Loading state cho hình ảnh */
+#contractDetailModal img[src=""] {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#contractDetailModal img:not([src=""]) {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
 </style>
 
 
