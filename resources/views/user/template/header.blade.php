@@ -50,7 +50,7 @@
                                     </div>
                                     <ul class="dropdown-menu" aria-labelledby="profileDropdown">
                                         <li><a class="dropdown-item" href="{{ route('profile') }}">
-                                                <i class="material-icons">person</i> Cá nhân
+                                                <i class="material-icons">person</i> Cá nhân 1
                                             </a></li>
                                         @if(Session::get('user')->role == 1)
                                         <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">

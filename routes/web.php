@@ -56,10 +56,12 @@ Route::group(['prefix' => 'admin','middleware' => 'CheckAdmin'], function () {
     Route::delete('/reports/{id}', [ReportController::class, 'destroy'])->name('admin.reports.delete');
     Route::get('reports', function () {})->name('admin.reports');
     Route::get('settings', function () {})->name('admin.settings');
-    Route::post('logout', function () {})->name('logout');
     // History
     Route::get('/history', [AdminController::class, 'history'])->name('admin.history');
 });
+
+
+    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 Route::fallback(function () {
     return response()->view('errors.404');
 });

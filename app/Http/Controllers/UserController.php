@@ -23,6 +23,11 @@ class UserController extends Controller
         }
         return redirect()->route('chon-dang-ky');
     }
+    public function logout(Request $request)
+    {
+        $request->session()->forget('user');
+        return redirect()->route('user.index');
+    }
     public function profile(Request $request)
     {
         $user = Session::get('user');
