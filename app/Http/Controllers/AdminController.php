@@ -168,4 +168,44 @@ class AdminController extends Controller
             return response()->json($res, 500);
         }
     }
+
+    public function deleteHopDong(Request $request, $id)
+    {
+        try {
+            $hopDong = HopDong::find($id);
+            if (!$hopDong) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Hợp đồng không tồn tại!'
+                ], 404);
+            }
+
+            // Lưu thông tin hợp đồng trước khi xóa để ghi log
+            $maHopDong = $hopDong->ma_hop_dong;
+            $hoTen = $hopDong->ho_ten;
+
+            // Xóa hợp đồng
+            $hopDong->delete();
+
+            // Ghi log lịch sử
+            $lichSu = new LichSu();
+            $lichSu->nguoi_dung = session('user')->name ?? 'admin';
+            $lichSu->hanh_dong = 'Xóa hợp đồng';
+            $lichSu->chi_tiet = "Xóa hợp đồng: {$maHopDong} - Khách hàng: {$hoTen}";
+            $lichSu->thoi_gian = now();
+            $lichSu->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Xóa hợp đồng thành công!'
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('deleteHopDong error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi xóa hợp đồng!'
+            ], 500);
+        }
+    }
 }

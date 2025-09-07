@@ -72,14 +72,11 @@
                 <thead>
                     <tr>
                         <th class="text-center">STT</th>
-                        <th>Mã hợp đồng</th>
+                        <th style="min-width: 150px;">Mã hợp đồng</th>
                         <th>Khách hàng</th>
                         <th>Công ty</th>
-                        <th>Loại hợp đồng</th>
-                        <th>Trạng thái</th>
-                        <th>Phí bảo hiểm</th>
-                        <th>Ngày hiệu lực</th>
-                        <th>Thao tác</th>
+                        <th>Hợp đồng</th>
+                        <th class="text-center">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -93,42 +90,141 @@
                             <span class="badge bg-primary fs-6">{{ $hd->ma_hop_dong }}</span>
                         </td>
                         <td>
-                            <div class="d-flex align-items-center">
-                                <div class="user-avatar me-2 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-size: 0.8rem;">
-                                    {{ substr($hd->ho_ten, 0, 1) }}
+                            <div class="d-flex align-items-start">
+                                <div class="user-avatar" style="width: 100px; height: 100px; font-size: 0.8rem;">
+                                   <img style="width: 80px; height: 100px" src="{{ $hd->anh_mat_truoc }}" alt="Ảnh chân dung" class="">      
                                 </div>
-                            <div>
-                                    <div class="fw-bold text-dark">{{ $hd->ho_ten }}</div>
-                                <small class="text-muted">{{ $hd->email }}</small>
+                                <div class="customer-info flex-grow-1">
+                                    <div class="fw-bold text-dark mb-1">{{ $hd->ho_ten }}</div>
+                                    <div class="customer-details">
+                                        <div class="row g-1">
+                                            @if($hd->cccd)
+                                            <div class="col-12">
+                                                <small class="text-muted d-flex align-items-center">
+                                                    <i class="bi bi-card-text me-1"></i>
+                                                    CCCD: {{ $hd->cccd }}
+                                                </small>
+                                            </div>
+                                            @endif
+                                            @if($hd->ngay_sinh)
+                                            <div class="col-12">
+                                                <small class="text-muted d-flex align-items-center">
+                                                    <i class="bi bi-calendar3 me-1"></i>
+                                                    Sinh: {{ $hd->ngay_sinh }}
+                                                </small>
+                                            </div>
+                                            @endif
+                                            @if($hd->so_dien_thoai)
+                                            <div class="col-12">
+                                                <small class="text-muted d-flex align-items-center">
+                                                    <i class="bi bi-telephone me-1"></i>
+                                                    {{ $hd->so_dien_thoai }}
+                                                </small>
+                                            </div>
+                                            @endif
+                                            @if($hd->gioi_tinh)
+                                            <div class="col-12">
+                                                <small class="text-muted d-flex align-items-center">
+                                                    <i class="bi bi-person me-1"></i>
+                                                    {{ $hd->gioi_tinh }}
+                                                </small>
+                                            </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
                         </td>
                         <td>
-                            <span class="badge bg-info fs-6">{{ $hd->cong_ty_id }}</span>
+                            <div class="d-flex align-items-center">
+                                @if($hd->congTy && $hd->congTy->logo)
+                                    <img src="{{ $hd->congTy->logo }}" alt="Logo {{ $hd->congTy->ten }}" 
+                                         class="company-logo me-2">
+                                @else
+                                    <div class="me-2 bg-info text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                         style="width: 24px; height: 24px; font-size: 0.7rem;">
+                                        <i class="bi bi-building"></i>
+                                    </div>
+                                @endif
+                                <div class="company-info">
+                                    <div class="company-name">{{ $hd->congTy ? $hd->congTy->ten : 'N/A' }}</div>
+                                    @if($hd->congTy && $hd->congTy->dia_chi)
+                                        <div class="company-address">{{ Str::limit($hd->congTy->dia_chi, 30) }}</div>
+                                    @endif
+                                </div>
+                            </div>
                         </td>
                         <td>
-                            <span class="badge bg-secondary fs-6">{{ $hd->loai_hop_dong }}</span>
+                            <div class="contract-info">
+                                <div class="contract-details">
+                                    <div class="row g-1">
+                                        @if($hd->so_tien_mua)
+                                        <div class="col-12">
+                                            <small class="text-dark d-flex align-items-center">
+                                                <i class="bi bi-cash-stack me-1"></i>
+                                                <span class="fw-bold text-success">{{ number_format($hd->so_tien_mua, 0, ',', '.') }} VNĐ</span>
+                                            </small>
+                                        </div>
+                                        @endif
+                                        @if($hd->so_tien_dong_hang_nam)
+                                        <div class="col-12">
+                                            <small class="text-dark d-flex align-items-center">
+                                                <i class="bi bi-currency-dollar me-1"></i>
+                                                Phí hàng năm: {{ number_format($hd->so_tien_dong_hang_nam, 0, ',', '.') }} VNĐ
+                                            </small>
+                                        </div>
+                                        @endif
+                                       
+                                        @if($hd->thoi_gian_mua)
+                                        <div class="col-12">
+                                            <small class="text-dark d-flex align-items-center">
+                                                <i class="bi bi-clock me-1"></i>
+                                                Thời hạn: {{ $hd->thoi_gian_mua }}
+                                            </small>
+                                        </div>
+                                        @endif
+                                        @if($hd->ngay_cap_hop_dong)
+                                        <div class="col-12">
+                                            <small class="text-dark d-flex align-items-center">
+                                                <i class="bi bi-calendar-event me-1"></i>
+                                                Hiệu lực: {{ \Carbon\Carbon::parse($hd->ngay_cap_hop_dong)->format('d/m/Y') }}
+                                            </small>
+                                        </div>
+                                        @endif
+                                        @if($hd->ngay_dao_han)
+                                        <div class="col-12">
+                                            <small class="text-dark d-flex align-items-center">
+                                                <i class="bi bi-calendar-check me-1"></i>
+                                                Đáo hạn: {{ \Carbon\Carbon::parse($hd->ngay_dao_han)->format('d/m/Y') }}
+                                            </small>
+                                        </div>
+                                        @endif
+                                        @if($hd->chu_ky_dong_phi)
+                                        <div class="col-12">
+                                            <small class="text-dark d-flex align-items-center">
+                                                <i class="bi bi-arrow-repeat me-1"></i>
+                                                Chu kỳ: {{ $hd->chu_ky_dong_phi }}
+                                            </small>
+                                        </div>
+                                        @endif
+                                        @if($hd->phuong_thuc_thanh_toan)
+                                        <div class="col-12">
+                                            <small class="text-dark d-flex align-items-center">
+                                                <i class="bi bi-credit-card me-1"></i>
+                                                TT: {{ $hd->phuong_thuc_thanh_toan }}
+                                            </small>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
                         </td>
-                        <td>
-                            <span class="badge {{ $hd->trang_thai == 1 ? 'bg-success' : 'bg-danger' }} fs-6">
-                                {{ $hd->trang_thai == 1 ? 'Đang hiệu lực' : 'Hết hạn' }}
-                            </span>
-                        </td>
-                        <td>
-                            <span class="fw-bold text-success">{{ number_format($hd->so_tien_mua, 0, ',', '.') }} VNĐ</span>
-                        </td>
-                        <td>
-                            <span class="text-muted">{{ $hd->ngay_cap_hop_dong }}</span>
-                        </td>
-                        <td>
+                        <td class="text-center">
                             <div class="btn-group btn-group-sm">
                                 <button class="btn btn-outline-primary" title="Xem chi tiết" onclick="viewContractDetail({{ $hd}})">
                                     <i class="bi bi-eye"></i>
                                 </button>
-                                <button class="btn btn-outline-warning" title="Chỉnh sửa">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button class="btn btn-outline-danger" title="Xóa">
+                                <button class="btn btn-outline-danger" title="Xóa" onclick="deleteContract({{ $hd->id }}, '{{ $hd->ma_hop_dong }}')">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </div>
@@ -137,7 +233,7 @@
                     @endforeach
                     @else
                     <tr>
-                        <td colspan="9" class="text-center py-4">
+                        <td colspan="6" class="text-center py-4">
                             <div class="text-muted">
                                 <i class="bi bi-inbox fs-1 d-block mb-2"></i>
                                 Không có dữ liệu hợp đồng
@@ -147,24 +243,8 @@
                     @endif
                 </tbody>
             </table>
-            {{ $hopDong->links(app()->getLocale() == 'vi' ? 'pagination::bootstrap-5' : 'pagination::bootstrap-4') }}
-            </table>
+            {!! $hopDong->links(app()->getLocale() == 'vi' ? 'pagination::bootstrap-5' : 'pagination::bootstrap-4') !!}
         </div>
-        
-        <!-- Pagination -->
-        <nav aria-label="Page navigation" class="mt-4">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Trước</a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Sau</a>
-                </li>
-            </ul>
-        </nav>
     </div>
 </div>
 
@@ -197,6 +277,41 @@
                         <i class="bi bi-x-circle me-2"></i>Đóng
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteContractModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    Xác nhận xóa hợp đồng
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="bi bi-trash fs-1 text-danger"></i>
+                </div>
+                <p class="text-center mb-3">
+                    Bạn có chắc chắn muốn xóa hợp đồng <strong id="deleteContractCode"></strong>?
+                </p>
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <strong>Cảnh báo:</strong> Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan đến hợp đồng sẽ bị xóa vĩnh viễn.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i>Hủy
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                    <i class="bi bi-trash me-2"></i>Xóa hợp đồng
+                </button>
             </div>
         </div>
     </div>
@@ -722,7 +837,7 @@ async function loadContractDetail(data) {
 function updateContractData(element, data) {
     // Cập nhật thông tin cơ bản
     element.querySelector('#contractCode').textContent = data.ma_hop_dong;
-    element.querySelector('#contractCompany').textContent = data.cong_ty.ten;
+    element.querySelector('#contractCompany').textContent = data.cong_ty ? data.cong_ty.ten : 'N/A';
     element.querySelector('#contractDate').textContent = new Date(data.ngay_cap_hop_dong).toLocaleDateString('vi-VN');
     
     // Cập nhật trạng thái
@@ -740,12 +855,32 @@ function updateContractData(element, data) {
         statusText.className = 'form-control text-danger';
     }
     // Cập nhật thông tin công ty
-    element.querySelector('#contractCompany').value = data.cong_ty;
-    element.querySelector('#contractTaxCode').value = data.cong_ty.ma_so_thue;
-    element.querySelector('#contractAddress').value = data.cong_ty.dia_chi;
-    element.querySelector('#contractPhone').value = data.cong_ty.so_dien_thoai;
-    element.querySelector('#contractWebsite').value = data.cong_ty.website;
-    element.querySelector('#contractEmail').value = data.cong_ty.email;
+    if (data.cong_ty) {
+        element.querySelector('#contractCompany').value = data.cong_ty.ten || 'N/A';
+        element.querySelector('#contractTaxCode').value = data.cong_ty.ma_so_thue || 'N/A';
+        element.querySelector('#contractAddress').value = data.cong_ty.dia_chi || 'N/A';
+        element.querySelector('#contractPhone').value = data.cong_ty.so_dien_thoai || 'N/A';
+        element.querySelector('#contractWebsite').value = data.cong_ty.website || 'N/A';
+        element.querySelector('#contractEmail').value = data.cong_ty.email || 'N/A';
+        
+        // Cập nhật logo công ty
+        const logoImg = element.querySelector('img[alt="Logo công ty"]');
+        if (data.cong_ty.logo) {
+            logoImg.src = data.cong_ty.logo;
+            logoImg.style.display = 'block';
+            logoImg.nextElementSibling.style.display = 'none';
+        } else {
+            logoImg.style.display = 'none';
+            logoImg.nextElementSibling.style.display = 'flex';
+        }
+    } else {
+        element.querySelector('#contractCompany').value = 'N/A';
+        element.querySelector('#contractTaxCode').value = 'N/A';
+        element.querySelector('#contractAddress').value = 'N/A';
+        element.querySelector('#contractPhone').value = 'N/A';
+        element.querySelector('#contractWebsite').value = 'N/A';
+        element.querySelector('#contractEmail').value = 'N/A';
+    }
     // Cập nhật thông tin người mua
     element.querySelector('#buyerName').value = data.ho_ten;
     element.querySelector('#buyerGender').value = data.gioi_tinh;
@@ -861,9 +996,216 @@ function updateResultCount() {
     
     resultCountElement.textContent = `Hiển thị ${visibleRows} kết quả`;
 }
+
+// Hàm xóa hợp đồng
+function deleteContract(contractId, contractCode) {
+    // Hiển thị mã hợp đồng trong modal
+    document.getElementById('deleteContractCode').textContent = contractCode;
+    
+    // Lưu ID hợp đồng để sử dụng khi xác nhận
+    document.getElementById('confirmDeleteBtn').setAttribute('data-contract-id', contractId);
+    
+    // Hiển thị modal xác nhận
+    const modal = new bootstrap.Modal(document.getElementById('deleteContractModal'));
+    modal.show();
+}
+
+// Xử lý xác nhận xóa - sử dụng event delegation
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.id === 'confirmDeleteBtn') {
+        const contractId = e.target.getAttribute('data-contract-id');
+        
+        if (!contractId) {
+            showToast('Lỗi: Không tìm thấy ID hợp đồng', 'error');
+            return;
+        }
+        
+        // Hiển thị loading
+        e.target.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Đang xóa...';
+        e.target.disabled = true;
+        
+        // Gửi request xóa bằng axios
+        axios.delete(`/admin/hop-dong/${contractId}`)
+        .then(response => {
+            if (response.data.success) {
+                showToast('Xóa hợp đồng thành công!', 'success');
+                
+                // Đóng modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('deleteContractModal'));
+                modal.hide();
+                
+                // Reload trang hoặc xóa row khỏi bảng
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            } else {
+                showToast(response.data.message || 'Có lỗi xảy ra khi xóa hợp đồng', 'error');
+                resetDeleteButton();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            if (error.response && error.response.data && error.response.data.message) {
+                showToast(error.response.data.message, 'error');
+            } else {
+                showToast('Có lỗi xảy ra khi xóa hợp đồng', 'error');
+            }
+            resetDeleteButton();
+        });
+    }
+});
+
+// Reset nút xóa về trạng thái ban đầu
+function resetDeleteButton() {
+    const btn = document.getElementById('confirmDeleteBtn');
+    btn.innerHTML = '<i class="bi bi-trash me-2"></i>Xóa hợp đồng';
+    btn.disabled = false;
+}
+
+// Hàm hiển thị toast notification
+function showToast(message, type = 'info') {
+    // Tạo toast element
+    const toast = document.createElement('div');
+    toast.className = `toast align-items-center text-white bg-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} border-0`;
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    toast.setAttribute('aria-atomic', 'true');
+    
+    toast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>
+                ${message}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    `;
+    
+    // Thêm vào container toast
+    let toastContainer = document.getElementById('toastContainer');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'toastContainer';
+        toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+        toastContainer.style.zIndex = '9999';
+        document.body.appendChild(toastContainer);
+    }
+    
+    toastContainer.appendChild(toast);
+    
+    // Hiển thị toast
+    const bsToast = new bootstrap.Toast(toast);
+    bsToast.show();
+    
+    // Tự động xóa toast sau khi ẩn
+    toast.addEventListener('hidden.bs.toast', function() {
+        toast.remove();
+    });
+}
 </script>
 
 <style>
+/* Customer info styles */
+.customer-info {
+    min-width: 200px;
+}
+
+.customer-details {
+    margin-top: 2px;
+}
+
+.customer-details .row {
+    margin: 0;
+}
+
+.customer-details .col-12 {
+    padding: 0;
+    margin-bottom: 1px;
+}
+
+.customer-details small {
+    font-size: 0.75rem;
+    line-height: 1.3;
+    color: #000000 !important;
+}
+
+.customer-details i {
+    width: 12px;
+    font-size: 0.7rem;
+}
+
+/* User avatar image styles */
+.user-avatar {
+    margin-right: 15px;
+}
+
+.user-avatar img {
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Contract info styles */
+.contract-info {
+    min-width: 180px;
+}
+
+.contract-details {
+    margin-top: 2px;
+}
+
+.contract-details .row {
+    margin: 0;
+}
+
+.contract-details .col-12 {
+    padding: 0;
+    margin-bottom: 2px;
+}
+
+.contract-details small {
+    font-size: 0.75rem;
+    line-height: 1.3;
+    color: #000000 !important;
+}
+
+.contract-details i {
+    width: 12px;
+    font-size: 0.7rem;
+}
+
+.contract-details .badge {
+    font-size: 0.7rem;
+    padding: 0.25em 0.5em;
+}
+
+/* Company info styles */
+.company-logo {
+    width: 100px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+}
+
+.company-info {
+    min-width: 150px;
+}
+
+.company-name {
+    font-weight: 600;
+    color: #495057;
+    line-height: 1.2;
+}
+
+.company-address {
+    font-size: 0.75rem;
+    color: #6c757d;
+    line-height: 1.2;
+    margin-top: 2px;
+}
+
 /* Responsive table styles */
 @media (max-width: 768px) {
     .table-responsive {
@@ -899,15 +1241,76 @@ function updateResultCount() {
     
     /* User avatar smaller on mobile */
     .user-avatar {
-        width: 30px !important;
-        height: 30px !important;
+        width: 100px !important;
+        height: 100px !important;
         font-size: 0.7rem !important;
+        margin-right: 10px !important;
+    }
+    
+    .user-avatar img {
+        width: 60px !important;
+        height: 80px !important;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
     }
     
     /* Badge responsive */
     .badge {
         font-size: 0.7rem;
         padding: 0.35em 0.5em;
+    }
+    
+    /* Customer info responsive */
+    .customer-info {
+        min-width: 150px;
+    }
+    
+    .customer-details small {
+        font-size: 0.7rem;
+        color: #000000 !important;
+    }
+    
+    .customer-details i {
+        width: 10px;
+        font-size: 0.65rem;
+    }
+    
+    /* Contract info responsive */
+    .contract-info {
+        min-width: 140px;
+    }
+    
+    .contract-details small {
+        font-size: 0.7rem;
+        color: #000000 !important;
+    }
+    
+    .contract-details i {
+        width: 10px;
+        font-size: 0.65rem;
+    }
+    
+    .contract-details .badge {
+        font-size: 0.65rem;
+        padding: 0.2em 0.4em;
+    }
+    
+    /* Company info responsive */
+    .company-info {
+        min-width: 120px;
+    }
+    
+    .company-name {
+        font-size: 0.8rem;
+    }
+    
+    .company-address {
+        font-size: 0.7rem;
+    }
+    
+    .company-logo {
+        width: 32px;
+        height: 32px;
     }
 }
 
@@ -922,11 +1325,55 @@ function updateResultCount() {
         padding: 0.4rem 0.2rem;
     }
     
+    /* Customer info very small screens */
+    .customer-info {
+        min-width: 120px;
+    }
+    
+    .customer-details small {
+        font-size: 0.65rem;
+        color: #000000 !important;
+    }
+    
+    .customer-details i {
+        width: 8px;
+        font-size: 0.6rem;
+    }
+    
+    /* Contract info very small screens */
+    .contract-info {
+        min-width: 120px;
+    }
+    
+    .contract-details small {
+        font-size: 0.65rem;
+        color: #000000 !important;
+    }
+    
+    .contract-details i {
+        width: 8px;
+        font-size: 0.6rem;
+    }
+    
+    .contract-details .badge {
+        font-size: 0.6rem;
+        padding: 0.15em 0.3em;
+    }
+    
+    .user-avatar {
+        margin-right: 8px !important;
+    }
+    
+    .user-avatar img {
+        width: 50px !important;
+        height: 70px !important;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+    }
+    
     /* Hide less important columns on very small screens */
     #hopDongTable th:nth-child(4),
-    #hopDongTable td:nth-child(4),
-    #hopDongTable th:nth-child(5),
-    #hopDongTable td:nth-child(5) {
+    #hopDongTable td:nth-child(4) {
         display: none;
     }
 }

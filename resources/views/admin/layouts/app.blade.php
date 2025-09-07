@@ -410,12 +410,12 @@
                     <span>Quản lý ccccd</span>
                 </a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a href="{{ route('admin.users') }}" class="nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
                     <i class="bi bi-people"></i>
                     <span>Quản lý người dùng</span>
                 </a>
-            </li>
+            </li> --}}
             <li class="nav-item">
                 <a href="{{ route('admin.companies') }}" class="nav-link {{ request()->routeIs('admin.companies*') ? 'active' : '' }}">
                     <i class="bi bi-building"></i>
@@ -428,24 +428,24 @@
                     <span>Quản lý hợp đồng</span>
                 </a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a href="{{ route('admin.reports') }}" class="nav-link {{ request()->routeIs('admin.reports*') ? 'active' : '' }}">
                     <i class="bi bi-graph-up"></i>
                     <span>Báo cáo & Thống kê</span>
                 </a>
-            </li>
+            </li> --}}
             <li class="nav-item">
                 <a href="{{ route('admin.history') }}" class="nav-link {{ request()->routeIs('admin.history*') ? 'active' : '' }}">
                     <i class="bi bi-clock-history"></i>
                     <span>Lịch sử hoạt động</span>
                 </a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a href="{{ route('admin.settings') }}" class="nav-link {{ request()->routeIs('admin.settings*') ? 'active' : '' }}">
                     <i class="bi bi-gear"></i>
                     <span>Cài đặt hệ thống</span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
     </nav>
 
