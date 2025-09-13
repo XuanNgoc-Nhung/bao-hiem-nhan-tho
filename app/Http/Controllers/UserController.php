@@ -183,9 +183,9 @@ class UserController extends Controller
                 'loai_hop_dong' => 'required|string|in:cho_ban_than,cho_nguoi_khac',
                 'cty' => 'required|integer|exists:cong_ty,id',
                 // Validation bắt buộc cho hình ảnh
-                'anh_mat_truoc' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
-                'anh_mat_sau' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
-                'anh_chan_dung' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
+                'anh_mat_truoc' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
+                'anh_mat_sau' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
+                'anh_chan_dung' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
             ];
 
             // Nếu loại hợp đồng là cho người khác, thêm validation cho thông tin người thừa hưởng
@@ -202,9 +202,9 @@ class UserController extends Controller
                     'th_so_tai_khoan' => 'required|string|max:50',
                     'th_chu_tai_khoan' => 'required|string|max:255',
                     // Validation bắt buộc cho hình ảnh người thừa hưởng
-                    'th_anh_mat_truoc' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
-                    'th_anh_mat_sau' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
-                    'th_anh_chan_dung' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
+                    'th_anh_mat_truoc' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
+                    'th_anh_mat_sau' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
+                    'th_anh_chan_dung' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
                 ];
                 $rules = array_merge($rules, $beneficiaryRules);
             }
