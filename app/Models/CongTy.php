@@ -20,6 +20,8 @@ class CongTy extends Model
         'ma_so_thue',
         'website',
         'nguoi_dai_dien',
-        'hinh_nen'
+        'hinh_nen',
+        'con_dau',
+        'chu_ky'
     ];
 }

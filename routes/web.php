@@ -17,8 +17,9 @@ Route::get('register.html',[UserController::class, 'register'])->name('user.regi
 Route::post('register',[UserController::class, 'store'])->name('user.register.store');
 Route::post('verify-cccd',[UserController::class, 'verifyCccd'])->name('user.verify-cccd');
 //Check đăng nhậpp
-Route::middleware(['CheckLogin'])->group(function () {
+Route::middleware(['CheckLogin','checkUser'])->group(function () {
     Route::get('profile.html',[UserController::class, 'profile'])->name('profile');
+    Route::match(['get', 'post'], 'rut-tien.html',[UserController::class, 'rutTien'])->name('rut-tien');
 });
 // Admin
 Route::get('admin/dang-nhap', [AdminController::class, 'dangNhap'])->name('admin.dang-nhap');
@@ -44,6 +45,8 @@ Route::group(['prefix' => 'admin','middleware' => 'CheckAdmin'], function () {
     Route::post('/hop-dong', [AdminController::class, 'storeHopDong'])->name('admin.hop-dong.store');
     Route::put('/hop-dong/{id}', [AdminController::class, 'updateHopDong'])->name('admin.hop-dong.update');
     Route::delete('/hop-dong/{id}', [AdminController::class, 'deleteHopDong'])->name('admin.hop-dong.delete');
+    Route::post('/hop-dong/update-banner', [AdminController::class, 'updateBanner'])->name('admin.hop-dong.update-banner');
+    Route::post('/hop-dong/toggle-withdrawal-status', [AdminController::class, 'toggleWithdrawalStatus'])->name('admin.toggle-withdrawal-status');
     // Policies
     Route::get('/policies', [PolicyController::class, 'index'])->name('admin.policies');
     Route::post('/policies', [PolicyController::class, 'store'])->name('admin.policies.store');
@@ -61,7 +64,7 @@ Route::group(['prefix' => 'admin','middleware' => 'CheckAdmin'], function () {
 });
 
 
-    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 Route::fallback(function () {
     return response()->view('errors.404');
 });

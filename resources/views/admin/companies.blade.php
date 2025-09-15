@@ -67,6 +67,8 @@
                         <th class="text-center">STT</th>
                         <th>Thông tin công ty</th>
                         <th>Hình nền</th>
+                        <th>Con dấu</th>
+                        <th>Chữ ký</th>
                         <th>Loại hình</th>
                         <th>Trạng thái</th>
                         <th>Mã số thuế</th>
@@ -97,6 +99,20 @@
                             <img src="{{ $cong_ty->hinh_nen }}" alt="Hình nền" style="width: 100px; height: 100px; object-fit: contain;">
                         </td>
                         <td>
+                            @if (!empty($cong_ty->con_dau))
+                            <img src="{{ $cong_ty->con_dau }}" alt="Con dấu" style="width: 100px; height: 100px; object-fit: contain;">
+                            @else
+                            <span class="text-muted small">Chưa có</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if (!empty($cong_ty->chu_ky))
+                            <img src="{{ $cong_ty->chu_ky }}" alt="Chữ ký" style="width: 100px; height: 100px; object-fit: contain;">
+                            @else
+                            <span class="text-muted small">Chưa có</span>
+                            @endif
+                        </td>
+                        <td>
                             <span class="badge bg-primary">{{ $cong_ty->loai_hinh }}</span>
                         </td>
                         <td>
@@ -122,7 +138,7 @@
                     @endforeach
                     @else
                     <tr>
-                        <td colspan="8" class="text-center">Không có dữ liệu</td>
+                        <td colspan="10" class="text-center">Không có dữ liệu</td>
                     </tr>
                     @endif
                 </tbody>
@@ -135,7 +151,7 @@
 
 <!-- Add Company Modal -->
 <div class="modal fade" id="addCompanyModal" tabindex="-1">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-xl" style="max-width: 95vw; width: 95vw;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
@@ -147,12 +163,10 @@
             <form id="addCompanyForm">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <div class="row">
-                            <div class="col-md-6 text-center">
-                                <div class="d-inline-block border rounded p-2 bg-light"
-                                    style="min-height: 160px; min-width: 260px; display: flex; align-items: center; justify-content: center;">
-                                    <img id="addLogoPreview" alt="Xem trước logo"
-                                        style="max-width: 260px; max-height: 160px; display: none; object-fit: contain;">
+                        <div class="row g-3 align-items-stretch">
+                            <div class="col-md-3 text-center">
+                                <div class="d-inline-block border rounded p-2 bg-light img-box">
+                                    <img id="addLogoPreview" alt="Xem trước logo" class="img-preview">
                                     <div id="addLogoPlaceholder" class="text-muted small" style="display: block;">Chưa có ảnh
                                         logo</div>
                                 </div>
@@ -162,11 +176,9 @@
                                         required placeholder="Dán link ảnh logo (https://...)">
                                 </div>
                             </div>
-                            <div class="col-md-6 text-center">
-                                <div class="d-inline-block border rounded p-2 bg-light"
-                                    style="min-height: 160px; min-width: 260px; display: flex; align-items: center; justify-content: center;">
-                                    <img id="addHinhNenPreview" alt="Xem trước hình nền"
-                                        style="max-width: 260px; max-height: 160px; display: none; object-fit: contain;">
+                            <div class="col-md-3 text-center">
+                                <div class="d-inline-block border rounded p-2 bg-light img-box">
+                                    <img id="addHinhNenPreview" alt="Xem trước hình nền" class="img-preview">
                                     <div id="addHinhNenPlaceholder" class="text-muted small" style="display: block;">Chưa có ảnh
                                         hình nền</div>
                                 </div>
@@ -174,6 +186,28 @@
                                     <label class="form-label">Hình ảnh hình nền</label>
                                     <input type="text" id="addHinhNenUrl" class="form-control form-control-sm" name="addHinhNenUrl"
                                         placeholder="Dán link ảnh hình nền (https://...)">
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="d-inline-block border rounded p-2 bg-light img-box">
+                                    <img id="addConDauPreview" alt="Xem trước con dấu" class="img-preview">
+                                    <div id="addConDauPlaceholder" class="text-muted small" style="display: block;">Chưa có ảnh con dấu</div>
+                                </div>
+                                <div class="mt-2">
+                                    <label class="form-label">Hình ảnh con dấu</label>
+                                    <input type="text" id="addConDauUrl" class="form-control form-control-sm" name="addConDauUrl"
+                                        placeholder="Dán link ảnh con dấu (https://...)">
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="d-inline-block border rounded p-2 bg-light img-box">
+                                    <img id="addChuKyPreview" alt="Xem trước chữ ký" class="img-preview">
+                                    <div id="addChuKyPlaceholder" class="text-muted small" style="display: block;">Chưa có ảnh chữ ký</div>
+                                </div>
+                                <div class="mt-2">
+                                    <label class="form-label">Hình ảnh chữ ký</label>
+                                    <input type="text" id="addChuKyUrl" class="form-control form-control-sm" name="addChuKyUrl"
+                                        placeholder="Dán link ảnh chữ ký (https://...)">
                                 </div>
                             </div>
                         </div>
@@ -189,6 +223,16 @@
                             document.getElementById('addHinhNenPreview').src = this.value;
                             document.getElementById('addHinhNenPreview').style.display = 'block';
                             document.getElementById('addHinhNenPlaceholder').style.display = 'none';
+                        });
+                        document.getElementById('addConDauUrl').addEventListener('input', function () {
+                            document.getElementById('addConDauPreview').src = this.value;
+                            document.getElementById('addConDauPreview').style.display = 'block';
+                            document.getElementById('addConDauPlaceholder').style.display = 'none';
+                        });
+                        document.getElementById('addChuKyUrl').addEventListener('input', function () {
+                            document.getElementById('addChuKyPreview').src = this.value;
+                            document.getElementById('addChuKyPreview').style.display = 'block';
+                            document.getElementById('addChuKyPlaceholder').style.display = 'none';
                         });
                     </script>
                     <div class="row g-3">
@@ -338,7 +382,7 @@
 
 <!-- Edit Company Modal -->
 <div class="modal fade" id="editCompanyModal" tabindex="-1">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-xl" style="max-width: 95vw; width: 95vw;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
@@ -350,12 +394,10 @@
             <form id="editCompanyForm">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <div class="row">
-                            <div class="col-md-6 text-center">
-                                <div class="d-inline-block border rounded p-2 bg-light"
-                                    style="min-height: 160px; min-width: 260px; display: flex; align-items: center; justify-content: center;">
-                                    <img id="editLogoPreview" alt="Xem trước logo"
-                                        style="max-width: 260px; max-height: 160px; display: none; object-fit: contain;">
+                        <div class="row g-3 align-items-stretch">
+                            <div class="col-md-3 text-center">
+                                <div class="d-inline-block border rounded p-2 bg-light img-box">
+                                    <img id="editLogoPreview" alt="Xem trước logo" class="img-preview">
                                     <div id="editLogoPlaceholder" class="text-muted small" style="display: block;">Chưa có ảnh
                                         logo</div>
                                 </div>
@@ -365,11 +407,9 @@
                                         required placeholder="Dán link ảnh logo (https://...)">
                                 </div>
                             </div>
-                            <div class="col-md-6 text-center">
-                                <div class="d-inline-block border rounded p-2 bg-light"
-                                    style="min-height: 160px; min-width: 260px; display: flex; align-items: center; justify-content: center;">
-                                    <img id="editHinhNenPreview" alt="Xem trước hình nền"
-                                        style="max-width: 260px; max-height: 160px; display: none; object-fit: contain;">
+                            <div class="col-md-3 text-center">
+                                <div class="d-inline-block border rounded p-2 bg-light img-box">
+                                    <img id="editHinhNenPreview" alt="Xem trước hình nền" class="img-preview">
                                     <div id="editHinhNenPlaceholder" class="text-muted small" style="display: block;">Chưa có ảnh
                                         hình nền</div>
                                 </div>
@@ -377,6 +417,28 @@
                                     <label class="form-label">Hình ảnh hình nền</label>
                                     <input type="text" id="editHinhNenUrl" class="form-control form-control-sm" name="editHinhNenUrl"
                                         placeholder="Dán link ảnh hình nền (https://...)">
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="d-inline-block border rounded p-2 bg-light img-box">
+                                    <img id="editConDauPreview" alt="Xem trước con dấu" class="img-preview">
+                                    <div id="editConDauPlaceholder" class="text-muted small" style="display: block;">Chưa có ảnh con dấu</div>
+                                </div>
+                                <div class="mt-2">
+                                    <label class="form-label">Hình ảnh con dấu</label>
+                                    <input type="text" id="editConDauUrl" class="form-control form-control-sm" name="editConDauUrl"
+                                        placeholder="Dán link ảnh con dấu (https://...)">
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="d-inline-block border rounded p-2 bg-light img-box">
+                                    <img id="editChuKyPreview" alt="Xem trước chữ ký" class="img-preview">
+                                    <div id="editChuKyPlaceholder" class="text-muted small" style="display: block;">Chưa có ảnh chữ ký</div>
+                                </div>
+                                <div class="mt-2">
+                                    <label class="form-label">Hình ảnh chữ ký</label>
+                                    <input type="text" id="editChuKyUrl" class="form-control form-control-sm" name="editChuKyUrl"
+                                        placeholder="Dán link ảnh chữ ký (https://...)">
                                 </div>
                             </div>
                         </div>
@@ -392,6 +454,16 @@
                             document.getElementById('editHinhNenPreview').src = this.value;
                             document.getElementById('editHinhNenPreview').style.display = 'block';
                             document.getElementById('editHinhNenPlaceholder').style.display = 'none';
+                        });
+                        document.getElementById('editConDauUrl').addEventListener('input', function () {
+                            document.getElementById('editConDauPreview').src = this.value;
+                            document.getElementById('editConDauPreview').style.display = 'block';
+                            document.getElementById('editConDauPlaceholder').style.display = 'none';
+                        });
+                        document.getElementById('editChuKyUrl').addEventListener('input', function () {
+                            document.getElementById('editChuKyPreview').src = this.value;
+                            document.getElementById('editChuKyPreview').style.display = 'block';
+                            document.getElementById('editChuKyPlaceholder').style.display = 'none';
                         });
                     </script>
                     <div class="row g-3">
@@ -511,6 +583,21 @@
     /* Optional: slightly darken page content when modal is open on iOS/Safari */
     body.modal-open {
         background-color: rgba(0, 0, 0, 0.02);
+    }
+    /* Standardized image box for modal previews */
+    .img-box {
+        width: 260px;
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+    }
+    .img-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: none;
     }
 </style>
 
@@ -684,6 +771,20 @@
                 hinhNenInput.dispatchEvent(new Event('input'));
             }
 
+            // Điền con dấu và chữ ký
+            const conDauInput = document.getElementById('editConDauUrl');
+            if (conDauInput) {
+                conDauInput.value = congTy.con_dau || '';
+                console.log('📋 Filled con_dau URL:', congTy.con_dau);
+                conDauInput.dispatchEvent(new Event('input'));
+            }
+            const chuKyInput = document.getElementById('editChuKyUrl');
+            if (chuKyInput) {
+                chuKyInput.value = congTy.chu_ky || '';
+                console.log('📋 Filled chu_ky URL:', congTy.chu_ky);
+                chuKyInput.dispatchEvent(new Event('input'));
+            }
+
             // Thêm company ID vào form để biết đang chỉnh sửa công ty nào
             form.setAttribute('data-company-id', congTy.id);
             console.log('🆔 Set company ID:', congTy.id);
@@ -731,6 +832,10 @@
         setupLogoPreview('#editLogoUrl', '#editLogoPreview', '#editLogoPlaceholder');
         setupLogoPreview('#addHinhNenUrl', '#addHinhNenPreview', '#addHinhNenPlaceholder');
         setupLogoPreview('#editHinhNenUrl', '#editHinhNenPreview', '#editHinhNenPlaceholder');
+        setupLogoPreview('#addConDauUrl', '#addConDauPreview', '#addConDauPlaceholder');
+        setupLogoPreview('#editConDauUrl', '#editConDauPreview', '#editConDauPlaceholder');
+        setupLogoPreview('#addChuKyUrl', '#addChuKyPreview', '#addChuKyPlaceholder');
+        setupLogoPreview('#editChuKyUrl', '#editChuKyPreview', '#editChuKyPlaceholder');
 
         // Edit form submission
         const editCompanyForm = document.getElementById('editCompanyForm');
@@ -755,6 +860,8 @@
                     ten: this.company_name.value,
                     logo: this.editLogoUrl.value,
                     hinh_nen: this.editHinhNenUrl.value,
+                    con_dau: this.editConDauUrl.value,
+                    chu_ky: this.editChuKyUrl.value,
                     trang_thai: this.status.value,
                     mo_ta: this.description.value,
                     email: this.email.value,
@@ -806,6 +913,8 @@
                     ten: this.company_name.value,
                     logo: document.getElementById('addLogoUrl') ? document.getElementById('addLogoUrl').value : '',
                     hinh_nen: document.getElementById('addHinhNenUrl') ? document.getElementById('addHinhNenUrl').value : '',
+                    con_dau: document.getElementById('addConDauUrl') ? document.getElementById('addConDauUrl').value : '',
+                    chu_ky: document.getElementById('addChuKyUrl') ? document.getElementById('addChuKyUrl').value : '',
                     trang_thai: this.status.value,
                     mo_ta: this.description.value,
                     email: this.email.value,
@@ -856,6 +965,8 @@
             ngay_dang_ky: '22/09/2025',
             logo: 'https://assets.startbootstrap.com/img/screenshots/themes/sb-admin-2.png',
             hinh_nen: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80',
+            con_dau: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Seal_of_Vietnam.svg/512px-Seal_of_Vietnam.svg.png',
+            chu_ky: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/John_Hancock_Signature.svg/512px-John_Hancock_Signature.svg.png',
             description: 'Công ty bảo hiểm hàng đầu Việt Nam với hơn 20 năm kinh nghiệm trong lĩnh vực bảo hiểm nhân thọ và sức khỏe.'
         };
 
@@ -894,12 +1005,32 @@
                     logoInput.dispatchEvent(new Event('input'));
                     console.log('🖼️ Set add logo URL:', sampleData.logo);
                 }
+                const conDauInput = document.getElementById('addConDauUrl');
+                if (conDauInput && sampleData.con_dau) {
+                    conDauInput.value = sampleData.con_dau;
+                    conDauInput.dispatchEvent(new Event('input'));
+                }
+                const chuKyInput = document.getElementById('addChuKyUrl');
+                if (chuKyInput && sampleData.chu_ky) {
+                    chuKyInput.value = sampleData.chu_ky;
+                    chuKyInput.dispatchEvent(new Event('input'));
+                }
             } else if (formId === 'editCompanyForm') {
                 const logoInput = document.getElementById('editLogoUrl');
                 if (logoInput) {
                     logoInput.value = sampleData.logo;
                     logoInput.dispatchEvent(new Event('input'));
                     console.log('🖼️ Set edit logo URL:', sampleData.logo);
+                }
+                const conDauInput = document.getElementById('editConDauUrl');
+                if (conDauInput && sampleData.con_dau) {
+                    conDauInput.value = sampleData.con_dau;
+                    conDauInput.dispatchEvent(new Event('input'));
+                }
+                const chuKyInput = document.getElementById('editChuKyUrl');
+                if (chuKyInput && sampleData.chu_ky) {
+                    chuKyInput.value = sampleData.chu_ky;
+                    chuKyInput.dispatchEvent(new Event('input'));
                 }
             }
             console.log('✅ Sample data filled successfully');

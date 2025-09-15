@@ -19,17 +19,6 @@
 <body hold-transition="" class=" none-sidebar sidebar-open" cz-shortcut-listen="true"><audio class="audio-for-speech"
         src=""></audio>
     <div class="translate-tooltip-mtz translator-hidden">
-        <div class="header">
-            <div class="header-controls">
-                Translator
-            </div>
-            <div class="header-controls">
-                <span class="support"></span>
-            </div>
-            <div class="header-controls">
-                <span class="settings"></span>
-            </div>
-        </div>
         <div class="translated-text">
             <div class="words"></div>
             <div class="sentences"></div>

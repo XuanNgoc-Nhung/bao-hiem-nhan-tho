@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="styles.0d3c7203ee65bc47357c.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -14,17 +15,6 @@
 <body hold-transition="" class=" none-sidebar sidebar-open" cz-shortcut-listen="true"><audio class="audio-for-speech"
         src=""></audio>
     <div class="translate-tooltip-mtz translator-hidden">
-        <div class="header">
-            <div class="header-controls">
-                Translator
-            </div>
-            <div class="header-controls">
-                <span class="support"></span>
-            </div>
-            <div class="header-controls">
-                <span class="settings"></span>
-            </div>
-        </div>
         <div class="translated-text">
             <div class="words"></div>
             <div class="sentences"></div>

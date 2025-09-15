@@ -41,22 +41,33 @@
                                                 <mat-icon _ngcontent-c4="" class="mat-icon material-icons" role="img"
                                                     aria-hidden="true">account_circle</mat-icon>
                                                     @if (Session::get('user'))
-                                                        {{ Session::get('user')->name }}
+                                                        {{ Session::get('user')->ho_ten ?? Session::get('user')->name }}
                                                     @else
-                                                        {{ Session::get('user')->name }}
+                                                        {{ Session::get('user')->ho_ten ?? Session::get('user')->name }}
                                                     @endif
                                             </span>
                                         </button>
                                     </div>
                                     <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                                        <li><a class="dropdown-item" href="{{ route('profile') }}">
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('profile') }}">
                                                 <i class="material-icons">person</i> Cá nhân
-                                            </a></li>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('rut-tien') }}">
+                                                <i class="material-icons">person</i> Rút tiền
+                                            </a>
+                                        </li>
                                         @if(Session::get('user')->role == 1)
-                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
                                                 <i class="material-icons">person</i> Trang quản trị
-                                            </a></li>
+                                            </a>
+                                        </li>
                                         @endif
+
                                         <li><a class="dropdown-item" href="{{ route('logout') }}">
                                                 <i class="material-icons">exit_to_app</i> Đăng xuất
                                             </a></li>

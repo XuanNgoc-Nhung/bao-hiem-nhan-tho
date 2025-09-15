@@ -76,6 +76,9 @@
                         <th>Khách hàng</th>
                         <th>Công ty</th>
                         <th>Hợp đồng</th>
+                        <th class="text-center">Ký</th>
+                        <th class="text-center">Rút tiền</th>
+                        <th class="text-center">Ảnh banner</th>
                         <th class="text-center">Thao tác</th>
                     </tr>
                 </thead>
@@ -166,6 +169,21 @@
                                             </small>
                                         </div>
                                         @endif
+                                        @if(!empty($hd->tien_lai))
+                                        <div class="col-12">
+                                            <small class="text-dark d-flex align-items-center">
+                                                <i class="bi bi-graph-up-arrow me-1"></i>
+                                                Tiền lãi: {{ $hd->tien_lai }}
+                                            </small>
+                                        </div>
+                                        @else
+                                        <div class="col-12">
+                                            <small class="text-dark d-flex align-items-center">
+                                                <i class="bi bi-graph-up-arrow me-1"></i>
+                                                Tiền lãi: 0
+                                            </small>
+                                        </div>
+                                        @endif
                                         @if($hd->so_tien_dong_hang_nam)
                                         <div class="col-12">
                                             <small class="text-dark d-flex align-items-center">
@@ -187,7 +205,7 @@
                                         <div class="col-12">
                                             <small class="text-dark d-flex align-items-center">
                                                 <i class="bi bi-calendar-event me-1"></i>
-                                                Hiệu lực: {{ \Carbon\Carbon::parse($hd->ngay_cap_hop_dong)->format('d/m/Y') }}
+                                                Hiệu lực: {{ $hd->ngay_cap_hop_dong }}
                                             </small>
                                         </div>
                                         @endif
@@ -195,7 +213,7 @@
                                         <div class="col-12">
                                             <small class="text-dark d-flex align-items-center">
                                                 <i class="bi bi-calendar-check me-1"></i>
-                                                Đáo hạn: {{ \Carbon\Carbon::parse($hd->ngay_dao_han)->format('d/m/Y') }}
+                                                Đáo hạn: {{ $hd->ngay_dao_han     }}
                                             </small>
                                         </div>
                                         @endif
@@ -219,10 +237,47 @@
                                 </div>
                             </div>
                         </td>
+                        <td class="text-center" style="vertical-align: middle;">
+                            @if (!empty($hd->chu_ky))
+                                <span class="badge bg-success">Đã ký</span>
+                            @else
+                                <span class="badge bg-secondary">Chưa ký</span>
+                            @endif
+                        </td>
+                        <td class="text-center">
+                            <div class="form-check form-switch d-flex justify-content-center">
+                                <input class="form-check-input" type="checkbox" 
+                                       id="withdrawalToggle{{ $hd->id }}" 
+                                       {{ $hd->cho_phep_rut_tien ? 'checked' : '' }}
+                                       onchange="toggleWithdrawalStatus({{ $hd->id }}, this.checked)"
+                                       style="transform: scale(1.2);">
+                            </div>
+                            <small class="text-muted d-block mt-1">
+                                {{ $hd->cho_phep_rut_tien ? 'Cho phép' : 'Không cho phép' }}
+                            </small>
+                        </td>
+                        <td class="text-center">
+                            @if($hd->anh_banner)
+                                <img src="{{ $hd->anh_banner }}" alt="Banner hợp đồng" 
+                                     class="img-fluid rounded" style="max-width: 80px; max-height: 60px; object-fit: cover;">
+                            @else
+                                <span class="text-muted">
+                                    <i class="bi bi-image fs-4"></i>
+                                    <br>
+                                    <small>Chưa có ảnh</small>
+                                </span>
+                            @endif
+                        </td>
                         <td class="text-center">
                             <div class="btn-group btn-group-sm">
                                 <button class="btn btn-outline-primary" title="Xem chi tiết" onclick="viewContractDetail({{ $hd}})">
                                     <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-outline-warning" title="Chỉnh sửa" onclick="editContract({{ $hd}})">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-outline-info" title="Chỉnh sửa ảnh banner" onclick="editBanner({{ $hd->id }}, '{{ $hd->ma_hop_dong }}', '{{ $hd->anh_banner ?? '' }}')">
+                                    <i class="bi bi-image"></i>
                                 </button>
                                 <button class="btn btn-outline-danger" title="Xóa" onclick="deleteContract({{ $hd->id }}, '{{ $hd->ma_hop_dong }}')">
                                     <i class="bi bi-trash"></i>
@@ -282,6 +337,84 @@
     </div>
 </div>
 
+<!-- Edit Banner Modal -->
+<div class="modal fade" id="editBannerModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-image me-2"></i>
+                    Chỉnh sửa ảnh banner
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editBannerForm" enctype="multipart/form-data">
+                    <input type="hidden" id="editBannerContractId" name="contract_id">
+                    <input type="hidden" id="editBannerContractCode" name="contract_code">
+                    
+                    <!-- Thông tin hợp đồng -->
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <strong>Hợp đồng:</strong> <span id="bannerContractCode"></span>
+                    </div>
+                    
+                    <!-- Upload ảnh mới -->
+                    <div class="mb-4">
+                        <label for="bannerImageInput" class="form-label">
+                            <i class="bi bi-cloud-upload me-2"></i>
+                            Chọn ảnh banner mới
+                        </label>
+                        <input type="file" class="form-control" id="bannerImageInput" name="banner_image" 
+                               accept="image/*" onchange="previewBannerImage(this)">
+                        <div class="form-text">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Chọn file ảnh (JPG, PNG, GIF) - Kích thước tối đa 5MB
+                        </div>
+                    </div>
+                    
+                    <!-- Preview ảnh hiện tại -->
+                    <div class="mb-4">
+                        <label class="form-label">
+                            <i class="bi bi-eye me-2"></i>
+                            Ảnh banner hiện tại
+                        </label>
+                        <div class="text-center">
+                            <div id="currentBannerContainer" class="border rounded p-3" style="min-height: 200px; background-color: #f8f9fa;">
+                                <img id="currentBannerImage" src="" alt="Ảnh banner hiện tại" 
+                                     class="img-fluid rounded" style="max-height: 300px; display: none; width: 100%; object-fit: contain;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Preview ảnh mới -->
+                    <div class="mb-4" id="newBannerPreview" style="display: none;">
+                        <label class="form-label">
+                            <i class="bi bi-eye me-2"></i>
+                            Xem trước ảnh mới
+                        </label>
+                        <div class="text-center">
+                            <div class="border rounded p-3" style="background-color: #f8f9fa;">
+                                <img id="newBannerImage" src="" alt="Xem trước ảnh mới" 
+                                     class="img-fluid rounded" style="max-height: 300px;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i>Hủy
+                </button>
+                <button type="button" class="btn btn-info" id="saveBannerBtn" disabled>
+                    <i class="bi bi-check-circle me-2"></i>Lưu ảnh banner
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteContractModal" tabindex="-1">
     <div class="modal-dialog">
@@ -312,6 +445,271 @@
                 <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
                     <i class="bi bi-trash me-2"></i>Xóa hợp đồng
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Contract Modal -->
+<div class="modal fade" id="editContractModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h4 class="modal-title">
+                    <i class="bi bi-pencil-square me-2"></i>
+                    Chỉnh sửa hợp đồng bảo hiểm
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editContractForm" class="needs-validation" novalidate>
+                    <input type="hidden" id="editContractId" name="id">
+                    
+                    <!-- Thông tin cơ bản hợp đồng -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h6 class="card-title mb-0">
+                                <i class="bi bi-file-earmark-text me-2"></i>
+                                Thông tin hợp đồng
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="editMaHopDong" class="form-label">Mã hợp đồng</label>
+                                    <input type="text" class="form-control" id="editMaHopDong" disabled>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editCongTy" class="form-label">Công ty bảo hiểm</label>
+                                    <select class="form-select" id="editCongTy" name="cong_ty_id" required>
+                                        <option value="">Chọn công ty</option>
+                                        @foreach ($congTy as $ct)
+                                            <option value="{{ $ct->id }}">{{ $ct->ten }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thông tin người mua bảo hiểm -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h6 class="card-title mb-0">
+                                <i class="bi bi-person-circle me-2"></i>
+                                Thông tin người mua bảo hiểm
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="editHoTen" class="form-label">Họ và tên</label>
+                                    <input type="text" class="form-control" id="editHoTen" name="ho_ten" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="editGioiTinh" class="form-label">Giới tính</label>
+                                    <select class="form-select" id="editGioiTinh" name="gioi_tinh" required>
+                                        <option value="">Chọn giới tính</option>
+                                        <option value="Nam">Nam</option>
+                                        <option value="Nữ">Nữ</option>
+                                        <option value="Khác">Khác</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="editNgaySinh" class="form-label">Ngày sinh</label>
+                                    <input type="text" class="form-control" id="editNgaySinh" name="ngay_sinh" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editCccd" class="form-label">Số CCCD/CMND</label>
+                                    <input type="text" class="form-control" id="editCccd" disabled>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editSoDienThoai" class="form-label">Số điện thoại</label>
+                                    <input type="tel" class="form-control" id="editSoDienThoai" name="so_dien_thoai" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="editDiaChi" class="form-label">Địa chỉ thường trú</label>
+                                    <textarea class="form-control" id="editDiaChi" name="dia_chi" rows="2" required></textarea>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="editNganHang" class="form-label">Tên ngân hàng</label>
+                                    <input type="text" class="form-control" id="editNganHang" name="ngan_hang">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="editSoTaiKhoan" class="form-label">Số tài khoản</label>
+                                    <input type="text" class="form-control" id="editSoTaiKhoan" name="so_tai_khoan">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="editChuTaiKhoan" class="form-label">Chủ tài khoản</label>
+                                    <input type="text" class="form-control" id="editChuTaiKhoan" name="chu_tai_khoan">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thông tin người thừa hưởng -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h6 class="card-title mb-0">
+                                <i class="bi bi-people-circle me-2"></i>
+                                Thông tin người thừa hưởng
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="editThHoTen" class="form-label">Họ và tên</label>
+                                    <input type="text" class="form-control" id="editThHoTen" name="th_ho_ten" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="editThMoiQuanHe" class="form-label">Mối quan hệ</label>
+                                    <select class="form-select" id="editThMoiQuanHe" name="th_moi_quan_he" required>
+                                        <option value="">Chọn mối quan hệ</option>
+                                        <option value="Vợ/Chồng">Vợ/Chồng</option>
+                                        <option value="Con">Con</option>
+                                        <option value="Cha/Mẹ">Cha/Mẹ</option>
+                                        <option value="Anh/Chị/Em">Anh/Chị/Em</option>
+                                        <option value="Khác">Khác</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="editThGioiTinh" class="form-label">Giới tính</label>
+                                    <select class="form-select" id="editThGioiTinh" name="th_gioi_tinh" required>
+                                        <option value="">Chọn giới tính</option>
+                                        <option value="Nam">Nam</option>
+                                        <option value="Nữ">Nữ</option>
+                                        <option value="Khác">Khác</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="editThNgaySinh" class="form-label">Ngày sinh</label>
+                                    <input type="text" class="form-control" id="editThNgaySinh" name="th_ngay_sinh" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="editThCccd" class="form-label">Số CCCD/CMND</label>
+                                    <input type="text" class="form-control" id="editThCccd" disabled>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editThSoDienThoai" class="form-label">Số điện thoại</label>
+                                    <input type="tel" class="form-control" id="editThSoDienThoai" name="th_so_dien_thoai">
+                                </div>
+                                <div class="col-12">
+                                    <label for="editThDiaChi" class="form-label">Địa chỉ thường trú</label>
+                                    <textarea class="form-control" id="editThDiaChi" name="th_dia_chi" rows="2" required></textarea>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="editThNganHang" class="form-label">Tên ngân hàng</label>
+                                    <input type="text" class="form-control" id="editThNganHang" name="th_ngan_hang">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="editThSoTaiKhoan" class="form-label">Số tài khoản</label>
+                                    <input type="text" class="form-control" id="editThSoTaiKhoan" name="th_so_tai_khoan">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="editThChuTaiKhoan" class="form-label">Chủ tài khoản</label>
+                                    <input type="text" class="form-control" id="editThChuTaiKhoan" name="th_chu_tai_khoan">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thông tin tài chính -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h6 class="card-title mb-0">
+                                <i class="bi bi-cash-stack me-2"></i>
+                                Thông tin tài chính
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="editSoTienMua" class="form-label">Số tiền bảo hiểm (VNĐ)</label>
+                                    <input type="number" class="form-control" id="editSoTienMua" name="so_tien_mua" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editSoTienDongHangNam" class="form-label">Phí bảo hiểm hàng năm (VNĐ)</label>
+                                    <input type="number" class="form-control" id="editSoTienDongHangNam" name="so_tien_dong_hang_nam" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editThoiGianMua" class="form-label">Thời gian đóng phí (tháng)</label>
+                                    <input type="number" class="form-control" id="editThoiGianMua" name="thoi_gian_mua" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editTienLai" class="form-label">Tiền lãi</label>
+                                    <input type="text" class="form-control" id="editTienLai" name="tien_lai" placeholder="Nhập tiền lãi (có thể để trống)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chữ ký hợp đồng (chỉ xem) -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h6 class="card-title mb-0">
+                                <i class="bi bi-pencil me-2"></i>
+                                Chữ ký hợp đồng
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="fw-semibold">Trạng thái ký:</span>
+                                        <span id="editChuKyStatus" class="badge bg-secondary">Chưa ký</span>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="border rounded p-2 text-center bg-light">
+                                        <img id="editChuKyImage" src="" alt="Chữ ký" style="max-height: 140px; max-width: 100%; display: none; object-fit: contain;">
+                                        <div id="editChuKyEmpty" class="text-muted" style="display: block;">Chưa có chữ ký</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thông tin thời gian -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h6 class="card-title mb-0">
+                                <i class="bi bi-calendar-event me-2"></i>
+                                Thông tin thời gian
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="editNgayCapHopDong" class="form-label">Ngày cấp hợp đồng</label>
+                                    <input type="text" class="form-control" id="editNgayCapHopDong" name="ngay_cap_hop_dong" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editNgayDaoHan" class="form-label">Ngày đáo hạn</label>
+                                    <input type="text" class="form-control" id="editNgayDaoHan" name="ngay_dao_han" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="editGhiChu" class="form-label">Ghi chú</label>
+                                    <textarea class="form-control" id="editGhiChu" name="ghi_chu" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex justify-content-between w-100">
+                    <button type="button" class="btn btn-outline-info" id="fillSampleDataBtn">
+                        <i class="bi bi-file-earmark-text me-2"></i>Điền dữ liệu mẫu
+                    </button>
+                    <div>
+                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-2"></i>Hủy
+                        </button>
+                        <button type="button" class="btn btn-warning" id="saveEditBtn">
+                            <i class="bi bi-check-circle me-2"></i>Lưu thay đổi
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -843,7 +1241,12 @@ function updateContractData(element, data) {
     // Cập nhật trạng thái
     const statusBadge = element.querySelector('#contractStatus');
     const statusText = element.querySelector('#contractStatusText');
-    if (data.trang_thai == 1) {
+    if (data.chu_ky && String(data.chu_ky).trim() !== '' && data.chu_ky !== 'null') {
+        statusBadge.className = 'badge bg-success';
+        statusBadge.textContent = 'Đã ký';
+        statusText.value = 'ĐÃ KÝ';
+        statusText.className = 'form-control text-success';
+    } else if (data.trang_thai == 1) {
         statusBadge.className = 'badge bg-success';
         statusBadge.textContent = 'Đang hiệu lực';
         statusText.value = 'ĐANG HIỆU LỰC';
@@ -1101,6 +1504,394 @@ function showToast(message, type = 'info') {
     toast.addEventListener('hidden.bs.toast', function() {
         toast.remove();
     });
+}
+
+// Hàm chỉnh sửa hợp đồng
+function editContract(data) {
+    console.log('editContract');
+    console.log(data);
+    
+    // Điền dữ liệu vào form
+    fillEditForm(data);
+    
+    // Hiển thị modal
+    const modal = new bootstrap.Modal(document.getElementById('editContractModal'));
+    modal.show();
+}
+
+// Hàm điền dữ liệu vào form chỉnh sửa
+function fillEditForm(data) {
+    // Thông tin cơ bản
+    document.getElementById('editContractId').value = data.id;
+    document.getElementById('editMaHopDong').value = data.ma_hop_dong;
+    document.getElementById('editCongTy').value = data.cong_ty_id || '';
+    
+    // Thông tin người mua
+    document.getElementById('editHoTen').value = data.ho_ten || '';
+    document.getElementById('editGioiTinh').value = data.gioi_tinh || '';
+    document.getElementById('editNgaySinh').value = data.ngay_sinh || '';
+    document.getElementById('editCccd').value = data.cccd || '';
+    document.getElementById('editSoDienThoai').value = data.so_dien_thoai || '';
+    document.getElementById('editDiaChi').value = data.dia_chi || '';
+    document.getElementById('editNganHang').value = data.ngan_hang || '';
+    document.getElementById('editSoTaiKhoan').value = data.so_tai_khoan || '';
+    document.getElementById('editChuTaiKhoan').value = data.chu_tai_khoan || '';
+    
+    // Thông tin người thừa hưởng
+    document.getElementById('editThHoTen').value = data.th_ho_ten || '';
+    document.getElementById('editThMoiQuanHe').value = data.th_moi_quan_he || '';
+    document.getElementById('editThGioiTinh').value = data.th_gioi_tinh || '';
+    document.getElementById('editThNgaySinh').value = data.th_ngay_sinh || '';
+    document.getElementById('editThCccd').value = data.th_cccd || '';
+    document.getElementById('editThSoDienThoai').value = data.th_so_dien_thoai || '';
+    document.getElementById('editThDiaChi').value = data.th_dia_chi || '';
+    document.getElementById('editThNganHang').value = data.th_ngan_hang || '';
+    document.getElementById('editThSoTaiKhoan').value = data.th_so_tai_khoan || '';
+    document.getElementById('editThChuTaiKhoan').value = data.th_chu_tai_khoan || '';
+    
+    // Thông tin tài chính
+    document.getElementById('editSoTienMua').value = data.so_tien_mua || '';
+    document.getElementById('editSoTienDongHangNam').value = data.so_tien_dong_hang_nam || '';
+    document.getElementById('editThoiGianMua').value = data.thoi_gian_mua || '';
+    document.getElementById('editTienLai').value = data.tien_lai || '';
+    
+    // Thông tin thời gian
+    document.getElementById('editNgayCapHopDong').value = data.ngay_cap_hop_dong || '';
+    document.getElementById('editNgayDaoHan').value = data.ngay_dao_han || '';
+    document.getElementById('editGhiChu').value = data.ghi_chu || '';
+
+    // Chữ ký: chỉ hiển thị
+    const statusEl = document.getElementById('editChuKyStatus');
+    const imgEl = document.getElementById('editChuKyImage');
+    const emptyEl = document.getElementById('editChuKyEmpty');
+    const chuKy = data.chu_ky;
+    if (chuKy && String(chuKy).trim() !== '' && chuKy !== 'null') {
+        statusEl.className = 'badge bg-success';
+        statusEl.textContent = 'Đã ký';
+        let src = chuKy;
+        if (!src.startsWith('http') && !src.startsWith('/')) {
+            src = '/' + src;
+        }
+        imgEl.src = src;
+        imgEl.style.display = 'inline-block';
+        emptyEl.style.display = 'none';
+        imgEl.onerror = function(){ imgEl.style.display = 'none'; emptyEl.style.display = 'block'; statusEl.className='badge bg-secondary'; statusEl.textContent='Chưa ký'; };
+    } else {
+        statusEl.className = 'badge bg-secondary';
+        statusEl.textContent = 'Chưa ký';
+        imgEl.style.display = 'none';
+        emptyEl.style.display = 'block';
+    }
+}
+
+// Xử lý lưu chỉnh sửa hợp đồng
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.id === 'saveEditBtn') {
+        e.preventDefault();
+        
+        const form = document.getElementById('editContractForm');
+        const contractId = document.getElementById('editContractId').value;
+        
+        // Validate form
+        if (!form.checkValidity()) {
+            form.classList.add('was-validated');
+            showToast('Vui lòng điền đầy đủ thông tin bắt buộc', 'error');
+            return;
+        }
+        
+        // Tạo object dữ liệu từ form
+        const formData = new FormData(form);
+        const data = {};
+        
+        // Kiểm tra tất cả các input trong form
+        const inputs = form.querySelectorAll('input, select, textarea');
+        console.log('Total inputs found:', inputs.length);
+        
+        for (let input of inputs) {
+            if (input.name && input.name !== '') {
+                data[input.name] = input.value;
+                console.log(`Input ${input.name}: ${input.value}`);
+            }
+        }
+        
+        // Cũng thử với FormData
+        for (let [key, value] of formData.entries()) {
+            data[key] = value;
+        }
+        
+        // Debug dữ liệu
+        console.log('Form data object:', data);
+        console.log('Form data keys:', Object.keys(data));
+        console.log('Form data values:', Object.values(data));
+        
+        // Kiểm tra xem có dữ liệu không
+        if (Object.keys(data).length === 0) {
+            console.error('No data found in form!');
+            showToast('Không có dữ liệu để gửi!', 'error');
+            return;
+        }
+        
+        // Hiển thị loading
+        e.target.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Đang lưu...';
+        e.target.disabled = true;
+        
+        // Gửi request cập nhật
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('CSRF Token:', csrfToken);
+        
+        axios.put(`/admin/hop-dong/${contractId}`, data, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (response.data.success) {
+                showToast('Cập nhật hợp đồng thành công!', 'success');
+                
+                // Đóng modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('editContractModal'));
+                modal.hide();
+                
+                // Reload trang
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            } else {
+                showToast(response.data.message || 'Có lỗi xảy ra khi cập nhật hợp đồng', 'error');
+                resetEditButton();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            if (error.response && error.response.data && error.response.data.message) {
+                showToast(error.response.data.message, 'error');
+            } else {
+                showToast('Có lỗi xảy ra khi cập nhật hợp đồng', 'error');
+            }
+            resetEditButton();
+        });
+    }
+});
+
+// Reset nút lưu về trạng thái ban đầu
+function resetEditButton() {
+    const btn = document.getElementById('saveEditBtn');
+    btn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Lưu thay đổi';
+    btn.disabled = false;
+}
+
+// Hàm điền dữ liệu mẫu vào form chỉnh sửa
+function fillSampleData() {
+    // Dữ liệu mẫu cho người mua bảo hiểm
+    document.getElementById('editHoTen').value = 'Nguyễn Văn A';
+    document.getElementById('editGioiTinh').value = 'Nam';
+    document.getElementById('editNgaySinh').value = '1990-01-15';
+    document.getElementById('editSoDienThoai').value = '0901234567';
+    document.getElementById('editDiaChi').value = '123 Đường ABC, Phường 1, Quận 1, TP.Hồ Chí Minh';
+    document.getElementById('editNganHang').value = 'Vietcombank';
+    document.getElementById('editSoTaiKhoan').value = '1234567890';
+    document.getElementById('editChuTaiKhoan').value = 'NGUYEN VAN A';
+    
+    // Dữ liệu mẫu cho người thừa hưởng
+    document.getElementById('editThHoTen').value = 'Nguyễn Thị B';
+    document.getElementById('editThMoiQuanHe').value = 'Vợ/Chồng';
+    document.getElementById('editThGioiTinh').value = 'Nữ';
+    document.getElementById('editThNgaySinh').value = '1992-05-20';
+    document.getElementById('editThSoDienThoai').value = '0907654321';
+    document.getElementById('editThDiaChi').value = '123 Đường ABC, Phường 1, Quận 1, TP.Hồ Chí Minh';
+    document.getElementById('editThNganHang').value = 'Vietcombank';
+    document.getElementById('editThSoTaiKhoan').value = '0987654321';
+    document.getElementById('editThChuTaiKhoan').value = 'NGUYEN THI B';
+    
+    // Dữ liệu mẫu cho thông tin tài chính
+    document.getElementById('editSoTienMua').value = '100000000';
+    document.getElementById('editSoTienDongHangNam').value = '5000000';
+    document.getElementById('editThoiGianMua').value = '240';
+ // 20 năm
+    
+    // Dữ liệu mẫu cho thông tin thời gian
+    const today = new Date();
+    const futureDate = new Date();
+    futureDate.setFullYear(today.getFullYear() + 20);
+    
+    document.getElementById('editNgayCapHopDong').value = today.toISOString().split('T')[0];
+    document.getElementById('editNgayDaoHan').value = futureDate.toISOString().split('T')[0];
+    document.getElementById('editGhiChu').value = 'Hợp đồng bảo hiểm nhân thọ với quyền lợi bảo hiểm cao, phù hợp cho gia đình trẻ.';
+    
+    // Chọn công ty đầu tiên nếu có
+    const congTySelect = document.getElementById('editCongTy');
+    if (congTySelect.options.length > 1) {
+        congTySelect.selectedIndex = 1; // Chọn option đầu tiên (không phải "Chọn công ty")
+    }
+    
+    showToast('Đã điền dữ liệu mẫu vào form!', 'success');
+}
+
+// Hàm chỉnh sửa ảnh banner
+function editBanner(contractId, contractCode, currentBanner) {
+    console.log('editBanner', { contractId, contractCode, currentBanner });
+    
+    // Điền thông tin vào modal
+    document.getElementById('editBannerContractId').value = contractId;
+    // document.getElementById('editBannerContractCode').value = contractCode;
+    // document.getElementById('bannerContractCode').textContent = contractCode;
+    
+    // Hiển thị ảnh hiện tại
+    const currentBannerImage = document.getElementById('currentBannerImage');
+    
+    if (currentBanner && currentBanner.trim() !== '' && currentBanner !== 'null') {
+        // Xử lý đường dẫn ảnh
+        let imagePath = currentBanner;
+        if (!imagePath.startsWith('http') && !imagePath.startsWith('/')) {
+            imagePath = '/' + imagePath;
+        }
+        
+        currentBannerImage.style.display = 'block';
+        currentBannerImage.src = imagePath;
+        
+        // Xử lý lỗi khi ảnh không tải được
+        currentBannerImage.onerror = function() {
+            console.log('Không thể tải ảnh banner:', imagePath);
+            currentBannerImage.style.display = 'none';
+        };
+        
+        // Xử lý khi ảnh tải thành công
+        currentBannerImage.onload = function() {
+            console.log('Đã tải ảnh banner thành công:', imagePath);
+        };
+    } else {
+        currentBannerImage.style.display = 'none';
+    }
+    
+    // Reset form
+    document.getElementById('bannerImageInput').value = '';
+    document.getElementById('newBannerPreview').style.display = 'none';
+    document.getElementById('saveBannerBtn').disabled = true;
+    
+    // Hiển thị modal
+    const modal = new bootstrap.Modal(document.getElementById('editBannerModal'));
+    modal.show();
+}
+
+// Hàm preview ảnh banner
+function previewBannerImage(input) {
+    const file = input.files[0];
+    
+    if (file) {
+        // Kiểm tra kích thước file (5MB)
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.size > maxSize) {
+            showToast('Kích thước file quá lớn! Vui lòng chọn file nhỏ hơn 5MB.', 'error');
+            input.value = '';
+            return;
+        }
+        
+        // Kiểm tra loại file
+        if (!file.type.startsWith('image/')) {
+            showToast('Vui lòng chọn file ảnh hợp lệ!', 'error');
+            input.value = '';
+            return;
+        }
+        
+        // Tạo URL preview
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            // Hiển thị preview ảnh mới
+            document.getElementById('newBannerImage').src = e.target.result;
+            document.getElementById('newBannerPreview').style.display = 'block';
+            
+            // Kích hoạt nút lưu
+            document.getElementById('saveBannerBtn').disabled = false;
+        };
+        reader.readAsDataURL(file);
+    } else {
+        // Ẩn preview nếu không có file
+        document.getElementById('newBannerPreview').style.display = 'none';
+        document.getElementById('saveBannerBtn').disabled = true;
+    }
+}
+
+
+// Xử lý sự kiện click nút điền dữ liệu mẫu
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.id === 'fillSampleDataBtn') {
+        e.preventDefault();
+        fillSampleData();
+    }
+});
+
+// Xử lý sự kiện click nút lưu ảnh banner
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.id === 'saveBannerBtn') {
+        e.preventDefault();
+        saveBannerImage();
+    }
+});
+
+// Hàm lưu ảnh banner
+function saveBannerImage() {
+    const form = document.getElementById('editBannerForm');
+    const contractId = document.getElementById('editBannerContractId').value;
+    const fileInput = document.getElementById('bannerImageInput');
+    
+    if (!fileInput.files[0]) {
+        showToast('Vui lòng chọn ảnh banner!', 'error');
+        return;
+    }
+    
+    // Tạo FormData
+    const formData = new FormData();
+    formData.append('banner_image', fileInput.files[0]);
+    formData.append('contract_id', contractId);
+    formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+    
+    // Hiển thị loading
+    const saveBtn = document.getElementById('saveBannerBtn');
+    const originalText = saveBtn.innerHTML;
+    saveBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Đang lưu...';
+    saveBtn.disabled = true;
+    
+    // Gửi request
+    axios.post('/admin/hop-dong/update-banner', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (response.data.success) {
+            showToast('Cập nhật ảnh banner thành công!', 'success');
+            
+            // Đóng modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editBannerModal'));
+            modal.hide();
+            
+            // Reload trang để cập nhật ảnh mới
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        } else {
+            showToast(response.data.message || 'Có lỗi xảy ra khi cập nhật ảnh banner', 'error');
+            resetBannerButton();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        if (error.response && error.response.data && error.response.data.message) {
+            showToast(error.response.data.message, 'error');
+        } else {
+            showToast('Có lỗi xảy ra khi cập nhật ảnh banner', 'error');
+        }
+        resetBannerButton();
+    });
+    
+    // Reset nút về trạng thái ban đầu
+    function resetBannerButton() {
+        saveBtn.innerHTML = originalText;
+        saveBtn.disabled = false;
+    }
 }
 </script>
 
@@ -1552,6 +2343,420 @@ function showToast(message, type = 'info') {
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
 }
+
+/* Edit Contract Modal Styles */
+#editContractModal .modal-dialog {
+    max-width: 1200px;
+}
+
+#editContractModal .modal-header {
+    background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%);
+    border-bottom: 2px solid #ff8f00;
+}
+
+#editContractModal .modal-title {
+    font-weight: 600;
+    color: #212529;
+}
+
+#editContractModal .card {
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+#editContractModal .card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+#editContractModal .card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #dee2e6;
+}
+
+#editContractModal .card-title {
+    color: #495057;
+    font-weight: 600;
+}
+
+#editContractModal .form-label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+#editContractModal .form-control,
+#editContractModal .form-select {
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+#editContractModal .form-control:focus,
+#editContractModal .form-select:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+}
+
+#editContractModal .form-control:disabled {
+    background-color: #f8f9fa;
+    opacity: 0.7;
+}
+
+#editContractModal .btn-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%);
+    border: none;
+    color: #212529;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+#editContractModal .btn-warning:hover {
+    background: linear-gradient(135deg, #ff8f00 0%, #ff6f00 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+}
+
+#editContractModal .btn-warning:disabled {
+    background: #6c757d;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Responsive cho modal chỉnh sửa */
+@media (max-width: 768px) {
+    #editContractModal .modal-dialog {
+        margin: 0.5rem;
+        max-width: calc(100% - 1rem);
+    }
+    
+    #editContractModal .modal-body {
+        padding: 1rem;
+    }
+    
+    #editContractModal .card-body {
+        padding: 1rem;
+    }
+    
+    #editContractModal .row.g-3 {
+        --bs-gutter-x: 0.75rem;
+        --bs-gutter-y: 0.75rem;
+    }
+}
+
+@media (max-width: 576px) {
+    #editContractModal .modal-dialog {
+        margin: 0.25rem;
+        max-width: calc(100% - 0.5rem);
+    }
+    
+    #editContractModal .modal-body {
+        padding: 0.75rem;
+    }
+    
+    #editContractModal .card-body {
+        padding: 0.75rem;
+    }
+    
+    #editContractModal .form-label {
+        font-size: 0.875rem;
+    }
+    
+    #editContractModal .form-control,
+    #editContractModal .form-select {
+        font-size: 0.875rem;
+    }
+}
+
+/* Animation cho modal */
+#editContractModal .modal.fade .modal-dialog {
+    transform: translate(0, -50px);
+    transition: transform 0.3s ease-out;
+}
+
+#editContractModal .modal.show .modal-dialog {
+    transform: translate(0, 0);
+}
+
+/* Loading state cho form */
+#editContractModal .form-control:disabled {
+    position: relative;
+}
+
+#editContractModal .form-control:disabled::after {
+    content: "Không thể chỉnh sửa";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    color: #6c757d;
+    background: #f8f9fa;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+/* Validation styles */
+#editContractModal .was-validated .form-control:invalid,
+#editContractModal .was-validated .form-select:invalid {
+    border-color: #dc3545;
+}
+
+#editContractModal .was-validated .form-control:valid,
+#editContractModal .was-validated .form-select:valid {
+    border-color: #198754;
+}
+
+/* Custom scrollbar cho modal body */
+#editContractModal .modal-body {
+    scrollbar-width: thin;
+    scrollbar-color: #ced4da #f8f9fa;
+}
+
+#editContractModal .modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+#editContractModal .modal-body::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 3px;
+}
+
+#editContractModal .modal-body::-webkit-scrollbar-thumb {
+    background: #ced4da;
+    border-radius: 3px;
+}
+
+#editContractModal .modal-body::-webkit-scrollbar-thumb:hover {
+    background: #adb5bd;
+}
+
+/* Edit Banner Modal Styles */
+#editBannerModal .modal-dialog {
+    max-width: 800px;
+}
+
+#editBannerModal .modal-header {
+    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+    border-bottom: 2px solid #138496;
+}
+
+#editBannerModal .modal-title {
+    font-weight: 600;
+    color: #ffffff;
+}
+
+#editBannerModal .form-control {
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+#editBannerModal .form-control:focus {
+    border-color: #17a2b8;
+    box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.25);
+}
+
+#editBannerModal .btn-info {
+    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+    border: none;
+    color: #ffffff;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+#editBannerModal .btn-info:hover {
+    background: linear-gradient(135deg, #138496 0%, #117a8b 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+}
+
+#editBannerModal .btn-info:disabled {
+    background: #6c757d;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Image preview styles */
+#editBannerModal .border {
+    border: 2px dashed #dee2e6 !important;
+    transition: border-color 0.3s ease;
+}
+
+#editBannerModal .border:hover {
+    border-color: #17a2b8 !important;
+}
+
+#editBannerModal img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.375rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#editBannerModal .alert-info {
+    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+}
+
+#editBannerModal .alert-light {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 1px solid #e9ecef;
+}
+
+/* File info styles */
+#editBannerModal .form-text {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+#editBannerModal small {
+    font-size: 0.8rem;
+}
+
+/* Responsive cho modal banner */
+@media (max-width: 768px) {
+    #editBannerModal .modal-dialog {
+        margin: 0.5rem;
+        max-width: calc(100% - 1rem);
+    }
+    
+    #editBannerModal .modal-body {
+        padding: 1rem;
+    }
+    
+    #editBannerModal img {
+        max-height: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    #editBannerModal .modal-dialog {
+        margin: 0.25rem;
+        max-width: calc(100% - 0.5rem);
+    }
+    
+    #editBannerModal .modal-body {
+        padding: 0.75rem;
+    }
+    
+    #editBannerModal img {
+        max-height: 150px;
+    }
+    
+    #editBannerModal .btn {
+        font-size: 0.875rem;
+        padding: 0.5rem 0.75rem;
+    }
+}
+
+/* Animation cho modal banner */
+#editBannerModal .modal.fade .modal-dialog {
+    transform: translate(0, -50px);
+    transition: transform 0.3s ease-out;
+}
+
+#editBannerModal .modal.show .modal-dialog {
+    transform: translate(0, 0);
+}
+
+/* Loading state cho file input */
+#editBannerModal .form-control:disabled {
+    background-color: #f8f9fa;
+    opacity: 0.7;
+}
+
+/* Hover effect cho preview images */
+#editBannerModal img:hover {
+    transform: scale(1.02);
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+/* Custom scrollbar cho modal body */
+#editBannerModal .modal-body {
+    scrollbar-width: thin;
+    scrollbar-color: #ced4da #f8f9fa;
+}
+
+#editBannerModal .modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+#editBannerModal .modal-body::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 3px;
+}
+
+#editBannerModal .modal-body::-webkit-scrollbar-thumb {
+    background: #ced4da;
+    border-radius: 3px;
+}
+
+#editBannerModal .modal-body::-webkit-scrollbar-thumb:hover {
+    background: #adb5bd;
+}
+
+/* Withdrawal Status Toggle Styles */
+.form-check-input:checked {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+}
 </style>
+
+<script>
+// Hàm chuyển đổi trạng thái rút tiền
+function toggleWithdrawalStatus(contractId, isAllowed) {
+    console.log('toggleWithdrawalStatus', { contractId, isAllowed });
+    
+    // Hiển thị loading
+    const toggle = document.getElementById('withdrawalToggle' + contractId);
+    const originalState = toggle.checked;
+    toggle.disabled = true;
+    
+    // Gửi request AJAX
+    fetch('{{ route("admin.toggle-withdrawal-status") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            contract_id: contractId,
+            cho_phep_rut_tien: isAllowed
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Cập nhật text hiển thị
+            const statusText = toggle.parentElement.nextElementSibling;
+            statusText.textContent = isAllowed ? 'Cho phép' : 'Không cho phép';
+            
+            // Hiển thị thông báo thành công
+            showToast(data.message || 'Cập nhật trạng thái rút tiền thành công!', 'success');
+        } else {
+            // Khôi phục trạng thái cũ nếu có lỗi
+            toggle.checked = !isAllowed;
+            showToast(data.message || 'Có lỗi xảy ra khi cập nhật trạng thái rút tiền', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Khôi phục trạng thái cũ nếu có lỗi
+        toggle.checked = !isAllowed;
+        showToast('Có lỗi xảy ra khi cập nhật trạng thái rút tiền', 'error');
+    })
+    .finally(() => {
+        // Kích hoạt lại toggle
+        toggle.disabled = false;
+    });
+}
+</script>
 
 

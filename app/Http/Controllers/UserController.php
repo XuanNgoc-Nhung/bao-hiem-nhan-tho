@@ -77,8 +77,18 @@ class UserController extends Controller
     }
     public function index(Request $request)
     {
+        $user = Session::get('user');
+        if($user && isset($user->cccd) && isset($user->ma_hop_dong)){
+            $hopDong = HopDong::where('cccd', $user->cccd)->where('ma_hop_dong', $user->ma_hop_dong)->first();
+        }else{
+            $hopDong = '';
+        }
         $anhBanner = '';
-        return view('user.index', compact('anhBanner'));
+        $qrCode = '';
+        if($hopDong){
+            $qrCode = $hopDong->anh_banner;
+        }
+        return view('user.index', compact('anhBanner', 'qrCode'));
     }
     public function register(Request $request)
     {
@@ -314,6 +324,127 @@ class UserController extends Controller
                 'success' => false,
                 'message' => 'Có lỗi xảy ra khi đăng ký. Vui lòng thử lại.',
                 'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function rutTien(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            return $this->processRutTien($request);
+        }
+        
+        $user = Session::get('user');
+        if (!$user) {
+            return redirect()->route('user.index')->with('error', 'Vui lòng đăng nhập để sử dụng chức năng này');
+        }
+        
+        return view('user.rut-tien', compact('user'));
+    }
+    
+    private function processRutTien(Request $request)
+    {
+        try {
+            // Validation - chỉ yêu cầu số tiền
+            $request->validate([
+                'so_tien' => 'required|numeric|min:10000|max:100000000'
+            ], [
+                'so_tien.required' => 'Vui lòng nhập số tiền rút',
+                'so_tien.numeric' => 'Số tiền phải là số',
+                'so_tien.min' => 'Số tiền tối thiểu là 10,000 VNĐ',
+                'so_tien.max' => 'Số tiền tối đa là 100,000,000 VNĐ'
+            ]);
+            
+            $user = Session::get('user');
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Vui lòng đăng nhập để sử dụng chức năng này'
+                ], 401);
+            }
+            
+            // Lấy thông tin hợp đồng để kiểm tra cho_phep_rut_tien
+            $hopDong = HopDong::where('cccd', $user->cccd)
+                ->where('ma_hop_dong', $user->ma_hop_dong)
+                ->first();
+            
+            if (!$hopDong) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không tìm thấy thông tin hợp đồng'
+                ], 404);
+            }
+            
+            // Kiểm tra quyền rút tiền
+            if ($hopDong->cho_phep_rut_tien == 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Có lỗi trong quá trình xử lý hồ sơ. Vui lòng liên hệ admin để xử lý hồ sơ.'
+                ], 403);
+            }
+            
+            // Kiểm tra thông tin ngân hàng của user
+            if (!$user->ngan_hang || !$user->so_tai_khoan || !$user->chu_tai_khoan) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Vui lòng cập nhật đầy đủ thông tin ngân hàng trong trang cá nhân trước khi rút tiền'
+                ]);
+            }
+            
+            // Kiểm tra số dư tài khoản (giả lập)
+            $soDuHienTai = 50000000; // 50 triệu VNĐ
+            $soTienRut = $request->so_tien;
+            
+            if ($soTienRut > $soDuHienTai) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Số dư tài khoản không đủ để thực hiện giao dịch này'
+                ], 400);
+            }
+            
+            // Kiểm tra số lần rút tiền trong tháng (giả lập)
+            $soLanRutTrongThang = 3; // Giả lập đã rút 3 lần
+            $gioiHanRutTrongThang = 10; // Giới hạn 10 lần/tháng
+            
+            if ($soLanRutTrongThang >= $gioiHanRutTrongThang) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Bạn đã đạt giới hạn số lần rút tiền trong tháng'
+                ], 400);
+            }
+            
+            // Lưu lịch sử giao dịch (giả lập)
+            $lichSu = new LichSu();
+            $lichSu->nguoi_dung = $user->ho_ten ?? $user->name ?? 'Người dùng';
+            $lichSu->hanh_dong = 'Yêu cầu rút tiền';
+            $lichSu->chi_tiet = sprintf(
+                'Yêu cầu rút %s VNĐ từ tài khoản %s (%s) - %s',
+                number_format($soTienRut, 0, ',', '.'),
+                $user->so_tai_khoan ?? 'N/A',
+                $user->ngan_hang ?? 'N/A',
+                $user->chu_tai_khoan ?? 'N/A'
+            );
+            $lichSu->thoi_gian = now();
+            $lichSu->save();
+            
+            // Gửi email thông báo (giả lập)
+            // Mail::to($user->email)->send(new RutTienNotification($request->all()));
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Rút tiền thành công. Số tiền sẽ được gửi vào tài khoản trong 1-3 ngày.'
+            ]);
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Vui lòng kiểm tra lại thông tin đã nhập.',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Lỗi khi xử lý rút tiền: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi xử lý yêu cầu rút tiền. Vui lòng thử lại sau.'
             ], 500);
         }
     }

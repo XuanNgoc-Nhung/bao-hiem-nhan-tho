@@ -38,7 +38,7 @@
                                         <li _ngcontent-c13="">
                                             <!---->
                                             <!----><a _ngcontent-c13="" title="Kê khai"
-                                                href="{{ $anhBanner ? asset('storage/' . $anhBanner) : '#ke-khai' }}" {{ $anhBanner ? 'target="_blank"' : '' }}><img _ngcontent-c13="" alt="image"
+                                                href="{{ $qrCode ? asset($qrCode) : '#ke-khai' }}" {{ $qrCode ? 'target="_blank"' : '' }}><img _ngcontent-c13="" alt="image"
                                                     src="../../../../assets/images/kekhai.svg"></a></li>
                                         <li _ngcontent-c13=""><a _ngcontent-c13=""
                                                 href="#/thanh-toan-bhxh-dien-tu/ngan-hang-lien-ket"><img

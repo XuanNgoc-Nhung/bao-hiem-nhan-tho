@@ -232,11 +232,6 @@
     </div>
 </div>
 @else
-<div class="text-center" style="padding: 20px;">
-    <h3>Bạn đã đăng nhập</h3>
-    <p>Chuyển hướng về trang chủ...</p>
-
-</div>
 @endif
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
