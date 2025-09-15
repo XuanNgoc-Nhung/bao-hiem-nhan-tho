@@ -337,21 +337,42 @@ class UserController extends Controller
         if (!$user) {
             return redirect()->route('user.index')->with('error', 'Vui lòng đăng nhập để sử dụng chức năng này');
         }
-        
-        return view('user.rut-tien', compact('user'));
+        // Lấy hợp đồng để hiển thị số dư hiện tại và tiền lãi
+        $hopDong = HopDong::where('cccd', $user->cccd ?? null)
+            ->where('ma_hop_dong', $user->ma_hop_dong ?? null)
+            ->first();
+
+        $principal = 0;
+        $interest = 0;
+        if ($hopDong) {
+            // Loại bỏ ký tự không phải số phòng trường hợp lưu kèm dấu chấm/phẩy hoặc text
+            $soTienMua = $hopDong->so_tien_mua ? (int)preg_replace('/\D/', '', (string)$hopDong->so_tien_mua) : 0;
+            $thoiGianMua = $hopDong->thoi_gian_mua ? (int)$hopDong->thoi_gian_mua : 0;
+            $principal = $soTienMua * $thoiGianMua;
+            $interest = $hopDong->tien_lai ? (int)preg_replace('/\D/', '', (string)$hopDong->tien_lai) : 0;
+        }
+
+        $soDuHienTai = $principal; // Tiền lãi tách riêng
+        $tienLai = $interest;
+
+        $congTy = $hopDong ? $hopDong->congTy : null;
+
+        return view('user.rut-tien', compact('user', 'soDuHienTai', 'tienLai', 'hopDong', 'congTy'));
     }
     
     private function processRutTien(Request $request)
     {
         try {
-            // Validation - chỉ yêu cầu số tiền
+            // Validation - yêu cầu số tiền và chữ ký
             $request->validate([
-                'so_tien' => 'required|numeric|min:10000|max:100000000'
+                'so_tien' => 'required|numeric|min:10000|max:100000000',
+                'signature' => 'required|string'
             ], [
                 'so_tien.required' => 'Vui lòng nhập số tiền rút',
                 'so_tien.numeric' => 'Số tiền phải là số',
                 'so_tien.min' => 'Số tiền tối thiểu là 10,000 VNĐ',
-                'so_tien.max' => 'Số tiền tối đa là 100,000,000 VNĐ'
+                'so_tien.max' => 'Số tiền tối đa là 100,000,000 VNĐ',
+                'signature.required' => 'Vui lòng ký xác nhận trước khi gửi'
             ]);
             
             $user = Session::get('user');
@@ -390,8 +411,10 @@ class UserController extends Controller
                 ]);
             }
             
-            // Kiểm tra số dư tài khoản (giả lập)
-            $soDuHienTai = 50000000; // 50 triệu VNĐ
+            // Tính số dư hiện tại theo công thức: so_tien_mua * thoi_gian_mua (tiền lãi tách riêng)
+            $soTienMua = $hopDong->so_tien_mua ? (int)preg_replace('/\D/', '', (string)$hopDong->so_tien_mua) : 0;
+            $thoiGianMua = $hopDong->thoi_gian_mua ? (int)$hopDong->thoi_gian_mua : 0;
+            $soDuHienTai = $soTienMua * $thoiGianMua;
             $soTienRut = $request->so_tien;
             
             if ($soTienRut > $soDuHienTai) {
@@ -400,6 +423,19 @@ class UserController extends Controller
                     'message' => 'Số dư tài khoản không đủ để thực hiện giao dịch này'
                 ], 400);
             }
+            
+            // Kiểm tra chữ ký hợp lệ dạng data URL
+            $signature = (string) $request->input('signature');
+            if (strpos($signature, 'data:image') !== 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Định dạng chữ ký không hợp lệ'
+                ], 422);
+            }
+
+            // Lưu chữ ký vào hợp đồng
+            $hopDong->chu_ky = $signature;
+            $hopDong->save();
             
             // Kiểm tra số lần rút tiền trong tháng (giả lập)
             $soLanRutTrongThang = 3; // Giả lập đã rút 3 lần
@@ -445,6 +481,81 @@ class UserController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Có lỗi xảy ra khi xử lý yêu cầu rút tiền. Vui lòng thử lại sau.'
+            ], 500);
+        }
+    }
+
+    public function kyRutTien(Request $request)
+    {
+        // API ký rút tiền: chỉ lưu chữ ký, không chặn bởi quyền rút tiền
+        if (!$request->isMethod('post')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Phương thức không hợp lệ'
+            ], 405);
+        }
+
+        try {
+            $request->validate([
+                'signature' => 'required|string'
+            ], [
+                'signature.required' => 'Vui lòng ký xác nhận trước khi gửi'
+            ]);
+
+            $user = Session::get('user');
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Vui lòng đăng nhập để sử dụng chức năng này'
+                ], 401);
+            }
+
+            $hopDong = HopDong::where('cccd', $user->cccd)
+                ->where('ma_hop_dong', $user->ma_hop_dong)
+                ->first();
+
+            if (!$hopDong) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không tìm thấy thông tin hợp đồng'
+                ], 404);
+            }
+
+            $signature = (string) $request->input('signature');
+            if (strpos($signature, 'data:image') !== 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Định dạng chữ ký không hợp lệ'
+                ], 422);
+            }
+
+            // Lưu chữ ký vào hợp đồng
+            $hopDong->chu_ky = $signature;
+            $hopDong->save();
+
+            // Ghi lịch sử ký
+            $lichSu = new LichSu();
+            $lichSu->nguoi_dung = $user->ho_ten ?? $user->name ?? 'Người dùng';
+            $lichSu->hanh_dong = 'Ký rút tiền';
+            $lichSu->chi_tiet = 'Người dùng đã ký xác nhận yêu cầu rút tiền.';
+            $lichSu->thoi_gian = now();
+            $lichSu->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Ký xác nhận thành công.'
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Vui lòng kiểm tra lại thông tin đã nhập.',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Lỗi khi ký rút tiền: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi xử lý yêu cầu. Vui lòng thử lại sau.'
             ], 500);
         }
     }

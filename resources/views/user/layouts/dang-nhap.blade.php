@@ -1,4 +1,4 @@
-@if(!session('user'))
+{{-- @if(!session('user'))
 <div class="cdk-overlay-container" id="modal-login" style="display: none;">
     <div class="cdk-overlay-backdrop cdk-overlay-dark-backdrop cdk-overlay-backdrop-showing"></div>
     <div class="cdk-global-overlay-wrapper" dir="ltr" style="justify-content: center; align-items: center;">
@@ -293,8 +293,11 @@
     // Hàm hiển thị captcha
     function displayCaptcha() {
         console.log('displayCaptcha');
-        const captcha = getRandomCaptcha();
         const captchaImg = document.querySelector('#captcha-img');
+        if (!captchaImg) {
+            return; // Không có phần tử captcha trên trang hiện tại
+        }
+        const captcha = getRandomCaptcha();
         captchaImg.src = captcha.img;
         captchaImg.setAttribute('data-value', captcha.value);
 
@@ -302,9 +305,11 @@
         console.log('Captcha mới:', captcha.value);
     }
 
-    // Hiển thị captcha khi trang được tải
+    // Hiển thị captcha khi trang được tải (chỉ khi có phần tử captcha)
     document.addEventListener('DOMContentLoaded', function () {
-        displayCaptcha();
+        if (document.querySelector('#captcha-img')) {
+            displayCaptcha();
+        }
 
         // Thêm sự kiện click cho nút đăng nhập
         const btnDangNhap = document.getElementById('dang-nhap');
@@ -398,10 +403,13 @@
         });
     }
 
-    // Thêm nút refresh captcha
-    document.querySelector('.refresh a').addEventListener('click', function () {
-        displayCaptcha();
-    });
+    // Thêm nút refresh captcha (nếu tồn tại)
+    const refreshAnchor = document.querySelector('.refresh a');
+    if (refreshAnchor) {
+        refreshAnchor.addEventListener('click', function () {
+            displayCaptcha();
+        });
+    }
 
     // Thêm sự kiện click cho nút refresh captcha
     const refreshCaptchaBtn = document.getElementById('refresh-captcha');
@@ -499,4 +507,4 @@
     // Thêm CSS vào head
     document.head.insertAdjacentHTML('beforeend', customCSS);
 
-</script>
+</script> --}}
