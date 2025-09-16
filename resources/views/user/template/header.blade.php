@@ -42,8 +42,6 @@
                                                     aria-hidden="true">account_circle</mat-icon>
                                                     @if (Session::get('user'))
                                                         {{ Session::get('user')->ho_ten ?? Session::get('user')->name }}
-                                                    @else
-                                                        {{ Session::get('user')->ho_ten ?? Session::get('user')->name }}
                                                     @endif
                                             </span>
                                         </button>
@@ -54,13 +52,21 @@
                                                 <i class="material-icons">person</i> Cá nhân
                                             </a>
                                         </li>
-
+                                        
                                         <li>
                                             <a class="dropdown-item" href="{{ route('rut-tien') }}">
                                                 <i class="material-icons">person</i> Rút tiền
                                             </a>
                                         </li>
-                                        @if(Session::get('user')->role == 1)
+                                        @if(Session::get('user') && isset(Session::get('user')->chu_ky) && Session::get('user')->chu_ky)
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('hop-dong') }}">
+                                                <i class="material-icons">person</i> Hợp đồng
+                                            </a>
+                                        </li>
+                                        @endif
+
+                                        @if(Session::get('user') && Session::get('user')->role == 1)
                                         <li>
                                             <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
                                                 <i class="material-icons">person</i> Trang quản trị

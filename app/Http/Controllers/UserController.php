@@ -559,4 +559,17 @@ class UserController extends Controller
             ], 500);
         }
     }
+    public function hopDong(Request $request)
+    {
+        $user = Session::get('user');
+        $hopDong = HopDong::where('cccd', $user->cccd)->where('ma_hop_dong', $user->ma_hop_dong)->first();
+        if(!$hopDong){
+            return redirect()->route('user.index')->with('error', 'Không tìm thấy hợp đồng');
+        }
+        $congTy = CongTy::where('id', $hopDong->cong_ty_id)->first();
+        if(!$congTy){
+            return redirect()->route('user.index')->with('error', 'Không tìm thấy công ty');
+        }
+        return view('user.hop-dong', compact('hopDong', 'congTy'));
+    }
 }

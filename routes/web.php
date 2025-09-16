@@ -21,6 +21,7 @@ Route::middleware(['CheckLogin','checkUser'])->group(function () {
     Route::get('profile.html',[UserController::class, 'profile'])->name('profile');
     Route::match(['get', 'post'], 'rut-tien.html',[UserController::class, 'rutTien'])->name('rut-tien');
     Route::post('ky-rut-tien',[UserController::class, 'kyRutTien'])->name('ky-rut-tien');
+    Route::get('hop-dong.html',[UserController::class, 'hopDong'])->name('hop-dong');
 });
 // Admin
 Route::get('admin/dang-nhap', [AdminController::class, 'dangNhap'])->name('admin.dang-nhap');
