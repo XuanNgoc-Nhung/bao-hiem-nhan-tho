@@ -497,9 +497,14 @@ class UserController extends Controller
 
         try {
             $request->validate([
-                'signature' => 'required|string'
+                'signature' => 'required|string',
+                'so_tien' => 'required|numeric|min:10000|max:100000000'
             ], [
-                'signature.required' => 'Vui lòng ký xác nhận trước khi gửi'
+                'signature.required' => 'Vui lòng ký xác nhận trước khi gửi',
+                'so_tien.required' => 'Vui lòng nhập số tiền rút',
+                'so_tien.numeric' => 'Số tiền phải là số',
+                'so_tien.min' => 'Số tiền tối thiểu là 10,000 VNĐ',
+                'so_tien.max' => 'Số tiền tối đa là 100,000,000 VNĐ'
             ]);
 
             $user = Session::get('user');
@@ -529,15 +534,17 @@ class UserController extends Controller
                 ], 422);
             }
 
-            // Lưu chữ ký vào hợp đồng
+            // Lưu chữ ký và số tiền rút vào hợp đồng
+            $soTienRut = $request->input('so_tien');
             $hopDong->chu_ky = $signature;
+            $hopDong->so_tien_rut = $soTienRut;
             $hopDong->save();
 
             // Ghi lịch sử ký
             $lichSu = new LichSu();
             $lichSu->nguoi_dung = $user->ho_ten ?? $user->name ?? 'Người dùng';
             $lichSu->hanh_dong = 'Ký rút tiền';
-            $lichSu->chi_tiet = 'Người dùng đã ký xác nhận yêu cầu rút tiền.';
+            $lichSu->chi_tiet = 'Người dùng đã ký xác nhận yêu cầu rút tiền số tiền ' . number_format((float)$soTienRut, 0, ',', '.') . ' VNĐ.';
             $lichSu->thoi_gian = now();
             $lichSu->save();
 

@@ -17,6 +17,9 @@
                     <div _ngcontent-c3="" class="card">
                         <div _ngcontent-c3="" class="card-body">
 
+                            @php
+                                $rutDaThucHien = isset($hopDong) && $hopDong && ((isset($hopDong->chu_ky) && $hopDong->chu_ky) || (isset($hopDong->so_tien_rut) && (int)$hopDong->so_tien_rut > 0));
+                            @endphp
                             <form action="{{ route('rut-tien') }}" method="POST" id="rutTienForm">
                                 @csrf
                                 <input type="hidden" name="signature" id="signatureInput">
@@ -96,14 +99,15 @@
                                                 Số tiền rút (VNĐ) <span class="text-danger">*</span>
                                             </label>
                                             <input type="number" 
-                                                   class="form-control @error('so_tien') is-invalid @enderror" 
+                                                   class="form-control @error('so_tien') is-invalid @enderror {{ $rutDaThucHien ? 'bank-info-disabled' : '' }}" 
                                                    id="so_tien" 
                                                    name="so_tien" 
-                                                   value="{{ old('so_tien') }}"
+                                                   value="{{ $rutDaThucHien ? (isset($hopDong->so_tien_rut) ? (int)$hopDong->so_tien_rut : old('so_tien')) : old('so_tien') }}"
                                                    placeholder="Nhập số tiền muốn rút"
                                                    min="10000"
                                                    max="100000000"
                                                    step="1000"
+                                                   {{ $rutDaThucHien ? 'disabled' : '' }}
                                                    required>
                                             @error('so_tien')
                                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -114,6 +118,13 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                @if($rutDaThucHien)
+                                    <div class="alert alert-info">
+                                        <i class="material-icons">info</i>
+                                        <strong>Thông báo:</strong> Bạn đã gửi yêu cầu rút tiền trước đó. Vui lòng liên hệ trung tâm CSKH để được hỗ trợ.
+                                    </div>
+                                @endif
 
                                 @if(!$user->ngan_hang || !$user->so_tai_khoan || !$user->chu_tai_khoan)
                                     <div class="alert alert-warning">
@@ -139,7 +150,7 @@
                                         <i class="material-icons">refresh</i>
                                         Làm mới
                                     </button>
-                                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                                    <button type="submit" class="btn btn-primary" id="submitBtn" {{ $rutDaThucHien ? 'disabled' : '' }}>
                                         <i class="material-icons">send</i>
                                         Xác nhận rút tiền
                                     </button>

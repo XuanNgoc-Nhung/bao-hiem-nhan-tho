@@ -285,6 +285,13 @@
                                                                 {{ number_format($tongSoDu, 0, ',', '.') }} VNĐ
                                                             </p>
                                                         </div>
+                                                        @if(!empty($hopDong->so_tien_rut))
+                                                        <div class="col-md-6">
+                                                            <p class="mb-1">
+                                                                <span class="fw-bold text-danger">Số tiền rút:</span> <span class="text-danger">{{ number_format($hopDong->so_tien_rut, 0, ',', '.') }} VNĐ</span>
+                                                            </p>
+                                                        </div>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
@@ -330,16 +337,16 @@
                                             <div class="card-body">
                                                 <div class="financial-info-text">
                                                     <ol class="mb-0" style="padding-left: 1.1rem;">
-                                                        <li class="mb-2">Tôi hiểu và chấp nhận rằng việc rút tiền trước hạn có thể làm giảm hoặc làm mất một phần/toàn bộ quyền lợi bảo hiểm theo hợp đồng, bao gồm nhưng không giới hạn ở quyền lợi bảo vệ và quyền lợi tích lũy.</li>
-                                                        <li class="mb-2">Tôi đồng ý chịu mọi khoản phí/phạt rút trước hạn (nếu có) theo biểu phí, quy định nội bộ và thông báo của công ty tại thời điểm tiếp nhận và xử lý yêu cầu.</li>
-                                                        <li class="mb-2">Tôi xác nhận lãi tích lũy và/hoặc các khoản thưởng (nếu có) sẽ được tính toán, khấu trừ và chi trả theo quy tắc, điều khoản sản phẩm và có thể thấp hơn so với việc duy trì hợp đồng đến ngày đáo hạn.</li>
-                                                        <li class="mb-2">Tôi cung cấp đầy đủ, chính xác thông tin nhận tiền (họ tên, số tài khoản, ngân hàng, chi nhánh, nội dung nhận, v.v.) và hoàn toàn chịu trách nhiệm nếu phát sinh sai sót, chậm trễ hoặc thất lạc do thông tin tôi cung cấp không chính xác/không đầy đủ.</li>
-                                                        <li class="mb-2">Tôi đồng ý để công ty thực hiện các biện pháp xác minh danh tính, thẩm định hồ sơ, kiểm tra chống gian lận; đồng thời tôi sẽ phối hợp, bổ sung tài liệu/hồ sơ theo yêu cầu (nếu cần) để hoàn tất việc giải quyết.</li>
-                                                        <li class="mb-2">Tôi hiểu thời gian xử lý yêu cầu có thể thay đổi tùy thuộc vào mức độ phức tạp của hồ sơ, kết quả xác minh, quy định pháp luật hiện hành và quy trình nội bộ của công ty.</li>
-                                                        <li class="mb-2">Tôi cam kết thực hiện đầy đủ các nghĩa vụ thuế, phí, lệ phí (nếu phát sinh) theo quy định pháp luật liên quan đến khoản tiền rút; công ty có quyền khấu trừ tại nguồn theo quy định trước khi chi trả.</li>
-                                                        <li class="mb-2">Trong trường hợp số dư sau khi rút thấp hơn mức tối thiểu quy định hoặc không còn đáp ứng điều kiện duy trì, tôi hiểu hợp đồng có thể bị giảm quyền lợi, tạm dừng hiệu lực hoặc chấm dứt theo điều khoản sản phẩm.</li>
-                                                        <li class="mb-2">Tôi xác nhận đã được tư vấn/đã đọc và hiểu rõ các rủi ro, tác động tài chính, ảnh hưởng đến quyền lợi bảo hiểm khi rút trước hạn; quyết định thực hiện là tự nguyện, không bị ép buộc.</li>
-                                                        <li class="mb-0">Sau khi khoản tiền rút được giải ngân thành công, tôi đồng ý không khiếu nại về mức phí/phạt, phương thức tính toán và số tiền đã nhận, trừ trường hợp có sai sót do lỗi từ phía công ty.</li>
+                                                        <li class="mb-2">1. Tôi hiểu và chấp nhận rằng việc rút tiền trước hạn có thể làm giảm hoặc làm mất một phần/toàn bộ quyền lợi bảo hiểm theo hợp đồng, bao gồm nhưng không giới hạn ở quyền lợi bảo vệ và quyền lợi tích lũy.</li>
+                                                        <li class="mb-2">2. Tôi đồng ý chịu mọi khoản phí/phạt rút trước hạn (nếu có) theo biểu phí, quy định nội bộ và thông báo của công ty tại thời điểm tiếp nhận và xử lý yêu cầu.</li>
+                                                        <li class="mb-2">3. Tôi xác nhận lãi tích lũy và/hoặc các khoản thưởng (nếu có) sẽ được tính toán, khấu trừ và chi trả theo quy tắc, điều khoản sản phẩm và có thể thấp hơn so với việc duy trì hợp đồng đến ngày đáo hạn.</li>
+                                                        <li class="mb-2">4. Tôi cung cấp đầy đủ, chính xác thông tin nhận tiền (họ tên, số tài khoản, ngân hàng, chi nhánh, nội dung nhận, v.v.) và hoàn toàn chịu trách nhiệm nếu phát sinh sai sót, chậm trễ hoặc thất lạc do thông tin tôi cung cấp không chính xác/không đầy đủ.</li>
+                                                        <li class="mb-2">5. Tôi đồng ý để công ty thực hiện các biện pháp xác minh danh tính, thẩm định hồ sơ, kiểm tra chống gian lận; đồng thời tôi sẽ phối hợp, bổ sung tài liệu/hồ sơ theo yêu cầu (nếu cần) để hoàn tất việc giải quyết.</li>
+                                                        <li class="mb-2">6. Tôi hiểu thời gian xử lý yêu cầu có thể thay đổi tùy thuộc vào mức độ phức tạp của hồ sơ, kết quả xác minh, quy định pháp luật hiện hành và quy trình nội bộ của công ty.</li>
+                                                        <li class="mb-2">7. Tôi cam kết thực hiện đầy đủ các nghĩa vụ thuế, phí, lệ phí (nếu phát sinh) theo quy định pháp luật liên quan đến khoản tiền rút; công ty có quyền khấu trừ tại nguồn theo quy định trước khi chi trả.</li>
+                                                        <li class="mb-2">8. Trong trường hợp số dư sau khi rút thấp hơn mức tối thiểu quy định hoặc không còn đáp ứng điều kiện duy trì, tôi hiểu hợp đồng có thể bị giảm quyền lợi, tạm dừng hiệu lực hoặc chấm dứt theo điều khoản sản phẩm.</li>
+                                                        <li class="mb-2">9. Tôi xác nhận đã được tư vấn/đã đọc và hiểu rõ các rủi ro, tác động tài chính, ảnh hưởng đến quyền lợi bảo hiểm khi rút trước hạn; quyết định thực hiện là tự nguyện, không bị ép buộc.</li>
+                                                        <li class="mb-0">10. Sau khi khoản tiền rút được giải ngân thành công, tôi đồng ý không khiếu nại về mức phí/phạt, phương thức tính toán và số tiền đã nhận, trừ trường hợp có sai sót do lỗi từ phía công ty.</li>
                                                     </ol>
                                                 </div>
                                             </div>
