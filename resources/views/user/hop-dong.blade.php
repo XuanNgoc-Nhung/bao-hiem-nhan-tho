@@ -477,31 +477,20 @@
                                                                 <p  style="font-size: 0.8rem; margin-bottom: 0;"><strong>{{ $congTy->ten }}</strong></p>
                                                             @endif
                                                             <div class="">
-                                                                @if($congTy && ($congTy->con_dau || $congTy->chu_ky))
+                                                                @if($congTy && $congTy->con_dau)
                                                                     <div class="company-signature-container">
-                                                                        <i class="mb-2 text-muted" style="font-size: 0.7rem;">(Đã ký tên, đóng dấu)</i>
                                                                         <!-- Con dấu công ty -->
-                                                                        @if($congTy->con_dau)
-                                                                            <div class="company-seal mb-2">
-                                                                                <img src="{{ asset($congTy->con_dau) }}" alt="Con dấu {{ $congTy->ten }}" class="company-seal-img">
-                                                                            </div>
-                                                                        @endif
-                                                                        
-                                                                        <!-- Chữ ký đại diện công ty -->
-                                                                        @if($congTy->chu_ky)
-                                                                            <div class="company-signature">
-                                                                                <img src="{{ asset($congTy->chu_ky) }}" alt="Chữ ký đại diện {{ $congTy->ten }}" class="company-signature-img">
-                                                                            </div>
-                                                                        @endif
+                                                                        <div class="company-seal">
+                                                                            <img src="{{ asset($congTy->con_dau) }}" alt="Con dấu {{ $congTy->ten }}" class="company-seal-img">
+                                                                        </div>
                                                                         @if(isset($congTy->nguoi_dai_dien) && $congTy->nguoi_dai_dien)
-                                                                            <p class="mt-2" style="font-size: 0.8rem;">{{ $congTy->nguoi_dai_dien }}</p>
+                                                                            <p style="font-size: 1rem;">{{ $congTy->nguoi_dai_dien }}</p>
                                                                         @endif
                                                                     </div>
                                                                 @else
                                                                     <div class="border border-2 border-dark rounded" style="height: 100px; width: 200px; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
-                                                                        <span class="text-muted" style="font-size: 0.75rem;">Chưa có chữ ký</span>
+                                                                        <span class="text-muted" style="font-size: 0.75rem;">Chưa có con dấu</span>
                                                                     </div>
-                                                                    <p class="mt-2 text-muted" style="font-size: 0.7rem;">(Ký tên, đóng dấu)</p>
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -515,7 +504,6 @@
                                                             <div class="">
                                                                 @if($hopDong->chu_ky)
                                                                     <div class="user-signature-container">
-                                                                        <i class="mb-2 text-muted" style="font-size: 0.7rem;">(Đã ký điện tử)</i>
                                                                         <img src="{{ $hopDong->chu_ky }}" alt="Chữ ký người được bảo hiểm" class="user-signature-img">
                                                                         @if(isset($hopDong->ho_ten) && $hopDong->ho_ten)
                                                                             <p class="mt-2" style="font-size: 0.8rem;">{{ $hopDong->ho_ten }}</p>
@@ -772,7 +760,7 @@
         }
     }
     
-    /* CSS cho con dấu và chữ ký công ty */
+    /* CSS cho con dấu công ty */
     .company-signature-container {
         display: flex;
         flex-direction: column;
@@ -780,43 +768,18 @@
         justify-content: center;
         min-height: 100px;
         padding: 10px;
-        position: relative;
     }
     
     .company-seal {
         display: flex;
         align-items: center;
         justify-content: center;
-        position: relative;
-        z-index: 1;
     }
     
     .company-seal-img {
-        max-height: 140px;
-        max-width: 140px;
+        max-height: 200px;
+        max-width: 200px;
         object-fit: contain;
-        border-radius: 50%;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    
-    .company-signature {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 0;
-        position: absolute;
-        top: 50%;
-        left: 70%;
-        transform: translate(-50%, -50%);
-        z-index: 2;
-        pointer-events: none;
-    }
-    
-    .company-signature-img {
-        max-height: 70px;
-        max-width: 250px;
-        object-fit: contain;
-        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
     }
     
     /* CSS cho chữ ký người dùng */
@@ -843,17 +806,8 @@
     /* Responsive cho con dấu và chữ ký */
     @media (max-width: 768px) {
         .company-seal-img {
-            max-height: 120px;
-            max-width: 120px;
-        }
-        
-        .company-signature-img {
-            max-height: 55px;
+            max-height: 200px;
             max-width: 200px;
-        }
-        .company-signature {
-            top: 52%;
-            left: 72%;
         }
         
         .company-signature-container {

@@ -133,7 +133,7 @@
                                     </form>
                                 </div>
                             </div>
-                            
+                            @if($userInfo->cho_phep_rut_tien)
                             <!-- Thông tin ngân hàng người mua -->
                             <div class="row mb-4">
                                 <div class="col-12">
@@ -156,7 +156,7 @@
                                     </form>
                                 </div>
                             </div>
-                            
+                            @endif                            
                             <!-- Hình ảnh CCCD -->
                             <div class="row">
                                 <div class="col-12">

@@ -51,8 +51,8 @@
         </div>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover table-striped table-bordered table-sm" id="companiesTable">
+        <div class="table-responsive" style="max-height: 70vh;">
+            <table class="table table-hover table-striped table-bordered table-sm" id="companiesTable" style="min-width: 600px;">
                 <thead>
                     <tr>
                         <th>STT</th>

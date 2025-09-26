@@ -19,7 +19,7 @@ class CccdController extends Controller
         if ($status !== null && in_array((int)$status, [1, 2], true)) {
             $query->where('trang_thai', (int)$status);
         }
-        $danh_sach_cccd = $query->paginate(2);
+        $danh_sach_cccd = $query->paginate(20);
         return view('admin.cccd', compact('danh_sach_cccd'));
     }
 

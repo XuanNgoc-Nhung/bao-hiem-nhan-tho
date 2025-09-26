@@ -279,7 +279,75 @@
         /* Tables */
         .table-responsive {
             border-radius: 0.75rem;
-            overflow: hidden;
+            overflow-x: auto;
+            overflow-y: visible;
+            position: relative;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar for table-responsive */
+        .table-responsive::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-responsive::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* Scroll indicator */
+        .table-responsive::after {
+            content: "← Kéo để xem thêm →";
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Show scroll indicator on mobile and when table overflows */
+        @media (max-width: 768px) {
+            .table-responsive::after {
+                opacity: 1;
+            }
+        }
+
+        /* Show scroll indicator when table has horizontal scroll */
+        .table-responsive:not(.no-scroll-indicator) {
+            position: relative;
+        }
+
+        .table-responsive:not(.no-scroll-indicator)::after {
+            opacity: 1;
+        }
+
+        /* Ensure table maintains minimum width */
+        .table-responsive .table {
+            min-width: 100%;
+            white-space: nowrap;
+        }
+
+        /* Allow text wrapping in specific columns if needed */
+        .table-responsive .table .text-wrap {
+            white-space: normal;
         }
 
         .table {

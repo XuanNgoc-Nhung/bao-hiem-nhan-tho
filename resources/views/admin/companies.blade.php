@@ -60,8 +60,8 @@
         </div>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover table-striped table-bordered table-sm" id="companiesTable">
+        <div class="table-responsive" style="max-height: 70vh;">
+            <table class="table table-hover table-striped table-bordered table-sm" id="companiesTable" style="min-width: 1200px;">
                 <thead>
                     <tr>
                         <th class="text-center">STT</th>
@@ -568,6 +568,65 @@
 </div>
 
 <style>
+    /* Companies table specific styles */
+    #companiesTable {
+        font-size: 0.9rem;
+    }
+    
+    #companiesTable th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        white-space: nowrap;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    
+    #companiesTable td {
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+    
+    /* Company info column */
+    #companiesTable td:nth-child(2) {
+        min-width: 300px;
+        white-space: normal;
+    }
+    
+    /* Image columns */
+    #companiesTable td:nth-child(3),
+    #companiesTable td:nth-child(4),
+    #companiesTable td:nth-child(5) {
+        min-width: 120px;
+        text-align: center;
+    }
+    
+    /* Action column */
+    #companiesTable td:last-child {
+        min-width: 120px;
+        text-align: center;
+    }
+    
+    /* Company logo styling */
+    .company-logo img {
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    /* Image preview styling */
+    #companiesTable img {
+        max-width: 100px;
+        max-height: 100px;
+        object-fit: contain;
+        border-radius: 4px;
+    }
+    
+    /* Badge styling */
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.4em 0.6em;
+    }
+    
     /* Darken backdrop for all Bootstrap modals on this page */
     .modal-backdrop {
         --bs-backdrop-bg: #000;

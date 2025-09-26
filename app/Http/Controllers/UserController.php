@@ -58,7 +58,8 @@ class UserController extends Controller
                 'message' => 'Đăng nhập thành công.',
                 'redirect_url' => route('profile')
             ];
-            session()->put('user', (object)$user);
+            // Lưu trực tiếp object user vào session để tránh lỗi undefined property
+            session()->put('user', $user);
             return response()->json($res);
         }
         Log::info('CCCD hoặc mã hợp đồng không khớp.');

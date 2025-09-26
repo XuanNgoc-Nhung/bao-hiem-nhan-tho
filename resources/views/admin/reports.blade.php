@@ -212,8 +212,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
+                <div class="table-responsive" style="max-height: 70vh;">
+                    <table class="table table-hover" style="min-width: 800px;">
                         <thead>
                             <tr>
                                 <th>Thời gian</th>

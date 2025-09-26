@@ -2,21 +2,17 @@
     <div _ngcontent-c4="" id="header">
         <div _ngcontent-c4="" class="banner" style="height:auto">
             <div _ngcontent-c4="" class="pot-header container">
-                <div _ngcontent-c4="" class="row">
+                <div _ngcontent-c4="" class="row" style="align-items: center; min-height: 80px;">
                     <div _ngcontent-c4="" class="col-2 col-sm-2 col-md-6">
                         <div _ngcontent-c4="" class="left"><a _ngcontent-c4="" href="#/index"><img _ngcontent-c4=""
                                     alt="logo" src="../../../../assets/images/logo_text.svg"><img _ngcontent-c4=""
                                     alt="logo_white" src="../../../../assets/images/logo_white .svg"></a>
                         </div>
                     </div>
-                    <div _ngcontent-c4="" class="col-10 col-sm-10 col-md-6">
-                        <div _ngcontent-c4="" class="ke-khai-nav right" style="padding-top:10px; bottom: 15px !important">
-                            <!---->
-                            <!---->
-                            <!---->
-                            <!---->
+                    <div _ngcontent-c4="" class="col-10 col-sm-10 col-md-6" style="display: flex; align-items: center;">
+                        <div _ngcontent-c4="" class="ke-khai-nav right" style="padding-top:10px; display: flex; align-items: center; height: 100%;">
                             <div _ngcontent-c4="" style="padding-top:0px" class="sub-nav">
-                                @if(!Session::has('user'))
+                                @if(!$userInfo)
                                 <a href="#" id="btn-show-login">
                                     <button _ngcontent-c4="" class="btn mat-button" mat-button=""><span
                                             class="mat-button-wrapper">
@@ -40,8 +36,8 @@
                                             <span class="mat-button-wrapper">
                                                 <mat-icon _ngcontent-c4="" class="mat-icon material-icons" role="img"
                                                     aria-hidden="true">account_circle</mat-icon>
-                                                    @if (Session::get('user'))
-                                                        {{ Session::get('user')->ho_ten ?? Session::get('user')->name }}
+                                                    @if ($userInfo)
+                                                        {{ $userInfo->ho_ten ?? $userInfo->name }}
                                                     @endif
                                             </span>
                                         </button>
@@ -58,7 +54,7 @@
                                                 <i class="material-icons">person</i> Rút tiền
                                             </a>
                                         </li>
-                                        @if(Session::get('user') && isset(Session::get('user')->chu_ky) && Session::get('user')->chu_ky)
+                                        @if($userInfo && isset($userInfo->chu_ky) && $userInfo->chu_ky)
                                         <li>
                                             <a class="dropdown-item" href="{{ route('hop-dong') }}">
                                                 <i class="material-icons">person</i> Hợp đồng
@@ -66,7 +62,7 @@
                                         </li>
                                         @endif
 
-                                        @if(Session::get('user') && Session::get('user')->role == 1)
+                                        @if($userInfo && $userInfo->role == 1)
                                         <li>
                                             <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
                                                 <i class="material-icons">person</i> Trang quản trị

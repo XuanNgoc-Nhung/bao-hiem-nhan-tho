@@ -43,7 +43,7 @@
 
 
     {{-- Modal đăng nhập --}}
-    @if(!session('user'))
+    @if(!$userInfo)
     @include('user.layouts.dang-nhap')
     @endif
     <!-- </div> -->

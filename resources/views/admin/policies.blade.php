@@ -133,8 +133,8 @@
         </h5>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover" id="policiesTable">
+        <div class="table-responsive" style="max-height: 70vh;">
+            <table class="table table-hover" id="policiesTable" style="min-width: 800px;">
                 <thead>
                     <tr>
                         <th>Mã hợp đồng</th>

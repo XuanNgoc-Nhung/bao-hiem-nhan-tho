@@ -10,7 +10,7 @@
                         </div>
                     </div>
                     <div _ngcontent-c4="" class="col-10 col-sm-10 col-md-6">
-                        <div _ngcontent-c4="" class="ke-khai-nav right" style="padding-top:10px; bottom: 15px !important">
+                        <div _ngcontent-c4="" class="ke-khai-nav right" style="">
                             <!---->
                             <!---->
                             <!---->

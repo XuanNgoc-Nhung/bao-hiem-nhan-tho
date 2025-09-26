@@ -1327,7 +1327,14 @@ function initializeForm() {
         return;
     }
     
+    // Đảm bảo Select2 đã được load
+    if (typeof jQuery.fn.select2 === 'undefined') {
+        console.error('Select2 is not loaded');
+        return;
+    }
+    
     console.log('jQuery version:', jQuery.fn.jquery);
+    console.log('Select2 is available');
 
     // Khởi tạo Select2 cho tất cả select box
     $('.form-select').select2({
@@ -2518,11 +2525,9 @@ function fillSampleData() {
 }
 
 // Thực thi khi DOM sẵn sàng
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeForm);
-} else {
+document.addEventListener('DOMContentLoaded', function() {
     initializeForm();
-}
+});
 
 // Xử lý hiển thị lỗi validation từ server
 document.addEventListener('DOMContentLoaded', function() {
